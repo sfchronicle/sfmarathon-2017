@@ -1,0 +1,45 @@
+.day-cell {
+  rx: 12;
+}
+
+//line graph ------------------------------------------------
+
+svg {
+  display: block;
+  margin: auto;
+  // @media @mobile {
+  //   margin: 0;
+  // }
+}
+text {
+  font-size: 14px;
+  font-family: @block-graphics;
+  @media @mobile {
+    font-size: 12px;
+  }
+}
+
+// #timing_lines, #timing-lines {
+  path {
+      stroke-width: 1;
+      fill: none;
+  }
+  .line {
+    stroke: rgb(31, 119, 180);
+    opacity: 0.6;
+  }
+  .elevationprofile {
+    opacity: 1;
+    fill: @light-gray;
+    stroke: none;
+  }
+
+// }
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}

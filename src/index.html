@@ -18,14 +18,58 @@
 
     <%= t.include("partials/_nav.html") %>
 
+    <div class="outer">
 
-    <div class="container">
-      <p>Content goes here...</p>
+      <div class="story-container">
+        <div class="hed">Hilary Dykes</div>
+        <div id="hilary-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Gene Dykes</div>
+        <div id="gene-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Iain Mickle</div>
+        <div id="iain-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Greg McQuaid</div>
+        <div id="greg-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Jorge Maravilla</div>
+        <div id="jorge-heatmap"></div>
+      </div>
+
+      <div class="hed">Elevation gain by Jorge</div>
+      <div id="jorge-elevation"></div>
+
+      <div class="hed">Cumulative miles by Jorge</div>
+      <div id="jorge-miles"></div>
+
+      <div class="hed">Cumulative hours by Jorge</div>
+      <div id="jorge-time"></div>
+
+      <div class="hed">Time vs. miles by Jorge</div>
+      <div id="jorge-time2"></div>
+
+      <div class="hed">Time vs. elevation by Jorge</div>
+      <div id="jorge-time3"></div>
+
     </div>
 
     <%= t.include("partials/_footer.html") %>
 
+    <script>
+      var hilaryData = <%= JSON.stringify(json.HilaryDykes) %>
+      var geneData = <%= JSON.stringify(json.GeneDykes) %>
+      var iainData = <%= JSON.stringify(json.IainMickle) %>
+      var jorgeData = <%= JSON.stringify(json.JorgeMaravilla) %>
+      var gregData = <%= JSON.stringify(json.GregMcQuaid) %>
+    </script>
+
     <script src="app.js" async></script>
+
     <%= t.include("partials/_helloSFC.html") %>
 
   </body>
