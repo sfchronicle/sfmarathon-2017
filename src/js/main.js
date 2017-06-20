@@ -3,7 +3,8 @@ var d3 = require("d3");//Do not delete'
 var calendar = require("calendar-heatmap-mini");
 
 var dataList = ["hilaryData","geneData","iainData","jorgeData","gregData"];
-var chartList = ["#hilary-heatmap","#gene-heatmap","#iain-heatmap","#jorge-heatmap","#greg-heatmap"];
+var chartHeatList = ["#hilary-heatmap","#gene-heatmap","#iain-heatmap","#jorge-heatmap","#greg-heatmap"];
+var chartElevationList = ["#hilary-elevation"];
 
 var	parseFullDate = d3.timeParse("%m/%d/%Y");
 
@@ -235,31 +236,6 @@ function drawCalendar(dateData){
 }
 // drawCalendar(jorgeData);
 // drawCalendarV2(jorgeData,chartList[0]);
-
-
-for (var jdx=0; jdx<dataList.length; jdx++) {
-  var data = [];
-  var chartID = chartList[jdx];
-  var chartData = [];
-  var data = eval(dataList[jdx]);
-  // for (var idx=0; idx < data.length; idx++){
-  //   if (data[idx]["miles"]){
-  //     chartData.push({
-  //       date: data[idx]["date"],
-  //       count: data[idx]["miles"]
-  //     });
-  //   }
-  // }
-  // var chart = new calendar()
-  //                 .data(chartData)
-  //                 .selector(chartID)
-  //                 .tooltipEnabled(false)
-  //                 .startDate(new Date("05/01/2017"))
-  //                 .endDate(new Date("07/16/2017"))
-  //                 .colorRange(["white","red"])
-  // chart();
-  drawCalendarV2(data,chartID);
-}
 
 //----------------------------------------------------------------------------------
 // elevation gain from strava ------------------------------------
@@ -516,6 +492,27 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
     .style("stroke", "red")//cscale(d.key))//
     .attr("d", lineFlow(flatData));
 }
+
+//----------------------------------------------------------------------------------
+// MASTER LOOP
+//----------------------------------------------------------------------------------
+
+for (var jdx=0; jdx<dataList.length; jdx++) {
+  var data = [];
+  var chartID = chartHeatList[jdx];
+  var data = eval(dataList[jdx]);
+  drawCalendarV2(data,chartID);
+
+  var elevID = chartElevationList[jdx];
+  // drawElevation(data,elevID);
+  console.log(elevID);
+  if (elevID) {
+    console.log(data);
+    areaChart(elevID,data,"elevationsum",60000);
+  }
+}
+
+
 
 areaChart("#jorge-elevation",jorgeData,"elevationsum",60000);
 areaChart("#jorge-miles",jorgeData,"milessum",500);
