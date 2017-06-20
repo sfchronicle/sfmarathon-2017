@@ -4,31 +4,261 @@ var calendar = require("calendar-heatmap-mini");
 
 var dataList = ["hilaryData","geneData","iainData","jorgeData","gregData"];
 var chartList = ["#hilary-heatmap","#gene-heatmap","#iain-heatmap","#jorge-heatmap","#greg-heatmap"];
-console.log(dataList.length);
+
+var	parseFullDate = d3.timeParse("%m/%d/%Y");
+
+function drawCalendarV2(dateData,chartID) {
+
+  var cellMargin = 2,
+      cellSize = 20;
+
+  var minDate = d3.min(dateData, function(d) { return new Date(d.date) })
+  var maxDate = d3.max(dateData, function(d) { return new Date(d.date) })
+
+  var day = d3.timeFormat("%w"), // day of the week
+      day_of_month = d3.timeFormat("%e"), // day of the month
+      day_of_year = d3.timeFormat("%j"),
+      week = d3.timeFormat("%U"), // week number of the year
+      month = d3.timeFormat("%m"), // month number
+      year = d3.timeFormat("%Y"),
+      percent = d3.format(".1%"),
+      format = d3.timeFormat("%m/%d/%Y"),
+      // format = d3.timeFormat("%Y-%m-%d"),
+      monthName = d3.timeFormat("%B"),
+      months= d3.timeMonth.range(d3.timeMonth.floor(minDate), d3.timeMonth.ceil(maxDate));
+
+  var num_months_in_a_row = 2;//months.length();//Math.floor(width / (cellSize * 7 + 50));
+  console.log(num_months_in_a_row);
+  // var shift_up = cellSize * 1;
+  var header_height = 50;
+
+  var color = d3.scaleLinear()
+    .range(['white', 'red'])
+    // .range(['#D8E6E7', '#218380'])
+    .domain([0, 40]);
+
+  var lookup = d3.nest()
+    .key(function(d) { return d.date; })
+    .rollup(function(leaves) {
+      return d3.sum(leaves, function(d){ return parseInt(d.miles); });
+    })
+    .object(dateData);
+
+  var svg = d3.select(chartID).selectAll("svg")
+      // .data(d3.range([2017,2017]))
+    .data("0")
+    .enter().append("svg")
+    .attr("width", 7*cellSize*2 + 25) //2 months of 7 days a week with 25 px between them
+    .attr("height", 5*cellSize + header_height)
+    .append("g")
+
+  var rect = svg.selectAll(".day")
+      .data(function(d) {
+        return d3.timeDays(minDate, maxDate);
+      })
+    .enter().append("rect")
+      .attr("class", "day")
+      .attr("width", cellSize-4)
+      .attr("height", cellSize-4)
+      .attr("rx", 3).attr("ry", 3) // rounded corners
+      .attr("fill", function(d,didx) {
+        var format = d3.timeFormat("%m/%d/%Y");
+        if (lookup[format(d)]) {
+          return color(lookup[format(d)]);
+        } else {
+          return "#eaeaea";
+        }
+      })
+      .attr("x", function(d) {
+        var month_padding = 1.2 * cellSize*7 * ((month(d)-1) % (num_months_in_a_row));
+        console.log(num_months_in_a_row);
+        return day(d) * cellSize + month_padding;
+      })
+      .attr("y", function(d) {
+        var week_diff = week(d) - week(new Date(year(d), month(d)-1, 1) );
+        var row_level = Math.ceil(month(d) / (num_months_in_a_row));
+        return (week_diff*cellSize) + header_height;
+      })
+      .datum(format);
+
+  var month_titles = svg.selectAll(".month-title")  // Jan, Feb, Mar and the whatnot
+        .data(function(d) {
+          return months; })
+      .enter().append("text")
+        .text(monthTitle)
+        .attr("x", function(d, i) {
+          var month_padding = 1.2 * cellSize*7* ((month(d)-1) % (num_months_in_a_row));
+          return month_padding;
+        })
+        .attr("y", function(d, i) {
+          var week_diff = week(d) - week(new Date(year(d), month(d)-1, 1) );
+          var row_level = Math.ceil(month(d) / (num_months_in_a_row));
+          return (week_diff*cellSize) + header_height - 20;
+        })
+        .attr("class", "month-title")
+        .attr("d", monthTitle);
+
+  //  Tooltip Object
+  var tooltip = d3.select("body")
+    .append("div").attr("id", "tooltip")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .text("a simple tooltip");
+
+  //  Tooltip
+  rect.on("mouseover", mouseover);
+  rect.on("mouseout", mouseout);
+  function mouseover(d) {
+    tooltip.style("visibility", "visible");
+    var text = d+" : "+lookup[d]+ " miles";
+    tooltip.style("opacity",1)
+    tooltip.html(text)
+                .style("left", (d3.event.pageX)+10 + "px")
+                .style("top", (d3.event.pageY) + "px");
+  }
+  function mouseout (d) {
+    tooltip.style("opacity",0);
+  }
+
+  // });
+
+  function dayTitle (t0) {
+    return t0.toString().split(" ")[2];
+  }
+  function monthTitle (t0) {
+    return t0.toLocaleString("en-us", { month: "long" });
+  }
+  // function yearTitle (t0) {
+  //   return t0.toString().split(" ")[3];
+  // }
+}
+
+function drawCalendar(dateData){
+
+  var weeksInMonth = function(month){
+    var m = d3.timeMonth.floor(month)
+    return d3.timeWeeks(d3.timeWeek.floor(m), d3.timeMonth.offset(m,1)).length;
+  }
+
+  var minDate = d3.min(dateData, function(d) { return new Date(d.date) })
+  var maxDate = d3.max(dateData, function(d) { return new Date(d.date) })
+
+  var cellMargin = 2,
+      cellSize = 20;
+
+  console.log(minDate);
+  console.log(maxDate);
+
+  // var colorRange = ['#D8E6E7', '#218380'];
+  //
+  // // color range
+  // var color = d3.scaleLinear()
+  //   .range(['#D8E6E7', '#218380'])
+  //   .domain([0, 40]);
+
+  var day = d3.timeFormat("%w"),
+      week = d3.timeFormat("%U"),
+      format = d3.timeFormat("%Y/%m/%d"),
+      // titleFormat = d3.utcFormat("%a, %d-%b");
+      monthName = d3.timeFormat("%B"),
+      months= d3.timeMonth.range(d3.timeMonth.floor(minDate), maxDate);
+
+  var svg = d3.select("#calendar").selectAll("svg")
+    .data(months)
+    .enter().append("svg")
+    .attr("class", "month")
+    .attr("height", ((cellSize * 7) + (cellMargin * 8) + 20) ) // the 20 is for the month labels
+    .attr("width", function(d) {
+      var columns = weeksInMonth(d);
+      return ((cellSize * columns) + (cellMargin * (columns + 1)));
+    })
+    .append("g")
+
+  svg.append("text")
+    .attr("class", "month-name")
+    .attr("y", (cellSize * 7) + (cellMargin * 8) + 15 )
+    .attr("x", function(d) {
+      var columns = weeksInMonth(d);
+      return (((cellSize * columns) + (cellMargin * (columns + 1))) / 2);
+    })
+    .attr("text-anchor", "middle")
+    .text(function(d) { return monthName(d); })
+
+  var rect = svg.selectAll("rect.day")
+    .data(function(d, i) { return d3.timeDays(d, new Date(d.getFullYear(), d.getMonth()+1, 1)); })
+    .enter().append("rect")
+    .attr("class", "day")
+    .attr("width", cellSize)
+    .attr("height", cellSize)
+    .attr("rx", 3).attr("ry", 3) // rounded corners
+    .attr("fill", '#eaeaea') // default light grey fill
+    // .attr('fill', function (d,i) {
+    //   console.log(i);
+    //   return color(jorgeData[i]["miles"]);
+    // })
+    .attr("y", function(d) { return (day(d) * cellSize) + (day(d) * cellMargin) + cellMargin; })
+    .attr("x", function(d) { return ((week(d) - week(new Date(d.getFullYear(),d.getMonth(),1))) * cellSize) + ((week(d) - week(new Date(d.getFullYear(),d.getMonth(),1))) * cellMargin) + cellMargin ; })
+    .on("mouseover", function(d) {
+      d3.select(this).classed('hover', true);
+    })
+    .on("mouseout", function(d) {
+      d3.select(this).classed('hover', false);
+    })
+    .datum(format);
+
+  // rect.append("title")
+  //   .text(function(d) { return titleFormat(new Date(d)); });
+
+  var lookup = d3.nest()
+    .key(function(d) { return d.date; })
+    .rollup(function(leaves) {
+      return d3.sum(leaves, function(d){ return parseInt(d.miles); });
+    })
+    .object(dateData);
+
+  console.log("DATE DATA IS HERE");
+  console.log(dateData);
+  console.log(lookup);
+
+  var scale = d3.scaleLinear()
+    .domain(d3.extent(dateData, function(d) { return parseInt(d.miles); }))
+    .range([0.4,1]); // the interpolate used for color expects a number in the range [0,1] but i don't want the lightest part of the color scheme
+
+  console.log("RECT IS HERE");
+  console.log(rect);
+  rect.filter(function(d) { console.log(d); return d in lookup;})
+  rect.style("fill",function(d) { var res = d in lookup; console.log(d); return scale(lookup[d]);});//eturn d3.interpolatePuBu(scale(lookup[d]));});
+    // .select("title")
+    // .text(function(d) { return titleFormat(new Date(d)) + ":  " + lookup[d]; });
+
+}
+// drawCalendar(jorgeData);
+// drawCalendarV2(jorgeData,chartList[0]);
+
+
 for (var jdx=0; jdx<dataList.length; jdx++) {
-  console.log(idx);
   var data = [];
   var chartID = chartList[jdx];
   var chartData = [];
   var data = eval(dataList[jdx]);
-  console.log(data);
-  console.log(chartID);
-  for (var idx=0; idx < data.length; idx++){
-    if (data[idx]["miles"]){
-      chartData.push({
-        date: new Date(data[idx]["date"]),
-        count: data[idx]["miles"]
-      });
-    }
-  }
-  var chart = new calendar()
-                  .data(chartData)
-                  .selector(chartID)
-                  .tooltipEnabled(false)
-                  .startDate(new Date("05/01/2017"))
-                  .endDate(new Date("07/16/2017"))
-                  .colorRange(["white","red"])
-  chart();
+  // for (var idx=0; idx < data.length; idx++){
+  //   if (data[idx]["miles"]){
+  //     chartData.push({
+  //       date: data[idx]["date"],
+  //       count: data[idx]["miles"]
+  //     });
+  //   }
+  // }
+  // var chart = new calendar()
+  //                 .data(chartData)
+  //                 .selector(chartID)
+  //                 .tooltipEnabled(false)
+  //                 .startDate(new Date("05/01/2017"))
+  //                 .endDate(new Date("07/16/2017"))
+  //                 .colorRange(["white","red"])
+  // chart();
+  drawCalendarV2(data,chartID);
 }
 
 //----------------------------------------------------------------------------------
@@ -276,7 +506,7 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
         return x(d.Date);
       })
       .y(function(d) {
-        console.log(parsePace(d.Var2));
+        // console.log(parsePace(d.Var2));
         return yRight(parsePace(d.Var2));
       });
 
