@@ -2,11 +2,261 @@ require("./lib/social");
 var d3 = require("d3");//Do not delete'
 var calendar = require("calendar-heatmap-mini");
 
+// lists to enable me to generate charts automatically - these are the runners that we're using
+var nameList = ["Hilary Dykes","Gene Dykes","Iain Mickle","Jorge Maravilla","Greg McQuaid"];
 var dataList = ["hilaryData","geneData","iainData","jorgeData","gregData"];
 var chartHeatList = ["#hilary-heatmap","#gene-heatmap","#iain-heatmap","#jorge-heatmap","#greg-heatmap"];
 var chartElevationList = ["#hilary-elevation"];
 
+// functions to parse dates
 var	parseFullDate = d3.timeParse("%m/%d/%Y");
+var	parseTime = d3.timeParse("%H:%M:%S");
+var	parsePace = d3.timeParse("%M:%S");
+var formatthousands = d3.format(",");
+
+//
+function color_by_person(personName) {
+  if (personName == "Hilary Dykes") {
+    return "red";
+  } else if (personName == "Gene Dykes") {
+    return "green";
+  } else if (personName == "Iain Mickle") {
+    return "yellow";
+  } else if (personName == "Jorge Maravilla") {
+    return "purple";
+  } else if (personName == "Greg McQuaid") {
+    return "orange";
+  } else {
+    return "black";
+  }
+}
+
+// combining all the data into one huge data structure
+var combinedData = [];
+for (var jdx=0; jdx<dataList.length; jdx++) {
+  var data = [];
+  data = eval(dataList[jdx]);
+  data.forEach(function(d) {
+    if (d.miles) {
+      d.paceObj = parsePace(d.pace);
+      d.name = nameList[jdx];
+      combinedData.push(d);
+    }
+  });
+};
+
+//----------------------------------------------------------------------------------
+// function to draw voronoi chart  ------------------------------------
+//----------------------------------------------------------------------------------
+
+function hoverChart() {
+  // show tooltip
+  var tooltipDots = d3.select("body").append("div")
+    .attr("class", "tooltip-dots");
+
+  // create SVG container for chart components
+  var margin = {
+    top: 15,
+    right: 80,
+    bottom: 60,
+    left: 100
+  };
+  if (screen.width > 768) {
+    var width = 900 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+  } else if (screen.width <= 768 && screen.width > 480) {
+    var width = 720 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+  } else if (screen.width <= 480 && screen.width > 340) {
+    console.log("big phone");
+    var margin = {
+      top: 20,
+      right: 60,
+      bottom: 50,
+      left: 30
+    };
+    var width = 340 - margin.left - margin.right;
+    var height = 350 - margin.top - margin.bottom;
+  } else if (screen.width <= 340) {
+    console.log("mini iphone")
+    var margin = {
+      top: 20,
+      right: 55,
+      bottom: 50,
+      left: 32
+    };
+    var width = 310 - margin.left - margin.right;
+    var height = 350 - margin.top - margin.bottom;
+  }
+  console.log(margin);
+  var svg = d3.select(targetID).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // x-axis scale
+  var x = d3.scaleLinear().range([0, width]),
+      y = d3.scaleTime().range([height, 0])
+
+  x.domain([0,maxval]);
+  y.domain([parsePace("4:00"),parsePace("20:00")]);
+
+  // Define the axes
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x)
+        .ticks(5))
+      .append("text")
+        .attr("class", "label")
+        .attr("x", width)
+        .attr("y", 35)
+        .style("text-anchor", "end")
+        .text("AXIS")
+
+  svg.append("g")
+      .call(d3.axisLeft(y)
+        .tickFormat(d3.timeFormat("%M:%S"))
+        .ticks(5))
+      .append("text")
+        .attr("class", "label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 20)
+        .attr("x", 0)
+        .attr("fill","black")
+        .style("text-anchor", "end")
+        .text("Pace per mile")
+
+
+}
+
+//----------------------------------------------------------------------------------
+// function to draw bubble chart  ------------------------------------
+//----------------------------------------------------------------------------------
+
+function dotChart(targetID,maxval){
+
+  // show tooltip
+  var tooltipDots = d3.select("body").append("div")
+    .attr("class", "tooltip-dots");
+
+  // create SVG container for chart components
+  var margin = {
+    top: 15,
+    right: 80,
+    bottom: 60,
+    left: 100
+  };
+  if (screen.width > 768) {
+    var width = 900 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+  } else if (screen.width <= 768 && screen.width > 480) {
+    var width = 720 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+  } else if (screen.width <= 480 && screen.width > 340) {
+    console.log("big phone");
+    var margin = {
+      top: 20,
+      right: 60,
+      bottom: 50,
+      left: 30
+    };
+    var width = 340 - margin.left - margin.right;
+    var height = 350 - margin.top - margin.bottom;
+  } else if (screen.width <= 340) {
+    console.log("mini iphone")
+    var margin = {
+      top: 20,
+      right: 55,
+      bottom: 50,
+      left: 32
+    };
+    var width = 310 - margin.left - margin.right;
+    var height = 350 - margin.top - margin.bottom;
+  }
+  console.log(margin);
+  var svg = d3.select(targetID).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // x-axis scale
+  var x = d3.scaleLinear().range([0, width]),
+      y = d3.scaleTime().range([height, 0])
+
+  x.domain([0,maxval]);
+  y.domain([parsePace("4:00"),parsePace("16:00")]);
+
+  // Define the axes
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x)
+        .ticks(5))
+      .append("text")
+        .attr("class", "label")
+        .attr("x", width)
+        .attr("y", -10)
+        .attr("fill","black")
+        .style("text-anchor", "end")
+        .text("Miles")
+
+  svg.append("g")
+      .call(d3.axisLeft(y)
+        .tickFormat(d3.timeFormat("%M:%S"))
+        .ticks(5))
+      .append("text")
+        .attr("class", "label")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 20)
+        .attr("x", 0)
+        .attr("fill","black")
+        .style("text-anchor", "end")
+        .text("Average pace per mile")
+
+  svg.selectAll("dot")
+        .data(combinedData)
+      .enter().append("circle")
+        .attr("r", function(d) {
+          if (d.elevation ) {
+            return (d.elevation/1000+5)
+          } else {
+            return 5;
+          }
+        })
+        .attr("cx", function(d) { return x(d.miles); })
+        .attr("cy", function(d) { return y(d.paceObj); })
+        .attr("opacity",0.6)
+        .attr("fill",function(d) {
+          return color_by_person(d.name);
+        })
+        .on("mouseover", function(d) {
+            tooltipDots.html(`
+                <div><b class='name'>${d.name}</b></div>
+                <div><b>${d.miles}</b> miles</div>
+                <div><b>${formatthousands(d.elevation)}</b> feet of elevation gain</div>
+                <div><b>${d.pace}</b> average pace</div>
+            `);
+            tooltipDots.style("visibility", "visible");
+        })
+        .on("mousemove", function() {
+          if (screen.width <= 480) {
+            return tooltipDots
+              .style("top",(d3.event.pageY+20)+"px")//(d3.event.pageY+40)+"px")
+              .style("left",30+"px");
+          } else {
+            return tooltipDots
+              .style("top", (d3.event.pageY+20)+"px")
+              .style("left",(d3.event.pageX-80)+"px");
+          }
+        })
+        .on("mouseout", function(){return tooltipDots.style("visibility", "hidden");});
+
+}
+
+//----------------------------------------------------------------------------------
+// functions to draw calendars ------------------------------------
+//----------------------------------------------------------------------------------
 
 function drawCalendarV2(dateData,chartID) {
 
@@ -234,16 +484,10 @@ function drawCalendar(dateData){
     // .text(function(d) { return titleFormat(new Date(d)) + ":  " + lookup[d]; });
 
 }
-// drawCalendar(jorgeData);
-// drawCalendarV2(jorgeData,chartList[0]);
 
 //----------------------------------------------------------------------------------
-// elevation gain from strava ------------------------------------
+// functions to draw line charts ------------------------------------
 //----------------------------------------------------------------------------------
-
-var	parseFullDate = d3.timeParse("%m/%d/%Y");
-var	parseTime = d3.timeParse("%H:%M:%S");
-var	parsePace = d3.timeParse("%M:%S");
 
 var areaChart = function(targetID,targetData,targetVar,maxval) {
 
@@ -505,15 +749,12 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 
   var elevID = chartElevationList[jdx];
   // drawElevation(data,elevID);
-  console.log(elevID);
   if (elevID) {
-    console.log(data);
     areaChart(elevID,data,"elevationsum",60000);
   }
 }
 
-
-
+dotChart("#dot-chart",65);
 areaChart("#jorge-elevation",jorgeData,"elevationsum",60000);
 areaChart("#jorge-miles",jorgeData,"milessum",500);
 areaTimes("#jorge-time",jorgeData,"timesum","pace",1);
