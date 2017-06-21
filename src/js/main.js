@@ -56,7 +56,7 @@ console.log(dataNested);
 // function to draw voronoi chart  ------------------------------------
 //----------------------------------------------------------------------------------
 
-function hoverChart(targetID,targetVal,maxval,yLabel) {
+function hoverChart(targetID,targetVal,maxval,yLabel,units) {
   // show tooltip
   var tooltipDots = d3.select("body").append("div")
     .attr("class", "tooltip-dots");
@@ -135,11 +135,13 @@ function hoverChart(targetID,targetVal,maxval,yLabel) {
         .text(yLabel)
 
     var voronoi = d3.voronoi()
+        // .interpolate("step-after")
         .x(function(d) { return x(parseFullDate(d.date)); })
         .y(function(d) { return y(d[targetVal]); })
         .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
 
     var line = d3.line()
+        .curve(d3.curveStepAfter)
         .x(function(d) { return x(parseFullDate(d.date)); })
         .y(function(d) { return y(d[targetVal]); });
 
@@ -175,7 +177,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel) {
       function mouseover(d) {
         d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal).classed("line-hover", true);
         focus.attr("transform", "translate(" + x(parseFullDate(d.data.date)) + "," + y(d.data[targetVal]) + ")");
-        focus.select("text").text(d.data.name+": elevation total was "+d.data[targetVal]+" on "+d.data.date);
+        focus.select("text").text(d.data.name+": "+formatthousands(d.data[targetVal])+" "+units);//+" on "+d.data.date
       }
 
       function mouseout(d) {
@@ -809,8 +811,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   }
 }
 
-hoverChart("#hover-chart-elevation","elevationsum",60000,"Elevation gain total (ft)");
-hoverChart("#hover-chart-miles","milessum",500,"Total number of miles run");
+hoverChart("#hover-chart-elevation","elevationsum",60000,"Elevation gain total (ft)","ft");
+hoverChart("#hover-chart-miles","milessum",500,"Total number of miles run","miles");
 dotChart("#dot-chart",65);
 areaChart("#jorge-elevation",jorgeData,"elevationsum",60000);
 areaChart("#jorge-miles",jorgeData,"milessum",500);
