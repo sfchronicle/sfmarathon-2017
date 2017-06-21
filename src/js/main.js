@@ -45,11 +45,18 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   });
 };
 
+var dataNested = d3.nest()
+  .key(function(d){ return d.name; })
+  .entries(combinedData);
+
+console.log(combinedData);
+console.log(dataNested);
+
 //----------------------------------------------------------------------------------
 // function to draw voronoi chart  ------------------------------------
 //----------------------------------------------------------------------------------
 
-function hoverChart() {
+function hoverChart(targetID,targetVal,maxval,yLabel) {
   // show tooltip
   var tooltipDots = d3.select("body").append("div")
     .attr("class", "tooltip-dots");
@@ -96,11 +103,11 @@ function hoverChart() {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // x-axis scale
-  var x = d3.scaleLinear().range([0, width]),
-      y = d3.scaleTime().range([height, 0])
+  var x = d3.scaleTime().range([0, width]),
+      y = d3.scaleLinear().range([height, 0]);
 
-  x.domain([0,maxval]);
-  y.domain([parsePace("4:00"),parsePace("20:00")]);
+  x.domain([parseFullDate('05/01/2017'),parseFullDate('07/01/2017')]);
+  y.domain([0,maxval]);
 
   // Define the axes
   svg.append("g")
@@ -116,7 +123,7 @@ function hoverChart() {
 
   svg.append("g")
       .call(d3.axisLeft(y)
-        .tickFormat(d3.timeFormat("%M:%S"))
+        // .tickFormat(d3.timeFormat("%M:%S"))
         .ticks(5))
       .append("text")
         .attr("class", "label")
@@ -125,8 +132,56 @@ function hoverChart() {
         .attr("x", 0)
         .attr("fill","black")
         .style("text-anchor", "end")
-        .text("Pace per mile")
+        .text(yLabel)
 
+    var voronoi = d3.voronoi()
+        .x(function(d) { return x(parseFullDate(d.date)); })
+        .y(function(d) { return y(d[targetVal]); })
+        .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
+
+    var line = d3.line()
+        .x(function(d) { return x(parseFullDate(d.date)); })
+        .y(function(d) { return y(d[targetVal]); });
+
+    dataNested.forEach(function(d) {
+      var class_list = "line voronoi id"+d.key.toLowerCase().replace(/ /g,'')+targetVal;
+      svg.append("path")
+        .attr("class", class_list)
+        .style("stroke", color_by_person(d.key))//color_by_gender(d.values[0].gender))
+        .style("stroke-width",2)
+        .attr("d", line(d.values));//lineAllStrava(d.values));
+    });
+
+    var focus = svg.append("g")
+        .attr("transform", "translate(-100,-100)")
+        .attr("class", "focus");
+
+    focus.append("circle")
+        .attr("r", 3.5);
+
+    focus.append("text")
+        .attr("y", -10);
+
+    var voronoiGroup = svg.append("g")
+      .attr("class", "voronoi");
+
+    voronoiGroup.selectAll("path")
+      .data(voronoi.polygons(d3.merge(dataNested.map(function(d) { return d.values; }))))
+      .enter().append("path")
+        .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+
+      function mouseover(d) {
+        d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal).classed("line-hover", true);
+        focus.attr("transform", "translate(" + x(parseFullDate(d.data.date)) + "," + y(d.data[targetVal]) + ")");
+        focus.select("text").text(d.data.name+": elevation total was "+d.data[targetVal]+" on "+d.data.date);
+      }
+
+      function mouseout(d) {
+        d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal).classed("line-hover", false);
+        focus.attr("transform", "translate(-100,-100)");
+      }
 
 }
 
@@ -754,6 +809,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   }
 }
 
+hoverChart("#hover-chart-elevation","elevationsum",60000,"Elevation gain total (ft)");
+hoverChart("#hover-chart-miles","milessum",500,"Total number of miles run");
 dotChart("#dot-chart",65);
 areaChart("#jorge-elevation",jorgeData,"elevationsum",60000);
 areaChart("#jorge-miles",jorgeData,"milessum",500);
