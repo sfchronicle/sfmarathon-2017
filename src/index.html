@@ -39,24 +39,32 @@
       <div id="hover-chart-miles"></div>
 
       <div class="story-container">
-        <div class="hed">Hilary Dykes</div>
-        <div id="hilary-heatmap"></div>
+        <div class="hed">Balint Gal</div>
+        <div id="balint-heatmap"></div>
       </div>
       <div class="story-container">
         <div class="hed">Gene Dykes</div>
         <div id="gene-heatmap"></div>
       </div>
       <div class="story-container">
-        <div class="hed">Iain Mickle</div>
-        <div id="iain-heatmap"></div>
-      </div>
-      <div class="story-container">
         <div class="hed">Greg McQuaid</div>
         <div id="greg-heatmap"></div>
       </div>
       <div class="story-container">
+        <div class="hed">Hilary Dykes</div>
+        <div id="hilary-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Iain Mickle</div>
+        <div id="iain-heatmap"></div>
+      </div>
+      <div class="story-container">
         <div class="hed">Jorge Maravilla</div>
         <div id="jorge-heatmap"></div>
+      </div>
+      <div class="story-container">
+        <div class="hed">Lauren Elkins</div>
+        <div id="lauren-heatmap"></div>
       </div>
 
     </div>
@@ -64,11 +72,13 @@
     <%= t.include("partials/_footer.html") %>
 
     <script>
-      var hilaryData = <%= JSON.stringify(json.HilaryDykes) %>
-      var geneData = <%= JSON.stringify(json.GeneDykes) %>
-      var iainData = <%= JSON.stringify(json.IainMickle) %>
-      var jorgeData = <%= JSON.stringify(json.JorgeMaravilla) %>
-      var gregData = <%= JSON.stringify(json.GregMcQuaid) %>
+      var balintData = <%= JSON.stringify(json.BalintGal) %>;
+      var geneData = <%= JSON.stringify(json.GeneDykes) %>;
+      var gregData = <%= JSON.stringify(json.GregMcQuaid) %>;
+      var hilaryData = <%= JSON.stringify(json.HilaryDykes) %>;
+      var iainData = <%= JSON.stringify(json.IainMickle) %>;
+      var jorgeData = <%= JSON.stringify(json.JorgeMaravilla) %>;
+      var laurenData = <%= JSON.stringify(json.LaurenElkins) %>;
     </script>
 
     <script src="app.js" async></script>

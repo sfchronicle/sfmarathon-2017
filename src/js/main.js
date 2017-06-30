@@ -3,13 +3,13 @@ var d3 = require("d3");//Do not delete'
 var calendar = require("calendar-heatmap-mini");
 
 // lists to enable me to generate charts automatically - these are the runners that we're using
-var nameList = ["Hilary Dykes","Gene Dykes","Iain Mickle","Jorge Maravilla","Greg McQuaid"];
-var dataList = ["hilaryData","geneData","iainData","jorgeData","gregData"];
-var chartHeatList = ["#hilary-heatmap","#gene-heatmap","#iain-heatmap","#jorge-heatmap","#greg-heatmap"];
+var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Dykes","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
+var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorgeData","laurenData"];
+var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
 var chartElevationList = ["#hilary-elevation"];
 
 // functions to parse dates
-var	parseFullDate = d3.timeParse("%m/%d/%Y");
+var	parseFullDate = d3.timeParse("%Y-%m-%d");
 var	parseTime = d3.timeParse("%H:%M:%S");
 var	parsePace = d3.timeParse("%M:%S");
 var formatthousands = d3.format(",");
@@ -37,8 +37,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = [];
   data = eval(dataList[jdx]);
   data.forEach(function(d) {
-    if (d.miles) {
-      d.paceObj = parsePace(d.pace);
+    if (d["Daily Miles"]) {
+      d.paceObj = parsePace(d["Daily Pace"]);
       d.name = nameList[jdx];
       combinedData.push(d);
     }
@@ -106,7 +106,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units) {
   var x = d3.scaleTime().range([0, width]),
       y = d3.scaleLinear().range([height, 0]);
 
-  x.domain([parseFullDate('05/01/2017'),parseFullDate('07/01/2017')]);
+  x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
   y.domain([0,maxval]);
 
   // Define the axes
@@ -136,13 +136,13 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units) {
 
     var voronoi = d3.voronoi()
         // .interpolate("step-after")
-        .x(function(d) { return x(parseFullDate(d.date)); })
+        .x(function(d) { return x(parseFullDate(d["Date"])); })
         .y(function(d) { return y(d[targetVal]); })
         .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
 
     var line = d3.line()
         .curve(d3.curveStepAfter)
-        .x(function(d) { return x(parseFullDate(d.date)); })
+        .x(function(d) { return x(parseFullDate(d["Date"])); })
         .y(function(d) { return y(d[targetVal]); });
 
     dataNested.forEach(function(d) {
@@ -275,13 +275,13 @@ function dotChart(targetID,maxval){
         .data(combinedData)
       .enter().append("circle")
         .attr("r", function(d) {
-          if (d.elevation ) {
-            return (d.elevation/1000+5)
+          if (d["Daily Elevation"] ) {
+            return (d["Daily Elevation"]/1000+5)
           } else {
             return 5;
           }
         })
-        .attr("cx", function(d) { return x(d.miles); })
+        .attr("cx", function(d) { return x(d["Daily Miles"]); })
         .attr("cy", function(d) { return y(d.paceObj); })
         .attr("opacity",0.6)
         .attr("fill",function(d) {
@@ -290,8 +290,8 @@ function dotChart(targetID,maxval){
         .on("mouseover", function(d) {
             tooltipDots.html(`
                 <div><b class='name'>${d.name}</b></div>
-                <div><b>${d.miles}</b> miles</div>
-                <div><b>${formatthousands(d.elevation)}</b> feet of elevation gain</div>
+                <div><b>${d["Daily Miles"]}</b> miles</div>
+                <div><b>${formatthousands(d["Daily Elevation"])}</b> feet of elevation gain</div>
                 <div><b>${d.pace}</b> average pace</div>
             `);
             tooltipDots.style("visibility", "visible");
@@ -320,8 +320,8 @@ function drawCalendarV2(dateData,chartID) {
   var cellMargin = 2,
       cellSize = 20;
 
-  var minDate = d3.min(dateData, function(d) { return new Date(d.date) })
-  var maxDate = d3.max(dateData, function(d) { return new Date(d.date) })
+  var minDate = d3.min(dateData, function(d) { return new Date(d["Date"]) })
+  var maxDate = d3.max(dateData, function(d) { return new Date(d["Date"]) })
 
   var day = d3.timeFormat("%w"), // day of the week
       day_of_month = d3.timeFormat("%e"), // day of the month
@@ -335,7 +335,7 @@ function drawCalendarV2(dateData,chartID) {
       monthName = d3.timeFormat("%B"),
       months= d3.timeMonth.range(d3.timeMonth.floor(minDate), d3.timeMonth.ceil(maxDate));
 
-  var num_months_in_a_row = 2;//months.length();//Math.floor(width / (cellSize * 7 + 50));
+  var num_months_in_a_row = 4;//months.length();//Math.floor(width / (cellSize * 7 + 50));
   console.log(num_months_in_a_row);
   // var shift_up = cellSize * 1;
   var header_height = 50;
@@ -346,9 +346,11 @@ function drawCalendarV2(dateData,chartID) {
     .domain([0, 40]);
 
   var lookup = d3.nest()
-    .key(function(d) { return d.date; })
+    .key(function(d) {
+      return format(parseFullDate(d["Date"]));
+    })
     .rollup(function(leaves) {
-      return d3.sum(leaves, function(d){ return parseInt(d.miles); });
+      return d3.sum(leaves, function(d){ return parseInt(d["Daily Miles"]); });
     })
     .object(dateData);
 
@@ -356,7 +358,7 @@ function drawCalendarV2(dateData,chartID) {
       // .data(d3.range([2017,2017]))
     .data("0")
     .enter().append("svg")
-    .attr("width", 7*cellSize*2 + 25) //2 months of 7 days a week with 25 px between them
+    .attr("width", 7*cellSize*num_months_in_a_row + 25) //2 months of 7 days a week with 25 px between them
     .attr("height", 5*cellSize + header_height)
     .append("g")
 
@@ -370,7 +372,7 @@ function drawCalendarV2(dateData,chartID) {
       .attr("height", cellSize-4)
       .attr("rx", 3).attr("ry", 3) // rounded corners
       .attr("fill", function(d,didx) {
-        var format = d3.timeFormat("%m/%d/%Y");
+        // var format = d3.timeFormat("%Y-%m-%d");
         if (lookup[format(d)]) {
           return color(lookup[format(d)]);
         } else {
@@ -418,6 +420,8 @@ function drawCalendarV2(dateData,chartID) {
   rect.on("mouseout", mouseout);
   function mouseover(d) {
     tooltip.style("visibility", "visible");
+    console.log(lookup);
+    console.log(d);
     var text = d+" : "+lookup[d]+ " miles";
     tooltip.style("opacity",1)
     tooltip.html(text)
@@ -448,8 +452,8 @@ function drawCalendar(dateData){
     return d3.timeWeeks(d3.timeWeek.floor(m), d3.timeMonth.offset(m,1)).length;
   }
 
-  var minDate = d3.min(dateData, function(d) { return new Date(d.date) })
-  var maxDate = d3.max(dateData, function(d) { return new Date(d.date) })
+  var minDate = d3.min(dateData, function(d) { return new Date(d["Date"]) })
+  var maxDate = d3.max(dateData, function(d) { return new Date(d["Date"]) })
 
   var cellMargin = 2,
       cellSize = 20;
@@ -518,9 +522,9 @@ function drawCalendar(dateData){
   //   .text(function(d) { return titleFormat(new Date(d)); });
 
   var lookup = d3.nest()
-    .key(function(d) { return d.date; })
+    .key(function(d) { return d["Date"]; })
     .rollup(function(leaves) {
-      return d3.sum(leaves, function(d){ return parseInt(d.miles); });
+      return d3.sum(leaves, function(d){ return parseInt(d["Daily Miles"]); });
     })
     .object(dateData);
 
@@ -529,7 +533,7 @@ function drawCalendar(dateData){
   console.log(lookup);
 
   var scale = d3.scaleLinear()
-    .domain(d3.extent(dateData, function(d) { return parseInt(d.miles); }))
+    .domain(d3.extent(dateData, function(d) { return parseInt(d["Daily Miles"]); }))
     .range([0.4,1]); // the interpolate used for color expects a number in the range [0,1] but i don't want the lightest part of the color scheme
 
   console.log("RECT IS HERE");
@@ -550,9 +554,9 @@ var areaChart = function(targetID,targetData,targetVar,maxval) {
   // create new flat data structure
   var flatData = []; //var flatDataOutflow = [];
   targetData.forEach(function(d,idx){
-    var dateObj = parseFullDate(d.date);
+    var dateObj = parseFullDate(d["Date"]);
     flatData.push(
-      {DateString: d.Date, Date: dateObj, Elevation: d[targetVar] }
+      {DateString: d["Date"], Date: dateObj, Elevation: d[targetVar] }
     );
   });
 
@@ -609,7 +613,7 @@ var areaChart = function(targetID,targetData,targetVar,maxval) {
   var x = d3.scaleTime().range([0, width]),
       y = d3.scaleLinear().range([height, 0]);
 
-  x.domain([parseFullDate('05/01/2017'),parseFullDate('07/01/2017')]);
+  x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
   y.domain([0,maxval]);
 
   // Define the axes
@@ -629,7 +633,7 @@ var areaChart = function(targetID,targetData,targetVar,maxval) {
   var areaElevation = d3.area()
       // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
       .x(function(d) {
-        return x(d.Date);
+        return x(d["Date"]);
       })
       .y0(height)
       .y1(function(d) {
@@ -650,7 +654,7 @@ var areaChart = function(targetID,targetData,targetVar,maxval) {
   var lineFlow = d3.line()
       // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
       .x(function(d) {
-        return x(d.Date);
+        return x(d["Date"]);
       })
       .y(function(d) {
         if (y(d.Elevation)) {
@@ -672,9 +676,9 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
   // create new flat data structure
   var flatData = []; //var flatDataOutflow = [];
   targetData.forEach(function(d,idx){
-    var dateObj = parseFullDate(d.date);
+    var dateObj = parseFullDate(d["Date"]);
     flatData.push(
-      {DateString: d.Date, Date: dateObj, Var1: d[targetVar], Var2: d[targetVar2] }
+      {DateString: d["Date"], Date: dateObj, Var1: d[targetVar], Var2: d[targetVar2] }
     );
   });
 
@@ -732,7 +736,7 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
       y = d3.scaleTime().range([height, 0]),
       yRight = d3.scaleTime().range([height,0]);
 
-  x.domain([parseFullDate('05/01/2017'),parseFullDate('07/01/2017')]);
+  x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
   y.domain([parseTime("0:00:00"),parseTime("50:00:00")]);
   yRight.domain([parsePace("0:00"),parsePace("12:00")]);
 
@@ -762,7 +766,7 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
   var areaElevation = d3.area()
       // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
       .x(function(d) {
-        return x(d.Date);
+        return x(d["Date"]);
       })
       .y0(height)
       .y1(function(d) {
@@ -779,7 +783,7 @@ var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
   var lineFlow = d3.line()
       // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
       .x(function(d) {
-        return x(d.Date);
+        return x(d["Date"]);
       })
       .y(function(d) {
         // console.log(parsePace(d.Var2));
@@ -806,15 +810,15 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var elevID = chartElevationList[jdx];
   // drawElevation(data,elevID);
   if (elevID) {
-    areaChart(elevID,data,"elevationsum",60000);
+    areaChart(elevID,data,"Total Elevation",60000);
   }
 }
 
-hoverChart("#hover-chart-elevation","elevationsum",60000,"Elevation gain total (ft)","ft");
-hoverChart("#hover-chart-miles","milessum",500,"Total number of miles run","miles");
+hoverChart("#hover-chart-elevation","Total Elevation",60000,"Elevation gain total (ft)","ft");
+hoverChart("#hover-chart-miles","Total Miles",900,"Total number of miles run","miles");
 dotChart("#dot-chart",65);
-areaChart("#jorge-elevation",jorgeData,"elevationsum",60000);
-areaChart("#jorge-miles",jorgeData,"milessum",500);
-areaTimes("#jorge-time",jorgeData,"timesum","pace",1);
-areaTimes("#jorge-time2",jorgeData,"miles","pace",1);
-areaTimes("#jorge-time3",jorgeData,"timesum","pace",1);
+// areaChart("#jorge-elevation",jorgeData,"Total Elevation",60000);
+// areaChart("#jorge-miles",jorgeData,"milessum",500);
+// areaTimes("#jorge-time",jorgeData,"timesum","pace",1);
+// areaTimes("#jorge-time2",jorgeData,"miles","pace",1);
+// areaTimes("#jorge-time3",jorgeData,"timesum","pace",1);
