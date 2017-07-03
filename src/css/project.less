@@ -1,4 +1,92 @@
 
+@red: #CF0000;//#8A0000;//"#F04646";
+
+.chart-wrapper {
+  display: block;
+  text-align: center;
+}
+
+.miles-chart, .elevation-chart {
+  display: inline-block;
+}
+
+.story-container {
+  padding: 30px 0;
+}
+
+.interactive-container {
+  padding: 30px 0;
+}
+.interactive-deck {
+  font-family: @block-graphics;
+  text-align: center;
+  font-size: 16px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.inline-image {
+  img {
+    width: 100%;
+  }
+}
+
+.intro-text {
+  padding-bottom: 50px;
+}
+
+.profile-hed {
+  font-size: 30px;
+  font-family: @boldest-graphics;
+  color: @red;
+  margin-bottom: 30px;
+  border-bottom: 4px solid @red;
+}
+
+.legend-container {
+  font-size: 12px;
+  font-family: @block-graphics;
+  padding-top: 20px;
+  text-align: center;
+  @media @mobile {
+    padding-top: 10px;
+  }
+  margin: auto;
+  .swath {
+    vertical-align: middle;
+  }
+  .swath  {
+    height: 16px;
+    width: 18px;
+    display: inline-block;
+    font-size: 0;
+    margin-right: -4px;
+    @media @mobile {
+      width: 14px;
+    }
+  }
+  .swath-text {
+    display: inline-block;
+    font-size: 12px;
+    // margin-top: -4px;
+    &.left {
+      padding-right: 10px;
+    }
+    &.right {
+      padding-left: 10px;
+    }
+  }
+  .red-swath0 {background: @red}
+  .red-swath1 {background: lighten(@red,10%)}
+  .red-swath2 {background: lighten(@red,20%)}
+  .red-swath3 {background: lighten(@red,30%)}
+  .red-swath4 {background: lighten(@red,40%)}
+  .red-swath5 {background: lighten(@red,50%)}
+  .white-swath {background: lighten(@light-gray,15%);}
+}
+
+
+
 .top-container {
   padding-top: 50px;
   padding-bottom: 100px;

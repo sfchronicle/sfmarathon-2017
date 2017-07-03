@@ -21,51 +21,70 @@
     <div class="outer">
 
       <div class="top-container">
-        <div class="title">There are a lot of different ways to train for a marathon</div>
-        <div class="title-deck">8 runners, 8 motivations, 8 training schedules, 8 races</div>
+        <div class="title"><%=json.sfmarathontraining["Title"]%></div>
+        <div class="title-deck"><%=json.sfmarathontraining["Deck"]%></div>
         <div class="author">By Erin Allday and Emma O'Neill</div>
+        <div class="author">Photos by Santiago Mejia</div>
       </div>
 
-      <div class="hed">How far and how fast are all the runners going on each run?</div>
-      <div class="deck">Each dot represents a run in the training leading up to the marathon. The size of the dots represents the elevation gain on the run. Longer runs are on the right, and slower runs are on the top. Color-coded by runner.</div>
-      <div id="dot-chart"></div>
+      <div class="intro-text">
+        <% json.sfmarathontraining.intro.forEach(function(d,idx) { %>
+          <p><%=d.value%></p>
+        <% }); %>
+      </div>
 
-      <div class="hed">What kind of elevation do the runners do to train?</div>
-      <div class="deck">Some of the runners do a lot more elevation gain than others. Color-coded by runner.</div>
-      <div id="hover-chart-elevation"></div>
+      <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
 
-      <div class="hed">How many miles do the runners do to train?</div>
-      <div class="deck">Some of the runners do a lot more elevation gain than others. Color-coded by runner.</div>
-      <div id="hover-chart-miles"></div>
+        <div class="profile-hed"><%=d.Name%></div>
 
-      <div class="story-container">
-        <div class="hed">Balint Gal</div>
-        <div id="balint-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Gene Dykes</div>
-        <div id="gene-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Greg McQuaid</div>
-        <div id="greg-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Hilary Dykes</div>
-        <div id="hilary-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Iain Mickle</div>
-        <div id="iain-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Jorge Maravilla</div>
-        <div id="jorge-heatmap"></div>
-      </div>
-      <div class="story-container">
-        <div class="hed">Lauren Elkins</div>
-        <div id="lauren-heatmap"></div>
-      </div>
+        <div class="inline-image">
+          <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
+          <div class="caption"><%= d.image.Caption %></div>
+        </div>
+
+        <div class="interactive-container">
+          <div class="hed"><%=d.Name%>'s training calendar</div>
+          <div class="interactive-deck"><%=d["Heatmap-deck"]%></div>
+          <div class="legend-container">
+            <div class="swath-text left">0 miles</div>
+            <div class="swath white-swath"></div>
+            <div class="swath red-swath5"></div>
+            <div class="swath red-swath4"></div>
+            <div class="swath red-swath3"></div>
+            <div class="swath red-swath2"></div>
+            <div class="swath red-swath1"></div>
+            <div class="swath red-swath0"></div>
+            <div class="swath-text right">26.2+ miles</div>
+          </div>
+          <div id="<%=d.Key%>-heatmap"></div>
+        </div>
+
+        <% d.text.forEach(function(d,idx) { %>
+          <p><%=d.value%></p>
+        <% }); %>
+
+
+        <div class="story-container">
+
+          <div class="hed"><%=d.Name%></div>
+          <div id="dot-chart-<%=d.Key%>"></div>
+
+          <div class="chart-wrapper">
+            <div class="elevation-chart">
+              <div class="hed"><%=d.Name%>'s total elevation gain</div>
+              <div id="hover-chart-elevation-<%=d.Key%>"></div>
+            </div>
+
+            <div class="miles-chart">
+              <div class="hed"><%=d.Name%>'s total miles</div>
+              <div id="hover-chart-miles-<%=d.Key%>"></div>
+            </div>
+          </div>
+
+          <div class="text-pullout"><%=d.Name%> ran a total of <span></span> hours in the last 3 months.</div>
+
+        </div>
+      <% }); %>
 
     </div>
 
