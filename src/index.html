@@ -33,6 +33,8 @@
         <% }); %>
       </div>
 
+      <div id="dot-chart"></div>
+
       <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
 
         <div class="profile-hed"><%=d.Name%></div>
@@ -59,15 +61,7 @@
           <div id="<%=d.Key%>-heatmap"></div>
         </div>
 
-        <% d.text.forEach(function(d,idx) { %>
-          <p><%=d.value%></p>
-        <% }); %>
-
-
         <div class="story-container">
-
-          <div class="hed"><%=d.Name%></div>
-          <div id="dot-chart-<%=d.Key%>"></div>
 
           <div class="chart-wrapper">
             <div class="elevation-chart">
@@ -80,10 +74,21 @@
               <div id="hover-chart-miles-<%=d.Key%>"></div>
             </div>
           </div>
-
-          <div class="text-pullout"><%=d.Name%> ran a total of <span></span> hours in the last 3 months.</div>
-
         </div>
+
+        <div class="interactive-container">
+          <div class="hed">Every run by <%=d.Name%>: mileage, pace, and elevation</div>
+          <div id="dot-chart-<%=d.Key%>"></div>
+        </div>
+
+
+        <% d.text.forEach(function(d,idx) { %>
+          <p><%=d.value%></p>
+        <% }); %>
+
+        <div class="text-pullout"><%=d.Name%> ran a total of <span></span> hours in the last 3 months.</div>
+
+
       <% }); %>
 
     </div>

@@ -39,6 +39,24 @@ function color_by_person(personName,runnerID) {
   // }
 }
 
+function colorful_dots(personName) {
+  if (personName == "Balint Gal") {
+    return "gray";
+  } else if (personName == "Gene Dykes") {
+    return "green";
+  } else if (personName == "Greg McQuaid") {
+    return "orange";
+  } else if (personName == "Hilary Dykes") {
+    return "red";
+  } else if (personName == "Iain Mickle") {
+    return "yellow";
+  } else if (personName == "Jorge Maravilla") {
+    return "purple";
+  } else if (personName == "Lauren Elkins") {
+    return "black";
+  }
+}
+
 // combining all the data into one huge data structure
 var combinedData = [];
 for (var jdx=0; jdx<dataList.length; jdx++) {
@@ -260,10 +278,10 @@ function dotChart(targetID,maxval,runnerID){
   };
   if (screen.width > 768) {
     var width = 900 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var height = 420 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
     var width = 720 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var height = 420 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
     var margin = {
@@ -297,7 +315,7 @@ function dotChart(targetID,maxval,runnerID){
       y = d3.scaleTime().range([height, 0])
 
   x.domain([0,maxval]);
-  y.domain([parsePace("4:00"),parsePace("25:00")]);
+  y.domain([parsePace("4:00"),parsePace("22:00")]);
 
   // Define the axes
   svg.append("g")
@@ -338,14 +356,18 @@ function dotChart(targetID,maxval,runnerID){
         .attr("cx", function(d) { return x(d["Daily Miles"]); })
         .attr("cy", function(d) { return y(d.paceObj); })
         .attr("opacity",function(d) {
-          if (d.name == runnerID) {
+          if (runnerID == "all") {
+            return 0.8;
+          } else if (d.name == runnerID) {
             return 0.8;
           } else {
             return 0.4;
           }
         })
         .attr("fill",function(d) {
-          if (d.name == runnerID) {
+          if (runnerID == "all"){
+            return colorful_dots(d.name);
+          } else if (d.name == runnerID) {
             return "#CF0000";
           } else {
             return "#cccccc";
@@ -889,6 +911,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   //   areaChart(elevID,data,"Total Elevation",60000);
   // }
 }
+
+dotChart("#dot-chart",80,"all");
 
 // hoverChart("#hover-chart-elevation","Total Elevation",60000,"Elevation gain total (ft)","ft");
 // hoverChart("#hover-chart-elevation","Daily Elevation",15000,"Elevation gain total (ft)","ft");
