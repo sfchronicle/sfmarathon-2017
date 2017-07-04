@@ -41,19 +41,19 @@ function color_by_person(personName,runnerID) {
 
 function colorful_dots(personName) {
   if (personName == "Balint Gal") {
-    return "gray";
+    return "#80A9D0";
   } else if (personName == "Gene Dykes") {
-    return "green";
+    return "#2274A5";
   } else if (personName == "Greg McQuaid") {
-    return "orange";
+    return "#D13D59";//"#EB8F6A";
   } else if (personName == "Hilary Dykes") {
-    return "red";
+    return "#81AD54";
   } else if (personName == "Iain Mickle") {
-    return "yellow";
+    return "#FFCC32";
   } else if (personName == "Jorge Maravilla") {
     return "purple";
   } else if (personName == "Lauren Elkins") {
-    return "black";
+    return "#462255";
   }
 }
 
@@ -92,10 +92,10 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     left: 100
   };
   if (screen.width > 768) {
-    var width = 400 - margin.left - margin.right;
+    var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 400 - margin.left - margin.right;
+    var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
@@ -278,10 +278,10 @@ function dotChart(targetID,maxval,runnerID){
   };
   if (screen.width > 768) {
     var width = 900 - margin.left - margin.right;
-    var height = 420 - margin.top - margin.bottom;
+    var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
     var width = 720 - margin.left - margin.right;
-    var height = 420 - margin.top - margin.bottom;
+    var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
     var margin = {
@@ -901,18 +901,20 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = eval(dataList[jdx]);
   drawCalendarV2(data,chartID);
 
-  console.log("#dot-chart"+keyList[jdx]);
-  dotChart("#dot-chart-"+keyList[jdx],80,nameList[jdx]);
+  // dotChart("#dot-chart-"+keyList[jdx],80,nameList[jdx]);
   hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
-  // var elevID = chartElevationList[jdx];
-  // // drawElevation(data,elevID);
-  // if (elevID) {
-  //   areaChart(elevID,data,"Total Elevation",60000);
-  // }
+
+  var timeVar = data[data.length-1]["Total Time"];
+  console.log(timeVar);
+  if (timeVar){
+    timeVar = timeVar.split(":")[0];
+    document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
+  }
+
 }
 
-dotChart("#dot-chart",80,"all");
+dotChart("#dot-chart",75,"all");
 
 // hoverChart("#hover-chart-elevation","Total Elevation",60000,"Elevation gain total (ft)","ft");
 // hoverChart("#hover-chart-elevation","Daily Elevation",15000,"Elevation gain total (ft)","ft");

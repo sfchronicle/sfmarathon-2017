@@ -1,9 +1,28 @@
 
 @red: #CF0000;//#8A0000;//"#F04646";
 
+@balint: #80A9D0;
+@gene: #2274A5;
+@greg: #D13D59;
+@hilary: #81AD54;
+@iain: #FFCC32;
+@jorge: "red";
+@lauren: #462255;
+
 .chart-wrapper {
   display: block;
   text-align: center;
+}
+
+.text-pullout {
+  font-family: @med-graphics;
+  text-align: center;
+  // padding: 20px 0;
+  padding-bottom: 40px;
+}
+.bold-text-pullout {
+  font-family: @boldest-graphics;
+  color: @red;
 }
 
 .miles-chart, .elevation-chart {
@@ -41,6 +60,36 @@
   color: @red;
   margin-bottom: 30px;
   border-bottom: 4px solid @red;
+  padding-top: 30px;
+}
+
+.legend-container-big {
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  padding-top: 10px;
+  font-family: @block-graphics;
+  .legend {
+    display: inline-block;
+    width: 150px;
+    padding: 5px;
+  }
+  .legend-swath {
+    height: 14px;
+    width: 16px;
+    background: red;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 3px;
+    vertical-align: sub;
+    &.balint {background: @balint;}
+    &.gene {background: @gene;}
+    &.greg {background: @greg;}
+    &.hilary {background: @hilary;}
+    &.iain {background: @iain;}
+    &.jorge {background: @jorge;}
+    &.lauren {background: @lauren;}
+  }
 }
 
 .legend-container {

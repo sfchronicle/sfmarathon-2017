@@ -33,6 +33,13 @@
         <% }); %>
       </div>
 
+      <div class="hed">Every training run, by distance and pace</div>
+      <div class="interactive-deck">See how far and how fast each runner went on each run. Larger dots correspond to runs with higher elevation gain.</div>
+      <div class="legend-container-big">
+        <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
+          <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
+        <% }); %>
+      </div>
       <div id="dot-chart"></div>
 
       <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
@@ -76,17 +83,11 @@
           </div>
         </div>
 
-        <div class="interactive-container">
-          <div class="hed">Every run by <%=d.Name%>: mileage, pace, and elevation</div>
-          <div id="dot-chart-<%=d.Key%>"></div>
-        </div>
-
+        <div class="text-pullout"><%=d.Name%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months.</div>
 
         <% d.text.forEach(function(d,idx) { %>
           <p><%=d.value%></p>
         <% }); %>
-
-        <div class="text-pullout"><%=d.Name%> ran a total of <span></span> hours in the last 3 months.</div>
 
 
       <% }); %>
