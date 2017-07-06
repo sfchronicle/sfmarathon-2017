@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
 
+    <script src="https://unpkg.com/d3fc/build/d3fc.min.js"></script>
+
     <%= !json.project.embedded ? t.include("partials/_paywall.html") : t.include("partials/_embedframe.html") %>
 
     <%= t.include("partials/_head.html") %>
@@ -18,7 +20,7 @@
 
     <%= t.include("partials/_nav.html") %>
 
-    <div class="outer">
+    <div class="outer" id="content">
 
       <div class="top-container">
         <div class="title"><%=json.sfmarathontraining["Title"]%></div>
@@ -29,22 +31,26 @@
 
       <div class="intro-text">
         <% json.sfmarathontraining.intro.forEach(function(d,idx) { %>
-          <p><%=d.value%></p>
+          <% if (d.type == "text") { %>
+            <p><%=d.value%></p>
+          <% } else { %>
+            <div class="interactive-container">
+              <div class="hed"><%=d.value[0].Hed%></div>
+              <div class="interactive-deck"><%=d.value[0].Deck%></div>
+              <div class="legend-container-big">
+                <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
+                  <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
+                <% }); %>
+              </div>
+              <div id="dot-chart"></div>
+            </div>
+          <% } %>
         <% }); %>
       </div>
-
-      <div class="hed">Every training run, by distance and pace</div>
-      <div class="interactive-deck">See how far and how fast each runner went on each run. Larger dots correspond to runs with higher elevation gain.</div>
-      <div class="legend-container-big">
-        <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
-          <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
-        <% }); %>
-      </div>
-      <div id="dot-chart"></div>
 
       <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
 
-        <div class="profile-hed"><%=d.Name%></div>
+        <div class="profile-hed <%=d.Key%>"><%=d.Name%></div>
 
         <div class="inline-image">
           <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
@@ -72,18 +78,29 @@
 
           <div class="chart-wrapper">
             <div class="elevation-chart">
-              <div class="hed"><%=d.Name%>'s total elevation gain</div>
+              <div class="subhed"><%=d.Name%>'s total elevation gain</div>
+              <div class="hover-container">
+                <div id="hover-runner-TotalElevation-<%=d.Key%>"></div>
+                <div id="hover-number-TotalElevation-<%=d.Key%>"></div>
+              </div>
               <div id="hover-chart-elevation-<%=d.Key%>"></div>
             </div>
 
             <div class="miles-chart">
-              <div class="hed"><%=d.Name%>'s total miles</div>
+              <div class="subhed"><%=d.Name%>'s total miles</div>
+              <div class="hover-container">
+                <div id="hover-runner-TotalMiles-<%=d.Key%>"></div>
+                <div id="hover-number-TotalMiles-<%=d.Key%>"></div>
+              </div>
               <div id="hover-chart-miles-<%=d.Key%>"></div>
             </div>
           </div>
         </div>
 
-        <div class="text-pullout"><%=d.Name%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months.</div>
+        <div class="text-pullout"><%=d.Name%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months,
+        <div>or the equivalent of <span id="work-weeks-<%=d.Key%>" class="bold-text-pullout"></span> of a full-time job.</div>
+        </div>
+
 
         <% d.text.forEach(function(d,idx) { %>
           <p><%=d.value%></p>

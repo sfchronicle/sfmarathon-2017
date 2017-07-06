@@ -2,6 +2,9 @@ require("./lib/social");
 var d3 = require("d3");//Do not delete'
 var calendar = require("calendar-heatmap-mini");
 
+// this is set in the styles
+var maxWidth = 1000;
+
 // lists to enable me to generate charts automatically - these are the runners that we're using
 var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Dykes","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
 var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorgeData","laurenData"];
@@ -15,28 +18,40 @@ var	parseTime = d3.timeParse("%H:%M:%S");
 var	parsePace = d3.timeParse("%M:%S");
 var formatthousands = d3.format(",");
 
-//
+var windowWidth = $(window).width();;
+console.log("window width = ");
+console.log(windowWidth);
+var halfWidth = Math.min((windowWidth/2),maxWidth/2);
+
 function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
     return "#CF0000";
+    // if (personName == "Balint Gal") {
+    //   return "#80A9D0";
+    // } else if (personName == "Gene Dykes") {
+    //   return "#2274A5";
+    // } else if (personName == "Greg McQuaid") {
+    //   return "#D13D59";//"#EB8F6A";
+    // } else if (personName == "Hilary Dykes") {
+    //   return "#81AD54";
+    // } else if (personName == "Iain Mickle") {
+    //   return "#FFCC32";
+    // } else if (personName == "Jorge Maravilla") {
+    //   return "purple";
+    // } else if (personName == "Lauren Elkins") {
+    //   return "#462255";
+    // }
   } else {
     return "#8c8c8c";
   }
-  // if (personName == "Balint Gal") {
-  //   return "gray";
-  // } else if (personName == "Gene Dykes") {
-  //   return "green";
-  // } else if (personName == "Greg McQuaid") {
-  //   return "orange";
-  // } else if (personName == "Hilary Dykes") {
-  //   return "red";
-  // } else if (personName == "Iain Mickle") {
-  //   return "yellow";
-  // } else if (personName == "Jorge Maravilla") {
-  //   return "purple";
-  // } else if (personName == "Lauren Elkins") {
-  //   return "black";
-  // }
+}
+
+function stroke_by_person(personName,runnerID) {
+  if (personName == runnerID) {
+    return 3;
+  } else {
+    return 2;
+  }
 }
 
 function colorful_dots(personName) {
@@ -80,6 +95,7 @@ var dataNested = d3.nest()
 //----------------------------------------------------------------------------------
 
 function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
+
   // show tooltip
   var tooltipDots = d3.select("body").append("div")
     .attr("class", "tooltip-dots");
@@ -87,15 +103,15 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
   // create SVG container for chart components
   var margin = {
     top: 15,
-    right: 80,
-    bottom: 60,
-    left: 100
+    right: 40,
+    bottom: 50,
+    left: 50
   };
   if (screen.width > 768) {
-    var width = 440 - margin.left - margin.right;
+    // var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 440 - margin.left - margin.right;
+    // var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
@@ -105,7 +121,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       bottom: 50,
       left: 30
     };
-    var width = 340 - margin.left - margin.right;
+    // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
@@ -115,10 +131,16 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       bottom: 50,
       left: 32
     };
-    var width = 310 - margin.left - margin.right;
+    // var width = 310 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   }
-  console.log(margin);
+  if (windowWidth <= 800) {
+    var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
+  } else {
+    var width = halfWidth - 10 - margin.left - margin.right;
+  }
+
+  d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -215,7 +237,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
         .attr("class", class_list)
         .style("stroke", color_by_person(d.key,runnerID))//color_by_gender(d.values[0].gender))
         .style("opacity",0.9)
-        .style("stroke-width",2.5)
+        .style("stroke-width",stroke_by_person(d.key,runnerID))
         .attr("d", line(d.values));//lineAllStrava(d.values));
     });
 
@@ -240,21 +262,27 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
         .on("mouseout", mouseout);
 
       function mouseover(d) {
-        console.log(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,''));
+        console.log("mouseover");
         d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", true);
+        if (+d.data["Date"].split("-")[1] < 5){
+          focus.style("text-anchor","begin")
+        } else {
+          focus.style("text-anchor","end")
+        }
+        d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.name);
+        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data[targetVal]+" "+units);
         if (units != "hours") {
           focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(d.data[targetVal]) + ")");
-          focus.select("text").text(d.data.name+": "+formatthousands(d.data[targetVal])+" "+units);//+" on "+d.data.date
         } else {
           focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(parseTime(d.data[targetVal])) + ")");
-          focus.select("text").text(d.data.name+": "+d.data[targetVal]+" "+units);//+" on "+d.data.date
         }
-
       }
 
       function mouseout(d) {
         d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", false);
         focus.attr("transform", "translate(-100,-100)");
+        d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text("");
+        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text("");
       }
 
 }
@@ -304,6 +332,8 @@ function dotChart(targetID,maxval,runnerID){
     var height = 350 - margin.top - margin.bottom;
   }
   console.log(margin);
+
+  d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -328,7 +358,7 @@ function dotChart(targetID,maxval,runnerID){
         .attr("y", -10)
         .attr("fill","black")
         .style("text-anchor", "end")
-        .text("Miles")
+        .text("Miles per day")
 
   svg.append("g")
       .call(d3.axisLeft(y)
@@ -342,6 +372,23 @@ function dotChart(targetID,maxval,runnerID){
         .attr("fill","black")
         .style("text-anchor", "end")
         .text("Average pace per mile")
+
+  var line = d3.line()
+      .x(function(d) { return x(26.2); })
+      .y(function(d) { return y(parsePace(d)); })
+
+  svg.append("path")
+        .datum(["4:00","22:00"])
+        .attr("fill", "none")
+        .attr("class","annotation-path")
+        .attr("d", line);
+
+  svg.append("text")
+      .text("Marathon distance (26.2 miles)")
+      .style("text-anchor","end")
+      // .attr("dx",function(d){ return x(26.2); })
+      // .attr("dy",function(d){ return y(parsePace("22:00")); })
+      .attr("transform","translate("+x(29)+","+y(parsePace("22:00"))+") rotate(-90)")
 
   svg.selectAll("dot")
         .data(combinedData)
@@ -427,9 +474,7 @@ function drawCalendarV2(dateData,chartID) {
       monthName = d3.timeFormat("%B"),
       months= d3.timeMonth.range(d3.timeMonth.ceil(minDate), d3.timeMonth.ceil(maxDate));
 
-  console.log(months);
   var num_months_in_a_row = 3;//months.length();//Math.floor(width / (cellSize * 7 + 50));
-  console.log(num_months_in_a_row);
   // var shift_up = cellSize * 1;
   var header_height = 50;
 
@@ -552,9 +597,6 @@ function drawCalendar(dateData){
   var cellMargin = 2,
       cellSize = 20;
 
-  console.log(minDate);
-  console.log(maxDate);
-
   // var colorRange = ['#D8E6E7', '#218380'];
   //
   // // color range
@@ -622,18 +664,12 @@ function drawCalendar(dateData){
     })
     .object(dateData);
 
-  console.log("DATE DATA IS HERE");
-  console.log(dateData);
-  console.log(lookup);
-
   var scale = d3.scaleLinear()
     .domain(d3.extent(dateData, function(d) { return parseInt(d["Daily Miles"]); }))
     .range([0.4,1]); // the interpolate used for color expects a number in the range [0,1] but i don't want the lightest part of the color scheme
 
-  console.log("RECT IS HERE");
-  console.log(rect);
-  rect.filter(function(d) { console.log(d); return d in lookup;})
-  rect.style("fill",function(d) { var res = d in lookup; console.log(d); return scale(lookup[d]);});//eturn d3.interpolatePuBu(scale(lookup[d]));});
+  rect.filter(function(d) { return d in lookup;})
+  rect.style("fill",function(d) { var res = d in lookup; return scale(lookup[d]);});//eturn d3.interpolatePuBu(scale(lookup[d]));});
     // .select("title")
     // .text(function(d) { return titleFormat(new Date(d)) + ":  " + lookup[d]; });
 
@@ -899,22 +935,51 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = [];
   var chartID = chartHeatList[jdx];
   var data = eval(dataList[jdx]);
-  drawCalendarV2(data,chartID);
 
-  // dotChart("#dot-chart-"+keyList[jdx],80,nameList[jdx]);
+  drawCalendarV2(data,chartID);
+  window.addEventListener("resize", drawCalendarV2(data,chartID));
+
   hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
+
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
+  window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
 
   var timeVar = data[data.length-1]["Total Time"];
-  console.log(timeVar);
   if (timeVar){
     timeVar = timeVar.split(":")[0];
     document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
+    document.getElementById("work-weeks-"+keyList[jdx]).innerHTML = Math.round(timeVar/520*100)+"%";
   }
-
 }
 
+
+$(window).resize(function () {
+  windowWidth = $(window).width();
+  halfWidth = Math.min((windowWidth/2),450);
+  for (var jdx=0; jdx<dataList.length; jdx++) {
+    var data = [];
+    var chartID = chartHeatList[jdx];
+    var data = eval(dataList[jdx]);
+
+    drawCalendarV2(data,chartID);
+    window.addEventListener("resize", drawCalendarV2(data,chartID));
+
+    hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
+
+    hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
+    window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
+
+    var timeVar = data[data.length-1]["Total Time"];
+    if (timeVar){
+      timeVar = timeVar.split(":")[0];
+      document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
+    }
+  }
+});
+
 dotChart("#dot-chart",75,"all");
+window.addEventListener("resize", dotChart("#dot-chart",75,"all"));
+
 
 // hoverChart("#hover-chart-elevation","Total Elevation",60000,"Elevation gain total (ft)","ft");
 // hoverChart("#hover-chart-elevation","Daily Elevation",15000,"Elevation gain total (ft)","ft");
