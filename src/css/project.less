@@ -9,6 +9,18 @@
 @jorge: "red";
 @lauren: #462255;
 
+.gene-heatmap {
+  padding-top: 20px;
+}
+
+.section-break {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 40px;
+  border-bottom: 4px solid @red;
+  padding-top: 30px;
+}
+
 .chart-wrapper {
   display: block;
   text-align: center;
@@ -44,6 +56,9 @@
 .bold-text-pullout {
   font-family: @boldest-graphics;
   color: @red;
+}
+.pullout-padding {
+  padding-top: 20px;
 }
 
 .story-container {
@@ -189,7 +204,7 @@
 
 .top-container {
   padding-top: 50px;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
   font-family: @block-graphics;
   text-align: center;
 }
@@ -199,10 +214,15 @@
   line-height: 1.2;
   font-size: 30px;
   max-width: 500px;
+  padding-bottom: 10px;
 }
 .title-deck {
   font-family: @med-graphics;
   padding-top: 10px;
+  // @media @tablet {
+    max-width: 90%;
+    margin: auto;
+  // }
 }
 
 .deck {

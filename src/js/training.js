@@ -41,6 +41,8 @@ function color_by_person(personName,runnerID) {
     // } else if (personName == "Lauren Elkins") {
     //   return "#462255";
     // }
+  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
+    return "#CF0000";
   } else {
     return "#8c8c8c";
   }
@@ -48,6 +50,8 @@ function color_by_person(personName,runnerID) {
 
 function stroke_by_person(personName,runnerID) {
   if (personName == runnerID) {
+    return 3;
+  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
     return 3;
   } else {
     return 2;
