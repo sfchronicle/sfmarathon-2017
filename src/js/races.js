@@ -49,12 +49,26 @@ function color_by_person(personName,runnerID) {
 }
 
 function stroke_by_person(personName,runnerID) {
+  // console.log(personName);
+  // console.log(runnerID);
   if (personName == runnerID) {
     return 3;
   } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
     return 3;
   } else {
-    return 2;
+    return 1;
+  }
+}
+
+function opacity_by_person(personName,runnerID) {
+  // console.log(personName);
+  // console.log(runnerID);
+  if (personName == runnerID) {
+    return 0.9;
+  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
+    return 0,9;
+  } else {
+    return 0.4;
   }
 }
 
@@ -94,6 +108,10 @@ var dataNested = d3.nest()
   .key(function(d){ return d.name; })
   .entries(combinedData);
 
+var raceDataNested = d3.nest()
+  .key(function(d){ return d.athlete_id; })
+  .entries(raceData);
+
 //----------------------------------------------------------------------------------
 // function to draw voronoi chart  ------------------------------------
 //----------------------------------------------------------------------------------
@@ -102,21 +120,21 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
 
   // show tooltip
   var tooltipDots = d3.select("body").append("div")
-    .attr("class", "tooltip-dots");
+    .attr("class", "tooltip-lines");
 
   // create SVG container for chart components
   var margin = {
     top: 15,
     right: 40,
     bottom: 50,
-    left: 50
+    left: 60
   };
   if (screen.width > 768) {
     // var width = 440 - margin.left - margin.right;
-    var height = 300 - margin.top - margin.bottom;
+    var height = 450 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
     // var width = 440 - margin.left - margin.right;
-    var height = 300 - margin.top - margin.bottom;
+    var height = 450 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
     var margin = {
@@ -138,11 +156,11 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     // var width = 310 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   }
-  if (windowWidth <= 800) {
+  // if (windowWidth <= 800) {
     var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
-  } else {
-    var width = halfWidth - 10 - margin.left - margin.right;
-  }
+  // } else {
+    // var width = halfWidth - 10 - margin.left - margin.right;
+  // }
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -151,25 +169,12 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  if (units != "hours") {
+  // x-axis scale
+  var x = d3.scaleLinear().range([0, width]),
+      y = d3.scaleTime().range([height, 0]);
 
-    // x-axis scale
-    var x = d3.scaleTime().range([0, width]),
-        y = d3.scaleLinear().range([height, 0]);
-
-    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
-    y.domain([0,maxval]);
-
-  } else {
-
-    // x-axis scale
-    var x = d3.scaleTime().range([0, width]),
-        y = d3.scaleTime().range([height, 0]);
-
-    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
-    y.domain([parseTime('00:00:00'),parseTime(String(maxval))]);
-
-  }
+  x.domain([0, 26.2]);
+  y.domain([parsePace('00:00'),parsePace("30:00")]);
 
   // Define the axes
   svg.append("g")
@@ -179,68 +184,51 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       .append("text")
         .attr("class", "label")
         .attr("x", width)
-        .attr("y", 35)
+        .attr("y", -10)
+        .attr("fill","black")
         .style("text-anchor", "end")
-        .text("AXIS")
+        .text("Mile of the race")
 
-    if (units == "ft") {
-      svg.append("g")
-          .call(d3.axisLeft(y)
-            .tickFormat(d3.format(".1s"))
-            .ticks(5))
-          .append("text")
-            .attr("class", "label")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 20)
-            .attr("x", 0)
-            .attr("fill","black")
-            .style("text-anchor", "end")
-            .text(yLabel)
-
-    } else {
-      svg.append("g")
-          .call(d3.axisLeft(y)
-            // .tickFormat(d3.timeFormat("%M:%S"))
-            .ticks(5))
-          .append("text")
-            .attr("class", "label")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 20)
-            .attr("x", 0)
-            .attr("fill","black")
-            .style("text-anchor", "end")
-            .text(yLabel)
-    }
+    svg.append("g")
+        .call(d3.axisLeft(y)
+          .tickFormat(d3.timeFormat("%M:%S"))
+          .ticks(5))
+        .append("text")
+          .attr("class", "label")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 20)
+          .attr("x", 0)
+          .attr("fill","black")
+          .style("text-anchor", "end")
+          .text("Pace per mile")
 
     var voronoi = d3.voronoi()
-        // .interpolate("step-after")
-        .x(function(d) { return x(parseFullDate(d["Date"])); })
+        // .curve(d3.curveBasis)
+        .x(function(d) {
+          return x(d["mileShort"]);
+        })
         .y(function(d) {
-          if (units != "hours"){
-            return y(d[targetVal]);
-          } else {
-            return y(parseTime(d[targetVal]));
-          }
+          return y(parsePace(d["paceShort"]))
         })
         .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
 
     var line = d3.line()
-        .curve(d3.curveStepAfter)
-        .x(function(d) { return x(parseFullDate(d["Date"])); })
+        .curve(d3.curveBasis)
+        .x(function(d) {
+          return x(d["mileShort"]);
+        })
         .y(function(d) {
-          if (units != "hours"){
-            return y(d[targetVal]);
-          } else {
-            return y(parseTime(d[targetVal]));
-          }
+          return y(parsePace(d["paceShort"]));
         });
 
-    dataNested.forEach(function(d) {
+    raceDataNested.forEach(function(d) {
+
+      // var class_list = "line voronoi"
       var class_list = "line voronoi id"+d.key.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'');
       svg.append("path")
         .attr("class", class_list)
         .style("stroke", color_by_person(d.key,runnerID))//color_by_gender(d.values[0].gender))
-        .style("opacity",0.9)
+        .style("opacity",opacity_by_person(d.key,runnerID))
         .style("stroke-width",stroke_by_person(d.key,runnerID))
         .attr("d", line(d.values));//lineAllStrava(d.values));
     });
@@ -259,7 +247,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       .attr("class", "voronoi");
 
     voronoiGroup.selectAll("path")
-      .data(voronoi.polygons(d3.merge(dataNested.map(function(d) { return d.values; }))))
+      .data(voronoi.polygons(d3.merge(raceDataNested.map(function(d) { return d.values; }))))
       .enter().append("path")
         .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
         .on("mouseover", mouseover)
@@ -268,13 +256,13 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       function mouseover(d) {
         console.log("mouseover");
         d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", true);
-        if (+d.data["Date"].split("-")[1] < 5){
-          focus.style("text-anchor","begin")
-        } else {
-          focus.style("text-anchor","end")
-        }
-        d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.name);
-        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data[targetVal]+" "+units);
+        // if (+d.data["Date"].split("-")[1] < 5){
+        //   focus.style("text-anchor","begin")
+        // } else {
+        //   focus.style("text-anchor","end")
+        // }
+        // d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.name);
+        // d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data[targetVal]+" "+units);
         if (units != "hours") {
           focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(d.data[targetVal]) + ")");
         } else {
@@ -710,6 +698,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = [];
   var chartID = chartHeatList[jdx];
   var data = eval(dataList[jdx]);
+
+  hoverChart("#"+keyList[jdx]+"-race","Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
 
   // drawCalendarV2(data,chartID);
   // window.addEventListener("resize", drawCalendarV2(data,chartID));
