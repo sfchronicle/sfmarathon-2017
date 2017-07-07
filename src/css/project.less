@@ -13,6 +13,10 @@
   padding-top: 20px;
 }
 
+.focus {
+  fill: @dark-gray;
+}
+
 .section-break {
   width: 90%;
   margin: auto;
@@ -32,14 +36,27 @@
     .flex(0 0 48%);
   }
 }
+.race-chart {
+  position: relative;
+}
 
 .hover-container {
   position: absolute;
   top: 40px;
-  left: 40%;
-  right: 0;
   font-size:12px;
   font-family: @block-graphics;
+  &.training {
+    left: 40%;
+    right: 0;
+  }
+  &.races {
+    // left: 0;
+    right: 20%;
+    font-size: 13px;
+    // border: @light-gray 1px solid;
+    // padding: 5px 20px;
+    // width: 200px;
+  }
 }
 
 .text-pullout {
@@ -199,8 +216,6 @@
   .red-swath5 {background: lighten(@red,50%)}
   .white-swath {background: lighten(@light-gray,15%);}
 }
-
-
 
 .top-container {
   padding-top: 50px;

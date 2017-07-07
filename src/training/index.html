@@ -58,7 +58,7 @@
 
         <div class="interactive-container">
           <% if (d.Key == "hilary"){ %>
-            <div class="hed">Hilary Shirazi's training calendar</div>
+            <div class="hed">Hilary's training calendar</div>
             <div class="interactive-deck"><%=d["Heatmap-deck"]%></div>
             <div class="legend-container">
               <div class="swath-text left">0 miles</div>
@@ -72,12 +72,12 @@
               <div class="swath-text right">26.2+ miles</div>
             </div>
             <div id="hilary-heatmap"></div>
-            <div class="hed gene-heatmap">Gene Dykes's training calendar</div>
-            <div class="interactive-deck"><%=d["Heatmap-deck"]%></div>
+            <div class="hed gene-heatmap">Gene's training calendar</div>
+            <div class="interactive-deck"><%=d["Heatmap-deck-gene"]%></div>
             <div id="gene-heatmap"></div>
           <% } else { %>
-            <div class="hed"><%=d.Name%>'s training calendar</div>
-            <div class="interactive-deck"><%=d["Heatmap-deck-gene"]%></div>
+            <div class="hed"><%=d.Name.split(" ")[0]%>'s training calendar</div>
+            <div class="interactive-deck"><%=d["Heatmap-deck"]%></div>
             <div class="legend-container">
               <div class="swath-text left">0 miles</div>
               <div class="swath white-swath"></div>
@@ -98,7 +98,7 @@
             <div class="chart-wrapper">
               <div class="elevation-chart">
                 <div class="subhed">Hilary and Gene's total elevation gain</div>
-                <div class="hover-container">
+                <div class="hover-container training">
                   <div id="hover-runner-TotalElevation-hilary"></div>
                   <div id="hover-number-TotalElevation-hilary"></div>
                 </div>
@@ -107,7 +107,7 @@
 
               <div class="miles-chart">
                 <div class="subhed">Hilary and Gene's total miles</div>
-                <div class="hover-container">
+                <div class="hover-container training">
                   <div id="hover-runner-TotalMiles-hilary"></div>
                   <div id="hover-number-TotalMiles-hilary"></div>
                 </div>
@@ -127,8 +127,8 @@
           <div class="story-container">
             <div class="chart-wrapper">
               <div class="elevation-chart">
-                <div class="subhed"><%=d.Name%>'s total elevation gain</div>
-                <div class="hover-container">
+                <div class="subhed"><%=d.Name.split(" ")[0]%>'s total elevation gain</div>
+                <div class="hover-container training">
                   <div id="hover-runner-TotalElevation-<%=d.Key%>"></div>
                   <div id="hover-number-TotalElevation-<%=d.Key%>"></div>
                 </div>
@@ -136,8 +136,8 @@
               </div>
 
               <div class="miles-chart">
-                <div class="subhed"><%=d.Name%>'s total miles</div>
-                <div class="hover-container">
+                <div class="subhed"><%=d.Name.split(" ")[0]%>'s total miles</div>
+                <div class="hover-container training">
                   <div id="hover-runner-TotalMiles-<%=d.Key%>"></div>
                   <div id="hover-number-TotalMiles-<%=d.Key%>"></div>
                 </div>
@@ -146,7 +146,7 @@
             </div>
           </div>
 
-          <div class="text-pullout"><%=d.Name%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months,
+          <div class="text-pullout"><%=d.Name.split(" ")[0]%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months,
           <div>or the equivalent of <span id="work-weeks-<%=d.Key%>" class="bold-text-pullout"></span> of a full-time job.</div>
           </div>
 

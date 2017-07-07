@@ -3,7 +3,8 @@ var d3 = require("d3");//Do not delete'
 var calendar = require("calendar-heatmap-mini");
 
 // this is set in the styles
-var maxWidth = 1000;
+var maxWidthDots = 1000;
+var maxWidthRaces = 800;
 
 // lists to enable me to generate charts automatically - these are the runners that we're using
 var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Dykes","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
@@ -21,7 +22,7 @@ var formatthousands = d3.format(",");
 var windowWidth = $(window).width();;
 console.log("window width = ");
 console.log(windowWidth);
-var halfWidth = Math.min((windowWidth/2),maxWidth/2);
+// var halfWidth = Math.min((windowWidth/2),maxWidth/2);
 
 function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
@@ -56,7 +57,7 @@ function stroke_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
     return 3;
   } else {
-    return 1;
+    return 2;
   }
 }
 
@@ -68,7 +69,7 @@ function opacity_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
     return 0,9;
   } else {
-    return 0.4;
+    return 0.5;
   }
 }
 
@@ -116,7 +117,7 @@ var raceDataNested = d3.nest()
 // function to draw voronoi chart  ------------------------------------
 //----------------------------------------------------------------------------------
 
-function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
+function hoverChart(targetID,maxval,yLabel,units,runnerID) {
 
   // show tooltip
   var tooltipDots = d3.select("body").append("div")
@@ -125,7 +126,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
   // create SVG container for chart components
   var margin = {
     top: 15,
-    right: 40,
+    right: 60,
     bottom: 50,
     left: 60
   };
@@ -157,7 +158,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     var height = 350 - margin.top - margin.bottom;
   }
   // if (windowWidth <= 800) {
-    var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
+    var width = Math.min(windowWidth,maxWidthRaces) - 10 - margin.left - margin.right;
   // } else {
     // var width = halfWidth - 10 - margin.left - margin.right;
   // }
@@ -171,10 +172,12 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
 
   // x-axis scale
   var x = d3.scaleLinear().range([0, width]),
-      y = d3.scaleTime().range([height, 0]);
+      y = d3.scaleTime().range([height, 0]),
+      yRight = d3.scaleLinear().range([height,0]);
 
   x.domain([0, 26.2]);
-  y.domain([parsePace('00:00'),parsePace("30:00")]);
+  y.domain([parsePace('00:00'),parsePace("20:00")]);
+  yRight.domain([-7,1000])
 
   // Define the axes
   svg.append("g")
@@ -184,7 +187,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
       .append("text")
         .attr("class", "label")
         .attr("x", width)
-        .attr("y", -10)
+        .attr("y", 40)
         .attr("fill","black")
         .style("text-anchor", "end")
         .text("Mile of the race")
@@ -200,7 +203,21 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
           .attr("x", 0)
           .attr("fill","black")
           .style("text-anchor", "end")
-          .text("Pace per mile")
+          .text("Pace (minutes per mile)")
+
+    svg.append("g")
+        .attr("transform", "translate( " + width + ", 0 )")
+        .call(d3.axisRight(yRight)
+          // .tickFormat(d3.timeFormat("%M:%S"))
+          .ticks(5))
+        .append("text")
+          .attr("class", "label")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -15)
+          .attr("x", 0)
+          .attr("fill","black")
+          .style("text-anchor", "end")
+          .text("Elevation profile (ft)")
 
     var voronoi = d3.voronoi()
         // .curve(d3.curveBasis)
@@ -213,7 +230,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
         .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
 
     var line = d3.line()
-        .curve(d3.curveBasis)
+        .curve(d3.curveCardinal)
         .x(function(d) {
           return x(d["mileShort"]);
         })
@@ -221,10 +238,24 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
           return y(parsePace(d["paceShort"]));
         });
 
+    var elevationLine = d3.line()
+        .curve(d3.curveCardinal)
+        .x(function(d) {
+          console.log(d);
+          return x(d["distance"]);
+        })
+        .y(function(d) {
+          return yRight(d["elevation"]);
+        });
+
+    svg.append("path")
+        .attr("class","elevationprofile")
+        .attr("d",elevationLine(elevationData))
+
     raceDataNested.forEach(function(d) {
 
       // var class_list = "line voronoi"
-      var class_list = "line voronoi id"+d.key.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'');
+      var class_list = "line voronoi id"+d.key.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'');
       svg.append("path")
         .attr("class", class_list)
         .style("stroke", color_by_person(d.key,runnerID))//color_by_gender(d.values[0].gender))
@@ -254,27 +285,17 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
         .on("mouseout", mouseout);
 
       function mouseover(d) {
-        console.log("mouseover");
-        d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", true);
-        // if (+d.data["Date"].split("-")[1] < 5){
-        //   focus.style("text-anchor","begin")
-        // } else {
-        //   focus.style("text-anchor","end")
-        // }
-        // d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.name);
-        // d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data[targetVal]+" "+units);
-        if (units != "hours") {
-          focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(d.data[targetVal]) + ")");
-        } else {
-          focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(parseTime(d.data[targetVal])) + ")");
-        }
+        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover", true);
+        d3.select("#hover-race-name-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.athlete_id);
+        d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("Mile "+d.data.mileShort+" pace: "+d.data.paceShort);
+        focus.attr("transform", "translate(" + x(d.data["mileShort"]) + "," + y(parsePace(d.data["paceShort"])) + ")");
       }
 
       function mouseout(d) {
-        d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", false);
+        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover", false);
         focus.attr("transform", "translate(-100,-100)");
-        d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text("");
-        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text("");
+        d3.select("#hover-race-name-"+runnerID.split(" ")[0].toLowerCase()).text("");
+        d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("");
       }
 
 }
@@ -300,7 +321,7 @@ function dotChart(targetID,maxval,runnerID){
     var width = 900 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 720 - margin.left - margin.right;
+    // var width = 720 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
@@ -310,7 +331,7 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 50,
       left: 30
     };
-    var width = 340 - margin.left - margin.right;
+    // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
@@ -320,10 +341,10 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 50,
       left: 32
     };
-    var width = 310 - margin.left - margin.right;
+    // var width = 310 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   }
-  console.log(margin);
+  var width = Math.min(windowWidth,maxWidthDots) - 10 - margin.left - margin.right;
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -699,7 +720,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var chartID = chartHeatList[jdx];
   var data = eval(dataList[jdx]);
 
-  hoverChart("#"+keyList[jdx]+"-race","Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
+  hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
+  // window.addEventListener("resize",hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]));
 
   // drawCalendarV2(data,chartID);
   // window.addEventListener("resize", drawCalendarV2(data,chartID));
@@ -721,6 +743,20 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 $(window).resize(function () {
   windowWidth = $(window).width();
   halfWidth = Math.min((windowWidth/2),450);
+
+  dotChart("#dot-chart-races",75,"all");
+
+  for (var jdx=0; jdx<dataList.length; jdx++) {
+    var data = [];
+    var chartID = chartHeatList[jdx];
+    var data = eval(dataList[jdx]);
+
+    hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
+  }
+
+  // window.addEventListener("resize",hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]));
+
+
   // for (var jdx=0; jdx<dataList.length; jdx++) {
   //   var data = [];
   //   var chartID = chartHeatList[jdx];

@@ -946,7 +946,7 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
 
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
-  window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
+  // window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
 
   var timeVar = data[data.length-1]["Total Time"];
   if (timeVar){

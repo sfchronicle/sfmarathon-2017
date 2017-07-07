@@ -45,13 +45,18 @@
 
         <div class="interactive-container">
           <% if (d.Key == "hilary"){ %>
-            <div class="hed"><%=d.Name%>'s races</div>
+            <div class="hed">Hilary and Gene's races</div>
           <% } else { %>
-            <div class="hed"><%=d.Name%>'s race</div>
+            <div class="hed"><%=d.Name.split(" ")[0]%>'s race</div>
           <% } %>
           <div class="interactive-deck"><%=d["Race-deck"]%></div>
-          <div id="<%=d.Key%>-race"></div>
-
+          <div class="race-chart">
+            <div class="hover-container races">
+              <div id="hover-race-name-<%=d.Key%>"></div>
+              <div id="hover-race-pace-<%=d.Key%>"></div>
+            </div>
+            <div id="<%=d.Key%>-race"></div>
+          </div>
         </div>
 
         <% if (d.Key == "hilary"){ %>
@@ -63,7 +68,7 @@
 
         <% } else { %>
 
-          <div class="text-pullout"><%=d.Name%> wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
+          <div class="text-pullout"><%=d.Name.split(" ")[0]%> wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
           <div>and succeeded in running <span class="bold-text-pullout"><%=d["Finish-time"]%></span></div>
           </div>
 
