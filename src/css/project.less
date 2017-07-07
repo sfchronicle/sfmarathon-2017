@@ -45,17 +45,23 @@
   top: 40px;
   font-size:12px;
   font-family: @block-graphics;
+  &:empty {
+    border: none;
+  }
   &.training {
     left: 40%;
     right: 0;
   }
   &.races {
     // left: 0;
-    right: 20%;
+    right: 25%;
     font-size: 13px;
-    // border: @light-gray 1px solid;
-    // padding: 5px 20px;
-    // width: 200px;
+    border: @light-gray 1px solid;
+    padding: 5px 20px;
+    width: 200px;
+  }
+  &:empty {
+    color: red;
   }
 }
 

@@ -588,351 +588,8 @@ function drawCalendarV2(dateData,chartID) {
   // }
 }
 
-function drawCalendar(dateData){
-
-  var weeksInMonth = function(month){
-    var m = d3.timeMonth.floor(month)
-    return d3.timeWeeks(d3.timeWeek.floor(m), d3.timeMonth.offset(m,1)).length;
-  }
-
-  var minDate = d3.min(dateData, function(d) { return new Date(d["Date"]) })
-  var maxDate = d3.max(dateData, function(d) { return new Date(d["Date"]) })
-
-  var cellMargin = 2,
-      cellSize = 20;
-
-  // var colorRange = ['#D8E6E7', '#218380'];
-  //
-  // // color range
-  // var color = d3.scaleLinear()
-  //   .range(['#D8E6E7', '#218380'])
-  //   .domain([0, 40]);
-
-  var day = d3.timeFormat("%w"),
-      week = d3.timeFormat("%U"),
-      format = d3.timeFormat("%Y/%m/%d"),
-      // titleFormat = d3.utcFormat("%a, %d-%b");
-      monthName = d3.timeFormat("%B"),
-      months= d3.timeMonth.range(d3.timeMonth.floor(minDate), maxDate);
-
-  var svg = d3.select("#calendar").selectAll("svg")
-    .data(months)
-    .enter().append("svg")
-    .attr("class", "month")
-    .attr("height", ((cellSize * 7) + (cellMargin * 8) + 20) ) // the 20 is for the month labels
-    .attr("width", function(d) {
-      var columns = weeksInMonth(d);
-      return ((cellSize * columns) + (cellMargin * (columns + 1)));
-    })
-    .append("g")
-
-  svg.append("text")
-    .attr("class", "month-name")
-    .attr("y", (cellSize * 7) + (cellMargin * 8) + 15 )
-    .attr("x", function(d) {
-      var columns = weeksInMonth(d);
-      return (((cellSize * columns) + (cellMargin * (columns + 1))) / 2);
-    })
-    .attr("text-anchor", "middle")
-    .text(function(d) { return monthName(d); })
-
-  var rect = svg.selectAll("rect.day")
-    .data(function(d, i) { return d3.timeDays(d, new Date(d.getFullYear(), d.getMonth()+1, 1)); })
-    .enter().append("rect")
-    .attr("class", "day")
-    .attr("width", cellSize)
-    .attr("height", cellSize)
-    .attr("rx", 3).attr("ry", 3) // rounded corners
-    .attr("fill", '#eaeaea') // default light grey fill
-    // .attr('fill', function (d,i) {
-    //   console.log(i);
-    //   return color(jorgeData[i]["miles"]);
-    // })
-    .attr("y", function(d) { return (day(d) * cellSize) + (day(d) * cellMargin) + cellMargin; })
-    .attr("x", function(d) { return ((week(d) - week(new Date(d.getFullYear(),d.getMonth(),1))) * cellSize) + ((week(d) - week(new Date(d.getFullYear(),d.getMonth(),1))) * cellMargin) + cellMargin ; })
-    .on("mouseover", function(d) {
-      d3.select(this).classed('hover', true);
-    })
-    .on("mouseout", function(d) {
-      d3.select(this).classed('hover', false);
-    })
-    .datum(format);
-
-  // rect.append("title")
-  //   .text(function(d) { return titleFormat(new Date(d)); });
-
-  var lookup = d3.nest()
-    .key(function(d) { return d["Date"]; })
-    .rollup(function(leaves) {
-      return d3.sum(leaves, function(d){ return parseInt(d["Daily Miles"]); });
-    })
-    .object(dateData);
-
-  var scale = d3.scaleLinear()
-    .domain(d3.extent(dateData, function(d) { return parseInt(d["Daily Miles"]); }))
-    .range([0.4,1]); // the interpolate used for color expects a number in the range [0,1] but i don't want the lightest part of the color scheme
-
-  rect.filter(function(d) { return d in lookup;})
-  rect.style("fill",function(d) { var res = d in lookup; return scale(lookup[d]);});//eturn d3.interpolatePuBu(scale(lookup[d]));});
-    // .select("title")
-    // .text(function(d) { return titleFormat(new Date(d)) + ":  " + lookup[d]; });
-
-}
-
 //----------------------------------------------------------------------------------
-// functions to draw line charts ------------------------------------
-//----------------------------------------------------------------------------------
-
-var areaChart = function(targetID,targetData,targetVar,maxval) {
-
-  // create new flat data structure
-  var flatData = []; //var flatDataOutflow = [];
-  targetData.forEach(function(d,idx){
-    var dateObj = parseFullDate(d["Date"]);
-    flatData.push(
-      {DateString: d["Date"], Date: dateObj, Elevation: d[targetVar] }
-    );
-  });
-
-  // show tooltip
-  var tooltip = d3.select("body")
-      .append("div")
-      .attr("class","tooltip")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-
-  // create SVG container for chart components
-  var margin = {
-    top: 15,
-    right: 80,
-    bottom: 60,
-    left: 100
-  };
-  if (screen.width > 768) {
-    var width = 900 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
-  } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 720 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
-  } else if (screen.width <= 480 && screen.width > 340) {
-    console.log("big phone");
-    var margin = {
-      top: 20,
-      right: 60,
-      bottom: 50,
-      left: 30
-    };
-    var width = 340 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
-  } else if (screen.width <= 340) {
-    console.log("mini iphone")
-    var margin = {
-      top: 20,
-      right: 55,
-      bottom: 50,
-      left: 32
-    };
-    var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
-  }
-  console.log(margin);
-  var svg = d3.select(targetID).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // x-axis scale
-  var x = d3.scaleTime().range([0, width]),
-      y = d3.scaleLinear().range([height, 0]);
-
-  x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
-  y.domain([0,maxval]);
-
-  // Define the axes
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
-        .ticks(5))
-      // .append("text")
-      //   .text("Date")
-
-  svg.append("g")
-      .call(d3.axisLeft(y)
-        .ticks(5))
-      .append("text")
-        .text("Elevation gain")
-
-  var areaElevation = d3.area()
-      // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
-      .x(function(d) {
-        return x(d["Date"]);
-      })
-      .y0(height)
-      .y1(function(d) {
-        if (d.Elevation) {
-          return y(d.Elevation);
-        } else {
-          return y(0);
-        }
-      });
-
-  // Add the filled area
-  svg.append("path")
-      .datum(flatData)
-      .attr("class", "area")
-      .style("fill","#6790B7")
-      .attr("d", areaElevation);
-
-  var lineFlow = d3.line()
-      // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
-      .x(function(d) {
-        return x(d["Date"]);
-      })
-      .y(function(d) {
-        if (y(d.Elevation)) {
-          return y(d.Elevation);
-        } else {
-          return y(0);
-        }
-      });
-
-  svg.append("path")
-    .data(flatData)
-    .attr("class", "path voronoi")
-    .style("stroke", "red")//cscale(d.key))//
-    .attr("d", lineFlow(flatData));
-}
-
-var areaTimes = function(targetID,targetData,targetVar,targetVar2,maxval) {
-
-  // create new flat data structure
-  var flatData = []; //var flatDataOutflow = [];
-  targetData.forEach(function(d,idx){
-    var dateObj = parseFullDate(d["Date"]);
-    flatData.push(
-      {DateString: d["Date"], Date: dateObj, Var1: d[targetVar], Var2: d[targetVar2] }
-    );
-  });
-
-  // show tooltip
-  var tooltip = d3.select("body")
-      .append("div")
-      .attr("class","tooltip")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-
-  // create SVG container for chart components
-  var margin = {
-    top: 15,
-    right: 80,
-    bottom: 60,
-    left: 100
-  };
-  if (screen.width > 768) {
-    var width = 900 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
-  } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 720 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
-  } else if (screen.width <= 480 && screen.width > 340) {
-    console.log("big phone");
-    var margin = {
-      top: 20,
-      right: 60,
-      bottom: 50,
-      left: 30
-    };
-    var width = 340 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
-  } else if (screen.width <= 340) {
-    console.log("mini iphone")
-    var margin = {
-      top: 20,
-      right: 55,
-      bottom: 50,
-      left: 32
-    };
-    var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
-  }
-  console.log(margin);
-  var svg = d3.select(targetID).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // x-axis scale
-  var x = d3.scaleTime().range([0, width]),
-      y = d3.scaleTime().range([height, 0]),
-      yRight = d3.scaleTime().range([height,0]);
-
-  x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
-  y.domain([parseTime("0:00:00"),parseTime("50:00:00")]);
-  yRight.domain([parsePace("0:00"),parsePace("12:00")]);
-
-  // Define the axes
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
-        .ticks(5))
-      // .append("text")
-      //   .text("Date")
-
-  svg.append("g")
-      .call(d3.axisLeft(y)
-        .tickFormat(d3.timeFormat("%d %H"))
-        .ticks(5))
-      .append("text")
-        .text("Elevation gain")
-
-  svg.append("g")
-      .attr("transform", "translate(" + width + ",0)")
-      .call(d3.axisRight(yRight)
-        .tickFormat(d3.timeFormat("%M:%S"))
-        .ticks(6))
-      .append("text")
-        .text("Elevation gain")
-
-  var areaElevation = d3.area()
-      // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
-      .x(function(d) {
-        return x(d["Date"]);
-      })
-      .y0(height)
-      .y1(function(d) {
-        return y(parseTime(d.Var1));
-      });
-
-  // Add the filled area
-  svg.append("path")
-      .datum(flatData)
-      .attr("class", "area")
-      .style("fill","#6790B7")
-      .attr("d", areaElevation);
-
-  var lineFlow = d3.line()
-      // .interpolate("monotone")//linear, linear-closed,step-before, step-after, basis, basis-open,basis-closed,monotone
-      .x(function(d) {
-        return x(d["Date"]);
-      })
-      .y(function(d) {
-        // console.log(parsePace(d.Var2));
-        return yRight(parsePace(d.Var2));
-      });
-
-  svg.append("path")
-    .data(flatData)
-    .attr("class", "path voronoi")
-    .style("stroke", "red")//cscale(d.key))//
-    .attr("d", lineFlow(flatData));
-}
-
-//----------------------------------------------------------------------------------
-// MASTER LOOP
+// DRAW ALL CHARTS
 //----------------------------------------------------------------------------------
 
 for (var jdx=0; jdx<dataList.length; jdx++) {
@@ -941,12 +598,10 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = eval(dataList[jdx]);
 
   drawCalendarV2(data,chartID);
-  window.addEventListener("resize", drawCalendarV2(data,chartID));
 
   hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
 
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
-  // window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
 
   var timeVar = data[data.length-1]["Total Time"];
   if (timeVar){
@@ -956,22 +611,28 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   }
 }
 
+dotChart("#dot-chart",75,"all");
+
+//----------------------------------------------------------------------------------
+// REDRAW ALL CHARTS ON RESIZE
+//----------------------------------------------------------------------------------
 
 $(window).resize(function () {
   windowWidth = $(window).width();
-  halfWidth = Math.min((windowWidth/2),450);
+  halfWidth = Math.min((windowWidth/2),maxWidth/2);
+
+  dotChart("#dot-chart",75,"all");
+
   for (var jdx=0; jdx<dataList.length; jdx++) {
     var data = [];
     var chartID = chartHeatList[jdx];
     var data = eval(dataList[jdx]);
 
     drawCalendarV2(data,chartID);
-    window.addEventListener("resize", drawCalendarV2(data,chartID));
 
     hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
 
     hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
-    window.addEventListener("resize",hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]));
 
     var timeVar = data[data.length-1]["Total Time"];
     if (timeVar){
@@ -980,18 +641,3 @@ $(window).resize(function () {
     }
   }
 });
-
-dotChart("#dot-chart",75,"all");
-window.addEventListener("resize", dotChart("#dot-chart",75,"all"));
-
-
-// hoverChart("#hover-chart-elevation","Total Elevation",60000,"Elevation gain total (ft)","ft");
-// hoverChart("#hover-chart-elevation","Daily Elevation",15000,"Elevation gain total (ft)","ft");
-// hoverChart("#hover-chart-miles","Total Miles",900,"Total number of miles run","miles");
-// dotChart("#dot-chart",80,"Gene Dykes");
-// hoverChart("#hover-chart-hours","Daily Time","30:00:00","Total number of hours run","hours");
-// areaChart("#jorge-elevation",jorgeData,"Total Elevation",60000);
-// areaChart("#jorge-miles",jorgeData,"milessum",500);
-// areaTimes("#jorge-time",jorgeData,"timesum","pace",1);
-// areaTimes("#jorge-time2",jorgeData,"miles","pace",1);
-// areaTimes("#jorge-time3",jorgeData,"timesum","pace",1);
