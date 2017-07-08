@@ -321,7 +321,7 @@ function dotChart(targetID,maxval,runnerID){
     var width = 900 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    // var width = 720 - margin.left - margin.right;
+    var width = 720 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
@@ -331,7 +331,7 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 50,
       left: 30
     };
-    // var width = 340 - margin.left - margin.right;
+    var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
@@ -341,10 +341,10 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 50,
       left: 32
     };
-    // var width = 310 - margin.left - margin.right;
+    var width = 310 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   }
-  var width = Math.min(windowWidth,maxWidthDots) - 10 - margin.left - margin.right;
+  console.log(margin);
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -408,7 +408,7 @@ function dotChart(targetID,maxval,runnerID){
       .enter().append("circle")
         .attr("r", function(d) {
           if (d["Daily Elevation"] ) {
-            return (d["Daily Elevation"]/1000+5)
+            return (d["Daily Elevation"]/500+5)
           } else {
             return 5;
           }
@@ -417,24 +417,24 @@ function dotChart(targetID,maxval,runnerID){
         .attr("cy", function(d) { return y(d.paceObj); })
         .attr("opacity",function(d) {
           if (runnerID == "all") {
-            return 0.8;
-          } else if (d.name == runnerID) {
-            return 0.8;
+            return 0.7;
+          } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
+            return 1.0;
           } else {
-            return 0.4;
+            return 0.1;
           }
         })
         .attr("fill",function(d) {
           if (runnerID == "all"){
             return colorful_dots(d.name);
-          } else if (d.name == runnerID) {
-            return "#CF0000";
+          } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
+            return colorful_dots(d.name);
           } else {
             return "#cccccc";
           }
           // return color_by_person(d.name);
         })
-        .style("stroke","#a5a5a5")
+        .style("stroke","#cccccc")
         .on("mouseover", function(d) {
             tooltipDots.html(`
                 <div><b class='name'>${d.name}</b></div>
@@ -480,6 +480,11 @@ $(window).resize(function () {
   windowWidth = $(window).width();
   // halfWidth = Math.min((windowWidth/2),450);
 
+  var buttons = document.getElementsByClassName("button");
+  for (var idx=1; idx<buttons.length; idx++){
+    buttons[idx].classList.remove("active");
+  }
+  buttons[0].classList.add("active");
   dotChart("#dot-chart-races",75,"all");
 
   for (var jdx=0; jdx<dataList.length; jdx++) {
@@ -489,4 +494,21 @@ $(window).resize(function () {
 
     hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
   }
+});
+
+//----------------------------------------------------------------------------------
+// REDRAW DOT CHART ON BUTTON CLICKS
+//----------------------------------------------------------------------------------
+
+var qsa = s => Array.prototype.slice.call(document.querySelectorAll(s));
+qsa(".button").forEach(function(group,index) {
+  group.addEventListener("click", function(e) {
+    var buttons = document.getElementsByClassName("button");
+    for (var idx=0; idx<buttons.length; idx++){
+      buttons[idx].classList.remove("active");
+    }
+    group.classList.add("active");
+    dotChart("#dot-chart-races",75,group.id.split("-button")[0]);
+    // console.log(e);
+  });
 });

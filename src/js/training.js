@@ -620,7 +620,12 @@ dotChart("#dot-chart",75,"all");
 $(window).resize(function () {
   windowWidth = $(window).width();
   halfWidth = Math.min((windowWidth/2),maxWidth/2);
-
+  
+  var buttons = document.getElementsByClassName("button");
+  for (var idx=1; idx<buttons.length; idx++){
+    buttons[idx].classList.remove("active");
+  }
+  buttons[0].classList.add("active");
   dotChart("#dot-chart",75,"all");
 
   for (var jdx=0; jdx<dataList.length; jdx++) {
@@ -649,14 +654,11 @@ $(window).resize(function () {
 var qsa = s => Array.prototype.slice.call(document.querySelectorAll(s));
 qsa(".button").forEach(function(group,index) {
   group.addEventListener("click", function(e) {
-    console.log("click");
     var buttons = document.getElementsByClassName("button");
     for (var idx=0; idx<buttons.length; idx++){
       buttons[idx].classList.remove("active");
     }
-    console.log(group.id.split("-button"));
     group.classList.add("active");
     dotChart("#dot-chart",75,group.id.split("-button")[0]);
-    // console.log(e);
   });
 });

@@ -92,8 +92,14 @@
               <div class="hed"><%=d.value[0].Hed%></div>
               <div class="interactive-deck"><%=d.value[0].Deck%></div>
               <div class="legend-container-big">
-                <% json.sfmarathonrace.profiles.forEach(function(d,idx){ %>
-                  <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
+                <div class="button all active" id="all-button">All runners</div>
+                <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
+                  <% if (d.Key == "hilary"){ %>
+                    <div class="button hilary" id="hilary-button">Hilary Shirazi</div>
+                    <div class="button gene" id="gene-button">Gene Dykes</div>
+                  <% } else { %>
+                    <div class="button <%=d.Key%>" id="<%=d.Key%>-button"><%=d.Name%></div>
+                  <% } %>
                 <% }); %>
               </div>
               <div id="dot-chart-races"></div>
