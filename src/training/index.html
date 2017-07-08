@@ -171,7 +171,12 @@
               <div class="interactive-deck"><%=d.value[0].Deck%></div>
               <div class="legend-container-big">
                 <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
-                  <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
+                  <% if (d.Key == "hilary"){ %>
+                    <div class="legend"><span class="legend-swath hilary"></span><span class="legend-name">Hilary Shirazi</span></div>
+                    <div class="legend"><span class="legend-swath gene"></span><span class="legend-name">Gene Dykes</span></div>
+                  <% } else { %>
+                    <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
+                  <% } %>
                 <% }); %>
               </div>
               <div id="dot-chart"></div>

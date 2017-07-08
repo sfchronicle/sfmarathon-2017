@@ -26,26 +26,26 @@ console.log(windowWidth);
 
 function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
-    return "#CF0000";
-    // if (personName == "Balint Gal") {
-    //   return "#80A9D0";
-    // } else if (personName == "Gene Dykes") {
-    //   return "#2274A5";
-    // } else if (personName == "Greg McQuaid") {
-    //   return "#D13D59";//"#EB8F6A";
-    // } else if (personName == "Hilary Dykes") {
-    //   return "#81AD54";
-    // } else if (personName == "Iain Mickle") {
-    //   return "#FFCC32";
-    // } else if (personName == "Jorge Maravilla") {
-    //   return "purple";
-    // } else if (personName == "Lauren Elkins") {
-    //   return "#462255";
-    // }
+    // return "#CF0000";
+    if (personName == "Balint Gal") {
+      return "#FFCC32";
+    } else if (personName == "Gene Dykes") {
+      return "#2274A5";
+    } else if (personName == "Greg McQuaid") {
+      return "#F25C00";//"#EB8F6A";
+    } else if (personName == "Hilary Dykes") {
+      return "#81AD54";
+    } else if (personName == "Iain Mickle") {
+      return "#F29730";
+    } else if (personName == "Jorge Maravilla") {
+      return "purple";
+    } else if (personName == "Lauren Elkins") {
+      return "#AA4297";
+    }
   } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
-    return "#CF0000";
+    return "#2274A5";
   } else {
-    return "#8c8c8c";
+    return "#cccccc";
   }
 }
 
@@ -75,19 +75,19 @@ function opacity_by_person(personName,runnerID) {
 
 function colorful_dots(personName) {
   if (personName == "Balint Gal") {
-    return "#80A9D0";
+    return "#FFCC32";
   } else if (personName == "Gene Dykes") {
     return "#2274A5";
   } else if (personName == "Greg McQuaid") {
-    return "#D13D59";//"#EB8F6A";
+    return "#F25C00";//"#EB8F6A";
   } else if (personName == "Hilary Dykes") {
     return "#81AD54";
   } else if (personName == "Iain Mickle") {
-    return "#FFCC32";
+    return "#F29730";
   } else if (personName == "Jorge Maravilla") {
     return "purple";
   } else if (personName == "Lauren Elkins") {
-    return "#462255";
+    return "#AA4297";
   }
 }
 
