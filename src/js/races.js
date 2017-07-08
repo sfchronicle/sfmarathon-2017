@@ -7,7 +7,7 @@ var maxWidthDots = 1000;
 var maxWidthRaces = 800;
 
 // lists to enable me to generate charts automatically - these are the runners that we're using
-var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Dykes","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
+var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Shirazi","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
 var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorgeData","laurenData"];
 var keyList = ["balint","gene","greg","hilary","iain","jorge","lauren"];
 var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
@@ -33,7 +33,7 @@ function color_by_person(personName,runnerID) {
       return "#2274A5";
     } else if (personName == "Greg McQuaid") {
       return "#F25C00";//"#EB8F6A";
-    } else if (personName == "Hilary Dykes") {
+    } else if (personName == "Hilary Shirazi") {
       return "#45C16F";
     } else if (personName == "Iain Mickle") {
       return "#26532B";
@@ -42,7 +42,7 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Lauren Elkins") {
       return "#AA4297";
     }
-  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
+  } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return "#2274A5";
   } else {
     return "#cccccc";
@@ -54,7 +54,7 @@ function stroke_by_person(personName,runnerID) {
   // console.log(runnerID);
   if (personName == runnerID) {
     return 3;
-  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
+  } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return 3;
   } else {
     return 2;
@@ -66,7 +66,7 @@ function opacity_by_person(personName,runnerID) {
   // console.log(runnerID);
   if (personName == runnerID) {
     return 0.9;
-  } else if (runnerID == "Hilary Dykes" && personName == "Gene Dykes"){
+  } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return 0,9;
   } else {
     return 0.5;
