@@ -34,9 +34,9 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Greg McQuaid") {
       return "#F25C00";//"#EB8F6A";
     } else if (personName == "Hilary Dykes") {
-      return "#81AD54";
+      return "#45C16F";
     } else if (personName == "Iain Mickle") {
-      return "#F29730";
+      return "#26532B";
     } else if (personName == "Jorge Maravilla") {
       return "purple";
     } else if (personName == "Lauren Elkins") {
@@ -81,9 +81,9 @@ function colorful_dots(personName) {
   } else if (personName == "Greg McQuaid") {
     return "#F25C00";//"#EB8F6A";
   } else if (personName == "Hilary Dykes") {
-    return "#81AD54";
+    return "#45C16F";
   } else if (personName == "Iain Mickle") {
-    return "#F29730";
+    return "#26532B";
   } else if (personName == "Jorge Maravilla") {
     return "purple";
   } else if (personName == "Lauren Elkins") {

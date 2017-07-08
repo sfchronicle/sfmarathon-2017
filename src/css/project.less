@@ -4,8 +4,8 @@
 @balint: #FFCC32;
 @gene: #2274A5;
 @greg: #F25C00;
-@hilary: #81AD54;
-@iain: #F29730;
+@hilary: #45C16F;
+@iain: #26532B;
 @jorge: purple;
 @lauren: #AA4297;
 
@@ -101,6 +101,7 @@ a {
   font-size: 16px;
   max-width: 800px;
   margin: auto;
+  padding-top: 5px;
 }
 
 .inline-image {
@@ -154,18 +155,101 @@ a {
   // }
 }
 
+.instructions {
+  font-family: @block-graphics;
+  text-align: center;
+  padding-top: 10px;
+  font-size: 14px;
+  .fa {
+    padding-left: 5px;
+  }
+}
+
 .legend-container-big {
-  max-width: 900px;
-  margin: auto;
+  max-width: 1000px;
+  // margin: auto;
   font-size: 14px;
   display: block;
   text-align: center;
   padding-top: 10px;
   font-family: @block-graphics;
+  margin: 20px auto;
   .legend {
     display: inline-block;
     width: 200px;
     padding: 5px;
+  }
+  .button {
+    font-size: 13px;
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 2px 5px;
+    font-family: @med-graphics;
+    cursor: pointer;
+    &.all {
+      color: @red;
+      border: 1px solid @red;
+      &.active {
+        background: @red;
+        color: white;
+      }
+    }
+    &.balint {
+      color: @balint;
+      border: 1px solid @balint;
+      &.active {
+        background: @balint;
+        color: white;
+      }
+    }
+    &.gene {
+      color: @gene;
+      border: 1px solid @gene;
+      &.active {
+        background: @gene;
+        color: white;
+      }
+    }
+    &.greg {
+      color: @greg;
+      border: 1px solid @greg;
+      &.active {
+        background: @greg;
+        color: white;
+      }
+    }
+    &.hilary {
+      color: @hilary;
+      border: 1px solid @hilary;
+      &.active {
+        background: @hilary;
+        color: white;
+      }
+    }
+    &.iain {
+      color: @iain;
+      border: 1px solid @iain;
+      &.active {
+        background: @iain;
+        color: white;
+      }
+    }
+    &.jorge {
+      color: @jorge;
+      border: 1px solid @jorge;
+      &.active {
+        background: @jorge;
+        color: white;
+      }
+    }
+    &.lauren {
+      color: @lauren;
+      border: 1px solid @lauren;
+      &.active {
+        background: @lauren;
+        color: white;
+      }
+    }
   }
   .legend-swath {
     height: 14px;

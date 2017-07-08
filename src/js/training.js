@@ -33,9 +33,9 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Greg McQuaid") {
       return "#F25C00";//"#EB8F6A";
     } else if (personName == "Hilary Dykes") {
-      return "#81AD54";
+      return "#45C16F";
     } else if (personName == "Iain Mickle") {
-      return "#F29730";
+      return "#26532B";
     } else if (personName == "Jorge Maravilla") {
       return "purple";
     } else if (personName == "Lauren Elkins") {
@@ -409,17 +409,17 @@ function dotChart(targetID,maxval,runnerID){
         .attr("opacity",function(d) {
           if (runnerID == "all") {
             return 0.7;
-          } else if (d.name == runnerID) {
-            return 0.6;
+          } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
+            return 1.0;
           } else {
-            return 0.4;
+            return 0.1;
           }
         })
         .attr("fill",function(d) {
           if (runnerID == "all"){
             return colorful_dots(d.name);
-          } else if (d.name == runnerID) {
-            return "#CF0000";
+          } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
+            return colorful_dots(d.name);
           } else {
             return "#cccccc";
           }
@@ -640,4 +640,23 @@ $(window).resize(function () {
       document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
     }
   }
+});
+
+//----------------------------------------------------------------------------------
+// REDRAW DOT CHART ON BUTTON CLICKS
+//----------------------------------------------------------------------------------
+
+var qsa = s => Array.prototype.slice.call(document.querySelectorAll(s));
+qsa(".button").forEach(function(group,index) {
+  group.addEventListener("click", function(e) {
+    console.log("click");
+    var buttons = document.getElementsByClassName("button");
+    for (var idx=0; idx<buttons.length; idx++){
+      buttons[idx].classList.remove("active");
+    }
+    console.log(group.id.split("-button"));
+    group.classList.add("active");
+    dotChart("#dot-chart",75,group.id.split("-button")[0]);
+    // console.log(e);
+  });
 });
