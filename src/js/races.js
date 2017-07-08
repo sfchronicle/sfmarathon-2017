@@ -80,7 +80,7 @@ function colorful_dots(personName) {
     return "#2274A5";
   } else if (personName == "Greg McQuaid") {
     return "#F25C00";//"#EB8F6A";
-  } else if (personName == "Hilary Dykes") {
+  } else if (personName == "Hilary Shirazi") {
     return "#45C16F";
   } else if (personName == "Iain Mickle") {
     return "#26532B";
