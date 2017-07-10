@@ -11,6 +11,59 @@
 
 a {
   color: @red;
+  &:hover {
+    color: darken(@red,10%);
+  }
+}
+
+.link-wrapper {
+  font-family: @med-graphics;
+  color: @red;
+  text-align: center;
+  margin-bottom: 50px;
+  @media @mobile {
+    margin-bottom: 30px;
+  }
+  .profile-link {
+    font-size: 18px;
+    margin-bottom: 30px;
+    display: inline-block;
+    border-bottom: 2px solid @dark-gray;
+    margin: 0 10px;
+    cursor: pointer;
+    a {
+      color: @dark-gray;
+      font-family: @bold-graphics;
+
+    }
+    @media @mobile {
+      font-size: 16px;
+    }
+  }
+}
+
+.nav-profile-links {
+    display: inline-block;
+    vertical-align: text-bottom;
+    font-family: @bold-graphics;
+    a {
+      font-size: 14px;
+      padding: 0 10px;
+      color: @dark-gray;
+    }
+    @media @mobile {
+      display: none;
+    }
+}
+
+#nav {
+  transition: opacity .1s linear .1s;
+  &.hide {
+    opacity: 0;
+  }
+  &.show {
+    opacity: 1;
+  }
 }
 
 .gene-heatmap {
@@ -79,6 +132,11 @@ a {
   width: 80%;
   margin: auto;
   margin-bottom: 40px;
+  @media @mobile {
+    width: 90%;
+    font-size: 18px;
+    padding: 20px 10px;
+  }
 }
 .bold-text-pullout {
   font-family: @boldest-graphics;
@@ -94,6 +152,9 @@ a {
 
 .interactive-container {
   padding: 30px 0;
+  @media @mobile {
+    padding: 10px 0 30px 0;
+  }
 }
 .interactive-deck {
   font-family: @block-graphics;
@@ -102,6 +163,10 @@ a {
   max-width: 800px;
   margin: auto;
   padding-top: 5px;
+  @media @mobile {
+    padding: 10px 0;
+    font-size: 14px;
+  }
 }
 
 .inline-image {
@@ -113,18 +178,25 @@ a {
 }
 
 .intro-text {
-  padding-bottom: 50px;
+  padding-bottom: 40px;
+  @media @mobile {
+    padding-bottom: 20px;
+  }
 }
 
 .profile-hed {
   width: 90%;
   margin: auto;
-  font-size: 30px;
+  font-size: 28px;
   font-family: @boldest-graphics;
   color: @red;
   margin-bottom: 30px;
   border-bottom: 4px solid @red;
-  padding-top: 30px;
+  padding-top: 40px;
+  @media @mobile {
+    padding-top: 20px;
+    font-size: 20px;
+  }
   // &.balint {
   //   color: @balint;
   //   border-bottom: 4px solid @balint;
@@ -174,6 +246,18 @@ a {
   padding-top: 10px;
   font-family: @block-graphics;
   margin: 20px auto;
+  &.mobile {
+    display: none;
+    @media @mobile {
+      display: block;
+    }
+  }
+  &.desktop {
+    display: block;
+    @media @mobile {
+      display: none;
+    }
+  }
   .legend {
     display: inline-block;
     width: 200px;
@@ -328,10 +412,11 @@ a {
 .title-deck {
   font-family: @med-graphics;
   padding-top: 10px;
-  // @media @tablet {
-    max-width: 90%;
-    margin: auto;
-  // }
+  max-width: 90%;
+  margin: auto;
+  @media @mobile {
+    font-size: 16px;
+  }
 }
 
 .deck {
@@ -344,10 +429,16 @@ a {
 }
 .hed {
   font-family: @med-graphics;
+  @media @mobile {
+    font-size: 16px;
+  }
 }
 .subhed {
   font-family: @med-graphics;
   font-size: 18px;
+  @media @mobile {
+    font-size: 16px;
+  }
 }
 
 
@@ -405,7 +496,7 @@ path {
 }
 
 .line-hover {
-  stroke-width: 4 !important;
+  stroke-width: 5 !important;
 }
 .voronoi path {
   fill: none;
@@ -426,6 +517,9 @@ path {
   border-bottom: 1px solid @light-gray;
   max-width: 80%;
   margin: 70px auto 50px auto;
+  @media @mobile {
+    margin: 40px auto 30px auto;
+  }
 }
 
 .credits {

@@ -131,12 +131,12 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     console.log("mini iphone")
     var margin = {
       top: 20,
-      right: 55,
+      right: 40,
       bottom: 50,
-      left: 32
+      left: 40
     };
     // var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 300 - margin.top - margin.bottom;
   }
   if (windowWidth <= 800) {
     var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
@@ -328,12 +328,12 @@ function dotChart(targetID,maxval,runnerID){
     console.log("mini iphone")
     var margin = {
       top: 20,
-      right: 55,
-      bottom: 50,
-      left: 32
+      right: 30,
+      bottom: 40,
+      left: 55
     };
     var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 370 - margin.top - margin.bottom;
   }
   console.log(margin);
 
@@ -371,7 +371,13 @@ function dotChart(targetID,maxval,runnerID){
       .append("text")
         .attr("class", "label")
         .attr("transform", "rotate(-90)")
-        .attr("y", 20)
+        .attr("y", function(d) {
+          if (screen.width <= 480) {
+            return 30;
+          } else {
+            return 20;
+          }
+        })
         .attr("x", 0)
         .attr("fill","black")
         .style("text-anchor", "end")
@@ -387,19 +393,32 @@ function dotChart(targetID,maxval,runnerID){
         .attr("class","annotation-path")
         .attr("d", line);
 
-  svg.append("text")
+  if (screen.width <= 480) {
+    svg.append("text")
+      .text("Marathon distance (26.2 miles)")
+      .style("text-anchor","end")
+      // .attr("dx",function(d){ return x(26.2); })
+      // .attr("dy",function(d){ return y(parsePace("22:00")); })
+      .attr("transform","translate("+x(32)+","+y(parsePace("22:00"))+") rotate(-90)")
+  } else {
+    svg.append("text")
       .text("Marathon distance (26.2 miles)")
       .style("text-anchor","end")
       // .attr("dx",function(d){ return x(26.2); })
       // .attr("dy",function(d){ return y(parsePace("22:00")); })
       .attr("transform","translate("+x(29)+","+y(parsePace("22:00"))+") rotate(-90)")
+  }
 
   svg.selectAll("dot")
         .data(combinedData)
       .enter().append("circle")
         .attr("r", function(d) {
           if (d["Daily Elevation"] ) {
-            return (d["Daily Elevation"]/500+5)
+            if (screen.width <= 480) {
+              return (d["Daily Elevation"]/1000+5)
+            } else {
+              return (d["Daily Elevation"]/500+5)
+            }
           } else {
             return 5;
           }
@@ -662,3 +681,41 @@ qsa(".button").forEach(function(group,index) {
     dotChart("#dot-chart",75,group.id.split("-button")[0]);
   });
 });
+
+//----------------------------------------------------------------------------------
+// SMOOTH SCROLLING
+//----------------------------------------------------------------------------------
+
+$(document).on('click', 'a[href^="#"]', function(e) {
+
+    // target element id
+    var id = $(this).attr('href');
+
+    // target element
+    var $id = $(id);
+    if ($id.length === 0) {
+        return;
+    }
+
+    // prevent standard hash navigation (avoid blinking in IE)
+    e.preventDefault();
+
+    // top position relative to the document
+    var pos = $(id).offset().top;
+
+    // animated top scrolling
+    $('body, html').animate({scrollTop: pos});
+});
+
+
+var navID = document.getElementById("nav");
+var navposition = document.getElementById("link-nav").offsetTop+40;
+var navDisplay = function() {
+  var y = window.scrollY;
+  if (y >= navposition) {
+    navID.className = "fixed show";
+  } else {
+    navID.className = "fixed hide";
+  }
+};
+window.addEventListener("scroll", navDisplay);

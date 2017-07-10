@@ -16,6 +16,7 @@
 
   <%= !json.project.embedded ? "<body>" : "<body is='responsive-body'>" %>
 
+    <%= t.include("partials/_flat_nav.html") %>
     <%= t.include("partials/_nav.html") %>
 
     <div class="outer" id="content">
@@ -34,9 +35,19 @@
         <% }); %>
       </div>
 
+      <div class="link-wrapper" id="link-nav">
+        <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
+          <% if (d.Key == "hilary"){ %>
+            <div class="profile-link"><a href="#profile<%=d.Key%>">Hilary & Gene</a></div>
+          <% } else { %>
+            <div class="profile-link"><a href="#profile<%=d.Key%>"><%=d.Name.split(" ")[0]%></a></div>
+          <% } %>
+        <% }); %>
+      </div>
+
       <% json.sfmarathonrace.profiles.forEach(function(d,idx){ %>
 
-        <div class="profile-hed <%=d.Key%>"><%=d.Name%></div>
+        <div class="profile-hed <%=d.Key%>"  id="profile<%=d.Key%>"><%=d.Name%></div>
 
         <div class="inline-image">
           <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
@@ -111,6 +122,7 @@
     </div>
 
     <%= t.include("partials/_credits.html") %>
+    <%= t.include("partials/_dontMiss_race.html") %>
     <%= t.include("partials/_footer.html") %>
 
     <script>
