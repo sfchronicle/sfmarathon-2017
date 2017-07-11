@@ -90,6 +90,8 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   });
 };
 
+console.log(combinedData);
+
 var dataNested = d3.nest()
   .key(function(d){ return d.name; })
   .entries(combinedData);
@@ -483,7 +485,7 @@ function drawCalendarV2(dateData,chartID) {
   // console.log(minDate);
   // console.log(maxDate);
   var minDate = new Date("2017-04-01");
-  var maxDate = new Date("2017-06-30");
+  var maxDate = new Date("2017-07-23");
 
   var day = d3.timeFormat("%w"), // day of the week
       day_of_month = d3.timeFormat("%e"), // day of the month
@@ -497,7 +499,15 @@ function drawCalendarV2(dateData,chartID) {
       monthName = d3.timeFormat("%B"),
       months= d3.timeMonth.range(d3.timeMonth.ceil(minDate), d3.timeMonth.ceil(maxDate));
 
-  var num_months_in_a_row = 3;//months.length();//Math.floor(width / (cellSize * 7 + 50));
+  if (screen.width <= 480) {
+    var num_months_in_a_row = 2;
+    var num_rows = 2;
+  } else {
+    var num_months_in_a_row = 4;
+    var num_rows = 1;
+  }
+
+  //months.length();//Math.floor(width / (cellSize * 7 + 50));
   // var shift_up = cellSize * 1;
   var header_height = 50;
 
@@ -520,7 +530,7 @@ function drawCalendarV2(dateData,chartID) {
     .data("0")
     .enter().append("svg")
     .attr("width", 7*cellSize*num_months_in_a_row + 28*(num_months_in_a_row-1)) //2 months of 7 days a week with 25 px between them
-    .attr("height", 5*cellSize + header_height)
+    .attr("height", 5*cellSize*num_rows + header_height)
     .append("g")
 
   var rect = svg.selectAll(".day")
@@ -533,6 +543,7 @@ function drawCalendarV2(dateData,chartID) {
       .attr("height", cellSize-4)
       .attr("rx", 3).attr("ry", 3) // rounded corners
       .attr("fill", function(d,didx) {
+        // console.log(d);
         // var format = d3.timeFormat("%Y-%m-%d");
         if (lookup[format(d)]) {
           return color(lookup[format(d)]);
@@ -541,7 +552,7 @@ function drawCalendarV2(dateData,chartID) {
         }
       })
       .attr("x", function(d) {
-        var month_padding = 1.2 * cellSize*7 * ((month(d)-1) % (num_months_in_a_row));
+        var month_padding = 1.2 * cellSize*7 * ((month(d)) % (num_months_in_a_row));
         return day(d) * cellSize + month_padding;
       })
       .attr("y", function(d) {
@@ -557,7 +568,7 @@ function drawCalendarV2(dateData,chartID) {
       .enter().append("text")
         .text(monthTitle)
         .attr("x", function(d, i) {
-          var month_padding = 1.2 * cellSize*7* ((month(d)-1) % (num_months_in_a_row));
+          var month_padding = 1.2 * cellSize*7* ((month(d)) % (num_months_in_a_row));
           return month_padding;
         })
         .attr("y", function(d, i) {
