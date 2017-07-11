@@ -123,12 +123,12 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     console.log("big phone");
     var margin = {
       top: 20,
-      right: 60,
+      right: 40,
       bottom: 50,
-      left: 30
+      left: 40
     };
     // var width = 340 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
     var margin = {
@@ -159,7 +159,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     var x = d3.scaleTime().range([0, width]),
         y = d3.scaleLinear().range([height, 0]);
 
-    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
+    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-16')]);
     y.domain([0,maxval]);
 
   } else {
@@ -168,7 +168,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     var x = d3.scaleTime().range([0, width]),
         y = d3.scaleTime().range([height, 0]);
 
-    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-01')]);
+    x.domain([parseFullDate('2017-04-01'),parseFullDate('2017-07-16')]);
     y.domain([parseTime('00:00:00'),parseTime(String(maxval))]);
 
   }
@@ -320,9 +320,9 @@ function dotChart(targetID,maxval,runnerID){
     console.log("big phone");
     var margin = {
       top: 20,
-      right: 60,
-      bottom: 50,
-      left: 30
+      right: 30,
+      bottom: 40,
+      left: 55
     };
     var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
@@ -477,15 +477,21 @@ function dotChart(targetID,maxval,runnerID){
 
 function drawCalendarV2(dateData,chartID) {
 
-  var cellMargin = 2,
-      cellSize = 20;
+  if (screen.width <=480) {
+    var cellMargin = 2,
+        cellSize = 16;
+  } else {
+    var cellMargin = 2,
+        cellSize = 20;
+  }
+
 
   // var minDate = d3.min(dateData, function(d) { return new Date(d["Date"]) })
   // var maxDate = d3.max(dateData, function(d) { return new Date(d["Date"]) })
   // console.log(minDate);
   // console.log(maxDate);
   var minDate = new Date("2017-04-01");
-  var maxDate = new Date("2017-07-23");
+  var maxDate = new Date("2017-07-16");
 
   var day = d3.timeFormat("%w"), // day of the week
       day_of_month = d3.timeFormat("%e"), // day of the month
@@ -499,6 +505,7 @@ function drawCalendarV2(dateData,chartID) {
       monthName = d3.timeFormat("%B"),
       months= d3.timeMonth.range(d3.timeMonth.ceil(minDate), d3.timeMonth.ceil(maxDate));
 
+  var num_months = 4;
   if (screen.width <= 480) {
     var num_months_in_a_row = 2;
     var num_rows = 2;
@@ -530,9 +537,10 @@ function drawCalendarV2(dateData,chartID) {
     .data("0")
     .enter().append("svg")
     .attr("width", 7*cellSize*num_months_in_a_row + 28*(num_months_in_a_row-1)) //2 months of 7 days a week with 25 px between them
-    .attr("height", 5*cellSize*num_rows + header_height)
+    .attr("height", 7*cellSize*num_rows + header_height)
     .append("g")
 
+  // making colored squares for dates
   var rect = svg.selectAll(".day")
       .data(function(d) {
         return d3.timeDays(minDate, maxDate);
@@ -558,7 +566,12 @@ function drawCalendarV2(dateData,chartID) {
       .attr("y", function(d) {
         var week_diff = week(d) - week(new Date(year(d), month(d)-1, 1) );
         var row_level = Math.ceil(month(d) / (num_months_in_a_row));
-        return (week_diff*cellSize) + header_height;
+        var index = +month(d) - num_months;
+        if(num_rows > 1) {
+          return (week_diff*cellSize) + header_height+ Math.floor(index/num_months_in_a_row)*cellSize*8;
+        } else {
+          return (week_diff*cellSize) + header_height;
+        }
       })
       .datum(format);
 
@@ -574,7 +587,11 @@ function drawCalendarV2(dateData,chartID) {
         .attr("y", function(d, i) {
           var week_diff = week(d) - week(new Date(year(d), month(d)-1, 1) );
           var row_level = Math.ceil(month(d) / (num_months_in_a_row));
-          return (week_diff*cellSize) + header_height - 20;
+          if(num_rows > 1) {
+            return (week_diff*cellSize) + header_height - 5 + Math.floor(i/num_months_in_a_row)*cellSize*8;
+          } else {
+            return (week_diff*cellSize) + header_height - 20;
+          }
         })
         .attr("class", "month-title")
         .attr("d", monthTitle);
@@ -597,9 +614,15 @@ function drawCalendarV2(dateData,chartID) {
       var text = d+" : 0 miles";
     }
     tooltip.style("opacity",1)
-    tooltip.html(text)
-                .style("left", (d3.event.pageX)+10 + "px")
-                .style("top", (d3.event.pageY) + "px");
+    if (screen.width <= 480) {
+      tooltip.html(text)
+        .style("left",(d3.event.pageX)/2+10+"px")
+        .style("top",(d3.event.pageY+20)+"px");//(d3.event.pageY+40)+"px")
+    } else {
+      tooltip.html(text)
+        .style("left", (d3.event.pageX)+10 + "px")
+        .style("top", (d3.event.pageY) + "px");
+    }
   }
   function mouseout (d) {
     tooltip.style("opacity",0);
