@@ -28,7 +28,7 @@ function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
     // return "#CF0000";
     if (personName == "Balint Gal") {
-      return "#FFCC32";
+      return "#E6B319";//"#FFCC32";
     } else if (personName == "Gene Dykes") {
       return "#2274A5";
     } else if (personName == "Greg McQuaid") {
@@ -36,7 +36,7 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Hilary Shirazi") {
       return "#45C16F";
     } else if (personName == "Iain Mickle") {
-      return "#26532B";
+      return "#55A85F";//"#26532B";
     } else if (personName == "Jorge Maravilla") {
       return "purple";
     } else if (personName == "Lauren Elkins") {
@@ -45,7 +45,7 @@ function color_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return "#2274A5";
   } else {
-    return "#cccccc";
+    return "#3F3F3F";
   }
 }
 
@@ -53,11 +53,11 @@ function stroke_by_person(personName,runnerID) {
   // console.log(personName);
   // console.log(runnerID);
   if (personName == runnerID) {
-    return 3;
+    return 4;
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
-    return 3;
+    return 4;
   } else {
-    return 2;
+    return 1;
   }
 }
 
@@ -69,7 +69,7 @@ function opacity_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return 0,9;
   } else {
-    return 0.5;
+    return 0.9;
   }
 }
 
@@ -241,7 +241,6 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
     var elevationLine = d3.line()
         .curve(d3.curveCardinal)
         .x(function(d) {
-          console.log(d);
           return x(d["distance"]);
         })
         .y(function(d) {
@@ -285,14 +284,14 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
         .on("mouseout", mouseout);
 
       function mouseover(d) {
-        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover", true);
+        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover-races", true);
         d3.select("#hover-race-name-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.athlete_id);
         d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("Mile "+d.data.mileShort+" pace: "+d.data.paceShort);
         focus.attr("transform", "translate(" + x(d.data["mileShort"]) + "," + y(parsePace(d.data["paceShort"])) + ")");
       }
 
       function mouseout(d) {
-        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover", false);
+        d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover-races", false);
         focus.attr("transform", "translate(-100,-100)");
         d3.select("#hover-race-name-"+runnerID.split(" ")[0].toLowerCase()).text("");
         d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("");

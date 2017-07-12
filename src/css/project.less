@@ -16,6 +16,10 @@ a {
   }
 }
 
+.month-title {
+  font-family: @bold-graphics;
+}
+
 .link-wrapper {
   font-family: @med-graphics;
   color: @red;
@@ -100,26 +104,43 @@ a {
 .hover-container {
   position: absolute;
   top: 40px;
-  font-size:12px;
-  font-family: @block-graphics;
-  &:empty {
-    border: none;
-  }
+  font-size:14px;
+  font-family: @med-graphics;
+  background: rgba(0,0,0,0.05);
+  width: 200px;
   &.training {
-    left: 40%;
+    width: 150px;
+    left: 35%;
     right: 0;
+    @media @mobile {
+      left: 20%;
+    }
   }
   &.races {
-    // left: 0;
+    background: rgba(0,0,0,0.1);
     right: 25%;
-    font-size: 13px;
-    border: @light-gray 1px solid;
-    padding: 5px 20px;
-    width: 200px;
   }
-  &:empty {
-    color: red;
+}
+
+.hover-name {
+  padding-top: 10px;
+  padding-left: 20px;
+  @media @mobile {
+    padding-left: 0;
   }
+}
+.hover-pace {
+  padding-left: 20px;
+  padding-bottom: 10px;
+  @media @mobile {
+    padding-left: 0;
+  }
+}
+.hover-pace:empty{
+    display:none;
+}
+.hover-name:empty {
+  display:none;
 }
 
 .source {
@@ -165,18 +186,18 @@ a {
 }
 
 .interactive-container {
-  padding: 30px 0;
+  padding: 30px 0 10px 0;
   @media @mobile {
     padding: 10px 0 30px 0;
   }
 }
 .interactive-deck {
-  font-family: @block-graphics;
+  font-family: @med-graphics;
   text-align: center;
   font-size: 16px;
-  max-width: 800px;
+  max-width: 600px;
   margin: auto;
-  padding-top: 5px;
+  padding: 10px 0;
   @media @mobile {
     padding: 10px 0;
     font-size: 14px;
@@ -369,8 +390,9 @@ a {
 
 .legend-container {
   font-size: 12px;
-  font-family: @block-graphics;
+  font-family: @med-graphics;
   padding-top: 20px;
+  padding-bottom: 10px;
   text-align: center;
   @media @mobile {
     padding-top: 10px;
@@ -412,21 +434,23 @@ a {
 .top-container {
   padding-top: 50px;
   padding-bottom: 50px;
-  font-family: @block-graphics;
+  font-family: @body;
+  font-size: 18px;
   text-align: center;
 }
 
 .title {
-  font-family: @bold-graphics;
+  font-family: @body-bold;
   line-height: 1.2;
-  font-size: 30px;
+  font-size: 40px;
   max-width: 500px;
   padding-bottom: 10px;
 }
 .title-deck {
-  font-family: @med-graphics;
+  font-family: @body;
+  font-size: 24px;
   padding-top: 10px;
-  max-width: 90%;
+  max-width: 600px;
   margin: auto;
   @media @mobile {
     font-size: 16px;
@@ -442,7 +466,7 @@ a {
   padding: 20px 0 40px 0;
 }
 .hed {
-  font-family: @med-graphics;
+  font-family: @bold-graphics;
   @media @mobile {
     font-size: 16px;
   }
@@ -485,7 +509,7 @@ svg {
 }
 text {
   font-size: 14px;
-  font-family: @block-graphics;
+  font-family: @med-graphics;
   @media @mobile {
     font-size: 12px;
   }
@@ -510,6 +534,9 @@ path {
 }
 
 .line-hover {
+  stroke-width: 5 !important;
+}
+.line-hover-races {
   stroke-width: 5 !important;
 }
 .voronoi path {

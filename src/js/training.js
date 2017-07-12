@@ -27,7 +27,7 @@ function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
     // return "#CF0000";
     if (personName == "Balint Gal") {
-      return "#FFCC32";
+      return "#E6B319";//#FFCC32";
     } else if (personName == "Gene Dykes") {
       return "#2274A5";
     } else if (personName == "Greg McQuaid") {
@@ -44,7 +44,7 @@ function color_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return "#2274A5";
   } else {
-    return "#cccccc";
+    return "#8C8C8C";
   }
 }
 
@@ -54,7 +54,7 @@ function stroke_by_person(personName,runnerID) {
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return 3;
   } else {
-    return 2;
+    return 1;
   }
 }
 
@@ -273,7 +273,7 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
           focus.style("text-anchor","end")
         }
         d3.select("#hover-runner-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.name);
-        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(d.data[targetVal]+" "+units);
+        d3.select("#hover-number-"+targetVal.replace(/ /g,'')+"-"+runnerID.split(" ")[0].toLowerCase()).text(formatthousands(d.data[targetVal])+" "+units);
         if (units != "hours") {
           focus.attr("transform", "translate(" + x(parseFullDate(d.data["Date"])) + "," + y(d.data[targetVal]) + ")");
         } else {
@@ -578,7 +578,7 @@ function drawCalendarV2(dateData,chartID) {
       .enter().append("text")
         .text(monthTitle)
         .attr("x", function(d, i) {
-          var month_padding = 1.2 * cellSize*7* ((month(d)) % (num_months_in_a_row));
+          var month_padding = 1.2 * cellSize*7* ((month(d)) % (num_months_in_a_row)) + 2.5*cellSize;
           return month_padding;
         })
         .attr("y", function(d, i) {
@@ -608,7 +608,7 @@ function drawCalendarV2(dateData,chartID) {
     if (lookup[d]){
       var text = d+" : "+lookup[d]+ " miles";
     } else {
-      var text = d+" : 0 miles";
+      var text = "";
     }
     tooltip.style("opacity",1)
     if (screen.width <= 480) {
