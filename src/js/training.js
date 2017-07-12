@@ -90,8 +90,6 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   });
 };
 
-console.log(combinedData);
-
 var dataNested = d3.nest()
   .key(function(d){ return d.name; })
   .entries(combinedData);
@@ -268,7 +266,6 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
         .on("mouseout", mouseout);
 
       function mouseover(d) {
-        console.log("mouseover");
         d3.select(".id"+d.data.name.toLowerCase().replace(/ /g,'')+targetVal.replace(/ /g,'')+runnerID.replace(/ /g,'')).classed("line-hover", true);
         if (+d.data["Date"].split("-")[1] < 5){
           focus.style("text-anchor","begin")
@@ -307,7 +304,7 @@ function dotChart(targetID,maxval,runnerID){
   var margin = {
     top: 15,
     right: 80,
-    bottom: 60,
+    bottom: 20,
     left: 100
   };
   if (screen.width > 768) {
@@ -743,7 +740,7 @@ $(document).on('click', 'a[href^="#"]', function(e) {
 
 
 var navID = document.getElementById("nav");
-var navposition = document.getElementById("link-nav").offsetTop+40;
+var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var navDisplay = function() {
   var y = window.scrollY;
   if (y >= navposition) {

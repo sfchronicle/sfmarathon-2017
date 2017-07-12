@@ -35,7 +35,7 @@
         <% }); %>
       </div>
 
-      <div class="link-wrapper" id="link-nav">
+      <!-- <div class="link-wrapper" id="link-nav">
         <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
           <% if (d.Key == "hilary"){ %>
             <div class="profile-link"><a href="#profile<%=d.Key%>">Hilary & Gene</a></div>
@@ -43,7 +43,7 @@
             <div class="profile-link"><a href="#profile<%=d.Key%>"><%=d.Name.split(" ")[0]%></a></div>
           <% } %>
         <% }); %>
-      </div>
+      </div> -->
 
       <% json.sfmarathonrace.profiles.forEach(function(d,idx){ %>
 
@@ -68,18 +68,19 @@
             </div>
             <div id="<%=d.Key%>-race"></div>
           </div>
+          <div class="source nomargin">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>, <a href="http://www.thesfmarathon.com/" target="_blank">SF Marathon</a></div>
         </div>
 
         <% if (d.Key == "hilary"){ %>
 
-          <div class="text-pullout">Hilary wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
+          <div class="text-pullout padded">Hilary wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
           <div>and succeeded in running <span class="bold-text-pullout"><%=d["Finish-time"]%></span></div>
           <div>Gene ran a time of <span class="bold-text-pullout"><%=d["Finish-time-Gene"]%></div>
           </div>
 
         <% } else { %>
 
-          <div class="text-pullout"><%=d.Name.split(" ")[0]%> wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
+          <div class="text-pullout padded"><%=d.Name.split(" ")[0]%> wanted to run a time of <span class="bold-text-pullout"><%=d["Finish-goal"]%></span>
           <div>and succeeded in running <span class="bold-text-pullout"><%=d["Finish-time"]%></span></div>
           </div>
 
@@ -114,6 +115,7 @@
                 <% }); %>
               </div>
               <div id="dot-chart-races"></div>
+              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla, Lauren Elkins</div>
             </div>
           <% } %>
         <% }); %>

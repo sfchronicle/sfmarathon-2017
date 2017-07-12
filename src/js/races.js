@@ -127,7 +127,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
   var margin = {
     top: 15,
     right: 60,
-    bottom: 50,
+    bottom: 40,
     left: 60
   };
   if (screen.width > 768) {
@@ -314,7 +314,7 @@ function dotChart(targetID,maxval,runnerID){
   var margin = {
     top: 15,
     right: 80,
-    bottom: 60,
+    bottom: 20,
     left: 100
   };
   if (screen.width > 768) {
@@ -539,7 +539,7 @@ $(document).on('click', 'a[href^="#"]', function(e) {
 });
 
 var navID = document.getElementById("nav");
-var navposition = document.getElementById("link-nav").offsetTop+40;
+var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var navDisplay = function() {
   var y = window.scrollY;
   if (y >= navposition) {

@@ -122,6 +122,17 @@ a {
   }
 }
 
+.source {
+  width: 90%;
+  @media @mobile {
+    width: 95%;
+  }
+  margin: 20px auto 40px auto;
+  &.nomargin {
+    margin: 0 auto 20px auto;
+  }
+}
+
 .text-pullout {
   font-family: @med-graphics;
   text-align: center;
@@ -131,7 +142,10 @@ a {
   padding: 20px;
   width: 80%;
   margin: auto;
-  margin-bottom: 40px;
+  &.padded {
+    margin-bottom: 40px;
+  }
+  //
   @media @mobile {
     width: 90%;
     font-size: 18px;
