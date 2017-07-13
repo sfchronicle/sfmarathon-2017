@@ -177,7 +177,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
 
   x.domain([0, 26.2]);
   y.domain([parsePace('00:00'),parsePace("20:00")]);
-  yRight.domain([-7,1000])
+  yRight.domain([-9,1000])
 
   // Define the axes
   svg.append("g")

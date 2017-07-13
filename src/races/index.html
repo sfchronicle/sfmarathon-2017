@@ -115,7 +115,7 @@
                 <% }); %>
               </div>
               <div id="dot-chart-races"></div>
-              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla, Lauren Elkins</div>
+              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla and Lauren Elkins</div>
             </div>
           <% } %>
         <% }); %>
@@ -137,7 +137,7 @@
       var laurenData = <%= JSON.stringify(json.LaurenElkins) %>;
 
       var raceData = <%= JSON.stringify(csv.allStravaSplits) %>;
-      var elevationData = <%= JSON.stringify(csv.elevationProfile) %>;
+      var elevationData = <%= JSON.stringify(csv.elevationProfile2017) %>;
     </script>
 
     <script src="../app-races.js" async></script>

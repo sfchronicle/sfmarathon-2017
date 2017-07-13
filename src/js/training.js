@@ -308,10 +308,10 @@ function dotChart(targetID,maxval,runnerID){
     left: 100
   };
   if (screen.width > 768) {
-    var width = 900 - margin.left - margin.right;
+    // var width = 900 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 720 - margin.left - margin.right;
+    // var width = 720 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
@@ -321,7 +321,7 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 40,
       left: 55
     };
-    var width = 340 - margin.left - margin.right;
+    // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
@@ -331,9 +331,10 @@ function dotChart(targetID,maxval,runnerID){
       bottom: 40,
       left: 55
     };
-    var width = 310 - margin.left - margin.right;
+    // var width = 310 - margin.left - margin.right;
     var height = 370 - margin.top - margin.bottom;
   }
+  var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
   console.log(margin);
 
   d3.select(targetID).select("svg").remove();
@@ -653,12 +654,12 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
 
-  var timeVar = data[data.length-1]["Total Time"];
-  if (timeVar){
-    timeVar = timeVar.split(":")[0];
-    document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
-    document.getElementById("work-weeks-"+keyList[jdx]).innerHTML = Math.round(timeVar/520*100)+"%";
-  }
+  // var timeVar = data[data.length-1]["Total Time"];
+  // if (timeVar){
+  //   timeVar = timeVar.split(":")[0];
+  //   document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
+  //   document.getElementById("work-weeks-"+keyList[jdx]).innerHTML = Math.round(timeVar/520*100)+"%";
+  // }
 }
 
 dotChart("#dot-chart",75,"all");
@@ -689,11 +690,11 @@ $(window).resize(function () {
 
     hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
 
-    var timeVar = data[data.length-1]["Total Time"];
-    if (timeVar){
-      timeVar = timeVar.split(":")[0];
-      document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
-    }
+    // var timeVar = data[data.length-1]["Total Time"];
+    // if (timeVar){
+    //   timeVar = timeVar.split(":")[0];
+    //   document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
+    // }
   }
 });
 
@@ -741,6 +742,16 @@ $(document).on('click', 'a[href^="#"]', function(e) {
 
 var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
+
+// a = document.getElementById('balint'),
+// b = document.getElementById('gene'),
+// c = document.getElementById('greg'),
+// d = document.getElementById('hilary'),
+// e = document.getElementById('iain'),
+// f = document.getElementById('jorge'),
+// g = document.getElementById('lauren');
+// scroll = [a,b,c,d,e,f,g];
+
 var navDisplay = function() {
   var y = window.scrollY;
   if (y >= navposition) {
@@ -748,5 +759,30 @@ var navDisplay = function() {
   } else {
     navID.className = "fixed hide";
   }
+
+  // var p_top = psec.getBoundingClientRect().top + window_top - 40;
+  // var f_top = fsec.getBoundingClientRect().top + window_top - 40;
+  // var s_top = ssec.getBoundingClientRect().top + window_top - 40;
+  // var l_top = lsec.getBoundingClientRect().top + window_top - 40;
+  // var r_top = rsec.getBoundingClientRect().top + window_top - 40;
+  //
+  // var p_btm = psec.getBoundingClientRect().bottom + window_top - 40;
+  // var f_btm = fsec.getBoundingClientRect().bottom + window_top - 40;
+  // var s_btm = ssec.getBoundingClientRect().bottom + window_top - 40;
+  // var l_btm = lsec.getBoundingClientRect().bottom + window_top - 40;
+  // var r_btm = rsec.getBoundingClientRect().bottom + window_top - 40;
+  //
+  // var top = [p_top, f_top, s_top, l_top, r_top];
+  // var btm = [p_btm, f_btm, s_btm, l_btm, r_btm];
+  //
+  // for (var i = 0; i < top.length; i++) {
+  //   if ((top[i] < window_top) && (btm[i] > window_top)) {
+  //     scroll[i].classList.add('activelink');
+  //   }
+  //   else {
+  //     scroll[i].classList.remove('activelink');
+  //   }
+  // }
+
 };
 window.addEventListener("scroll", navDisplay);

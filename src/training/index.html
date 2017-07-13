@@ -19,6 +19,13 @@
     <%= t.include("partials/_flat_nav.html") %>
     <%= t.include("partials/_nav.html") %>
 
+    <div class="gif-container">
+      <div class="gif"><img src="../assets/gifs/Balint.gif"></img></div>
+      <div class="gif"><img src="../assets/gifs/Hilary.gif"></img></div>
+      <div class="gif"><img src="../assets/gifs/Iain.gif"></img></div>
+      <div class="gif"><img src="../assets/gifs/Lauren.gif"></img></div>
+    </div>
+
     <div class="outer" id="content">
 
       <div class="top-container">
@@ -107,14 +114,6 @@
         <% if (d.Key == "hilary"){ %>
           <div class="story-container">
             <div class="chart-wrapper">
-              <div class="elevation-chart">
-                <div class="subhed">Hilary and Gene's total elevation gain</div>
-                <div class="hover-container training">
-                  <div id="hover-runner-TotalElevation-hilary" class="hover-name"></div>
-                  <div id="hover-number-TotalElevation-hilary" class="hover-pace"></div>
-                </div>
-                <div id="hover-chart-elevation-hilary"></div>
-              </div>
 
               <div class="miles-chart">
                 <div class="subhed">Hilary and Gene's total miles</div>
@@ -124,14 +123,19 @@
                 </div>
                 <div id="hover-chart-miles-hilary"></div>
               </div>
+
+              <div class="elevation-chart">
+                <div class="subhed">Hilary and Gene's total elevation gain</div>
+                <div class="hover-container training">
+                  <div id="hover-runner-TotalElevation-hilary" class="hover-name"></div>
+                  <div id="hover-number-TotalElevation-hilary" class="hover-pace"></div>
+                </div>
+                <div id="hover-chart-elevation-hilary"></div>
+              </div>
             </div>
           </div>
 
-          <div class="text-pullout">Hilary Shirazi ran a total of <span id="total-time-text-hilary" class="bold-text-pullout"></span> hours in the last 3 months,
-          <div>or the equivalent of <span id="work-weeks-hilary" class="bold-text-pullout"></span> of a full-time job.</div>
-          <div class="pullout-padding">Gene Dykes ran a total of <span id="total-time-text-gene" class="bold-text-pullout"></span> hours in the last 3 months,
-          <div>or the equivalent of <span id="work-weeks-gene" class="bold-text-pullout"></span> of a full-time job.</div>
-          </div>
+          <div class="text-pullout"><%=d.FunFact.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%>
           </div>
 
           <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%></div>
@@ -139,15 +143,6 @@
         <% } else { %>
           <div class="story-container">
             <div class="chart-wrapper">
-              <div class="elevation-chart">
-                <div class="subhed"><%=d.Name.split(" ")[0]%>'s total elevation gain</div>
-                <div class="hover-container training">
-                  <div id="hover-runner-TotalElevation-<%=d.Key%>" class="hover-name"></div>
-                  <div id="hover-number-TotalElevation-<%=d.Key%>" class="hover-pace"></div>
-                </div>
-                <div id="hover-chart-elevation-<%=d.Key%>"></div>
-              </div>
-
               <div class="miles-chart">
                 <div class="subhed"><%=d.Name.split(" ")[0]%>'s total miles</div>
                 <div class="hover-container training">
@@ -156,11 +151,18 @@
                 </div>
                 <div id="hover-chart-miles-<%=d.Key%>"></div>
               </div>
+              <div class="elevation-chart">
+                <div class="subhed"><%=d.Name.split(" ")[0]%>'s total elevation gain</div>
+                <div class="hover-container training">
+                  <div id="hover-runner-TotalElevation-<%=d.Key%>" class="hover-name"></div>
+                  <div id="hover-number-TotalElevation-<%=d.Key%>" class="hover-pace"></div>
+                </div>
+                <div id="hover-chart-elevation-<%=d.Key%>"></div>
+              </div>
             </div>
           </div>
 
-          <div class="text-pullout"><%=d.Name.split(" ")[0]%> ran a total of <span id="total-time-text-<%=d.Key%>" class="bold-text-pullout"></span> hours in the last 3 months,
-          <div>or the equivalent of <span id="work-weeks-<%=d.Key%>" class="bold-text-pullout"></span> of a full-time job.</div>
+          <div class="text-pullout"><%=d.FunFact.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%></div>
           </div>
 
           <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%></div>
@@ -208,7 +210,7 @@
                 <% }); %>
               </div>
               <div id="dot-chart"></div>
-              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla, Lauren Elkins</div>
+              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla and Lauren Elkins</div>
             </div>
           <% } %>
         <% }); %>
