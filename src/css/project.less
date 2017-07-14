@@ -16,6 +16,12 @@ a {
   }
 }
 
+.hide-mobile {
+  @media @mobile {
+    display: none;
+  }
+}
+
 .gif-container {
   max-width: 800px;
   margin: auto;
@@ -23,7 +29,7 @@ a {
   .display-flex;
   .flex-wrap(wrap);
   .gif {
-    .flex(0 0 50%);
+    .flex(0 1 50%);
     img {
       width: 97%;
     }
@@ -79,9 +85,10 @@ a {
       font-size: 14px;
       padding: 0 10px;
       color: @dark-gray;
-    }
-    @media @mobile {
-      display: none;
+      @media @mobile {
+        font-size: 11px;
+        padding: 0 3px;
+      }
     }
 }
 
@@ -216,7 +223,7 @@ a {
 .interactive-container {
   padding: 30px 0 10px 0;
   @media @mobile {
-    padding: 10px 0 30px 0;
+    padding: 10px 0 20px 0;
   }
 }
 .interactive-deck {
@@ -297,6 +304,9 @@ a {
   font-size: 14px;
   .fa {
     padding-left: 5px;
+  }
+  @media @mobile {
+    padding: 10px 10px 0 10px;
   }
 }
 
@@ -465,6 +475,9 @@ a {
   font-family: @body;
   font-size: 18px;
   text-align: center;
+  @media @mobile {
+    padding-bottom: 30px;
+  }
 }
 
 .title {
@@ -503,6 +516,7 @@ a {
   font-family: @med-graphics;
   font-size: 17px;
   @media @mobile {
+    margin-bottom: -5px;
     font-size: 16px;
   }
 }

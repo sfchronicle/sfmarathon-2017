@@ -479,9 +479,11 @@ function drawCalendarV2(dateData,chartID) {
   if (windowWidth <= 650) {
     var cellMargin = 2,
         cellSize = 16;
+    var header_height = 40;
   } else {
     var cellMargin = 2,
         cellSize = 20;
+    var header_height = 50;
   }
   var minDate = new Date("2017-04-01");
   var maxDate = new Date("2017-07-16");
@@ -503,7 +505,7 @@ function drawCalendarV2(dateData,chartID) {
     var num_rows = 1;
   }
 
-  var header_height = 50;
+
 
   var color = d3.scaleLinear()
     .range(['white', '#CF0000'])
@@ -731,7 +733,6 @@ window.onload = function () {
   e = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
   f = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   scroll = [a,b,c,d,e,f];
-  console.log(scroll);
   concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
 }
 
