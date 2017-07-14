@@ -722,20 +722,23 @@ var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var profile_idx = -1;
 var a,b,c,d,e,f,concdiv;
+var window_top = document.body.scrollTop;
 window.onload = function () {
-  a = document.getElementById('profilebalint').getBoundingClientRect().top;
-  b = document.getElementById('profilegreg').getBoundingClientRect().top;
-  c = document.getElementById('profilehilary').getBoundingClientRect().top;
-  d = document.getElementById('profileiain').getBoundingClientRect().top;
-  e = document.getElementById('profilejorge').getBoundingClientRect().top;
-  f = document.getElementById('profilelauren').getBoundingClientRect().top;
+  a = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
+  b = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
+  c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
+  d = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
+  e = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
+  f = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   scroll = [a,b,c,d,e,f];
   console.log(scroll);
-  concdiv= document.getElementById('conclusion').getBoundingClientRect().top;
+  concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
 }
 
+var y;
 var navDisplay = function() {
-  var y = window.scrollY;
+  // var y = window.scrollY;
+  y = $(window).scrollTop();
   if (y >= navposition) {
     navID.className = "fixed show";
   } else {
