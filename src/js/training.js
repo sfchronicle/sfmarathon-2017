@@ -432,7 +432,7 @@ function dotChart(targetID,maxval,runnerID){
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
             return 1.0;
           } else {
-            return 0.1;
+            return 0.3;
           }
         })
         .attr("fill",function(d) {
@@ -690,7 +690,38 @@ qsa(".button").forEach(function(group,index) {
       buttons[idx].classList.remove("active");
     }
     group.classList.add("active");
-    dotChart("#dot-chart",75,group.id.split("-button")[0]);
+
+    var buttonRunnerID = group.id.split("-button")[0];
+    if (buttonRunnerID != "all"){
+      combinedData = [];
+      for (var jdx=0; jdx<dataList.length; jdx++) {
+        var data = [];
+        if (keyList[jdx] != buttonRunnerID){
+          data = eval(dataList[jdx]);
+          data.forEach(function(d) {
+            if (d["Daily Miles"]) {
+              d.paceObj = parsePace(d["Daily Pace"]);
+              d.name = nameList[jdx];
+              combinedData.push(d);
+            }
+          });
+        } else {
+          var keyIDX = jdx;
+        }
+      }
+      data = eval(buttonRunnerID+"Data");
+      console.log(buttonRunnerID+"Data");
+      console.log(data);
+      data.forEach(function(d) {
+        if (d["Daily Miles"]) {
+          d.paceObj = parsePace(d["Daily Pace"]);
+          d.name = nameList[keyIDX];
+          combinedData.push(d);
+        }
+      });
+    }
+    console.log(combinedData);
+    dotChart("#dot-chart",75,buttonRunnerID);
   });
 });
 
@@ -724,7 +755,11 @@ var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var profile_idx = -1;
 var a,b,c,d,e,f,concdiv;
-var window_top = document.body.scrollTop;
+// if (windowWidth<= 480) {
+  var window_top = document.body.scrollTop-30;
+// } else {
+  // var window_top = document.body.scrollTop;
+// }
 window.onload = function () {
   a = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
   b = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
