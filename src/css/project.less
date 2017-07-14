@@ -34,6 +34,16 @@ a {
   font-family: @bold-graphics;
 }
 
+.prof-link {
+  height: 37px;
+  display: inline-block;
+  float: left;
+  // display: table-cell;
+  &.activelink {
+    background: @light-gray;
+  }
+}
+
 .link-wrapper {
   font-family: @med-graphics;
   color: @red;
@@ -64,6 +74,7 @@ a {
     display: inline-block;
     vertical-align: text-bottom;
     font-family: @bold-graphics;
+    height: 37px;
     a {
       font-size: 14px;
       padding: 0 10px;
@@ -216,7 +227,7 @@ a {
   margin: auto;
   padding: 10px 0;
   @media @mobile {
-    padding: 10px 0;
+    padding: 10px;
     font-size: 14px;
   }
 }
@@ -470,7 +481,7 @@ a {
   max-width: 600px;
   margin: auto;
   @media @mobile {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 

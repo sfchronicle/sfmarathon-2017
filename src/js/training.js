@@ -11,6 +11,7 @@ var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorg
 var keyList = ["balint","gene","greg","hilary","iain","jorge","lauren"];
 var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
 var chartElevationList = ["#hilary-elevation"];
+var shortkeyList = ["balint","greg","hilary","iain","jorge","lauren"];
 
 // functions to parse dates
 var	parseFullDate = d3.timeParse("%Y-%m-%d");
@@ -475,36 +476,26 @@ function dotChart(targetID,maxval,runnerID){
 
 function drawCalendarV2(dateData,chartID) {
 
-  if (screen.width <=480) {
+  if (windowWidth <= 650) {
     var cellMargin = 2,
         cellSize = 16;
   } else {
     var cellMargin = 2,
         cellSize = 20;
   }
-
-
-  // var minDate = d3.min(dateData, function(d) { return new Date(d["Date"]) })
-  // var maxDate = d3.max(dateData, function(d) { return new Date(d["Date"]) })
-  // console.log(minDate);
-  // console.log(maxDate);
   var minDate = new Date("2017-04-01");
   var maxDate = new Date("2017-07-16");
 
   var day = d3.timeFormat("%w"), // day of the week
-      day_of_month = d3.timeFormat("%e"), // day of the month
-      day_of_year = d3.timeFormat("%j"),
       week = d3.timeFormat("%U"), // week number of the year
       month = d3.timeFormat("%m"), // month number
       year = d3.timeFormat("%Y"),
-      percent = d3.format(".1%"),
       format = d3.timeFormat("%m/%d/%Y"),
-      // format = d3.timeFormat("%Y-%m-%d"),
       monthName = d3.timeFormat("%B"),
       months= d3.timeMonth.range(d3.timeMonth.ceil(minDate), d3.timeMonth.ceil(maxDate));
 
   var num_months = 4;
-  if (screen.width <= 480) {
+  if (windowWidth <= 650) {
     var num_months_in_a_row = 2;
     var num_rows = 2;
   } else {
@@ -512,13 +503,10 @@ function drawCalendarV2(dateData,chartID) {
     var num_rows = 1;
   }
 
-  //months.length();//Math.floor(width / (cellSize * 7 + 50));
-  // var shift_up = cellSize * 1;
   var header_height = 50;
 
   var color = d3.scaleLinear()
     .range(['white', '#CF0000'])
-    // .range(['#D8E6E7', '#218380'])
     .domain([0, 26.2]);
 
   var lookup = d3.nest()
@@ -530,6 +518,7 @@ function drawCalendarV2(dateData,chartID) {
     })
     .object(dateData);
 
+  // something about clearing the SVG is NOT WORKING
   var svg = d3.select(chartID).selectAll("svg")
       // .data(d3.range([2017,2017]))
     .data("0")
@@ -549,8 +538,6 @@ function drawCalendarV2(dateData,chartID) {
       .attr("height", cellSize-4)
       .attr("rx", 3).attr("ry", 3) // rounded corners
       .attr("fill", function(d,didx) {
-        // console.log(d);
-        // var format = d3.timeFormat("%Y-%m-%d");
         if (lookup[format(d)]) {
           return color(lookup[format(d)]);
         } else {
@@ -625,18 +612,9 @@ function drawCalendarV2(dateData,chartID) {
   function mouseout (d) {
     tooltip.style("opacity",0);
   }
-
-  // });
-
-  function dayTitle (t0) {
-    return t0.toString().split(" ")[2];
-  }
   function monthTitle (t0) {
     return t0.toLocaleString("en-us", { month: "long" });
   }
-  // function yearTitle (t0) {
-  //   return t0.toString().split(" ")[3];
-  // }
 }
 
 //----------------------------------------------------------------------------------
@@ -742,15 +720,19 @@ $(document).on('click', 'a[href^="#"]', function(e) {
 
 var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
-
-// a = document.getElementById('balint'),
-// b = document.getElementById('gene'),
-// c = document.getElementById('greg'),
-// d = document.getElementById('hilary'),
-// e = document.getElementById('iain'),
-// f = document.getElementById('jorge'),
-// g = document.getElementById('lauren');
-// scroll = [a,b,c,d,e,f,g];
+var profile_idx = -1;
+var a,b,c,d,e,f,concdiv;
+window.onload = function () {
+  a = document.getElementById('profilebalint').getBoundingClientRect().top;
+  b = document.getElementById('profilegreg').getBoundingClientRect().top;
+  c = document.getElementById('profilehilary').getBoundingClientRect().top;
+  d = document.getElementById('profileiain').getBoundingClientRect().top;
+  e = document.getElementById('profilejorge').getBoundingClientRect().top;
+  f = document.getElementById('profilelauren').getBoundingClientRect().top;
+  scroll = [a,b,c,d,e,f];
+  console.log(scroll);
+  concdiv= document.getElementById('conclusion').getBoundingClientRect().top;
+}
 
 var navDisplay = function() {
   var y = window.scrollY;
@@ -759,30 +741,22 @@ var navDisplay = function() {
   } else {
     navID.className = "fixed hide";
   }
-
-  // var p_top = psec.getBoundingClientRect().top + window_top - 40;
-  // var f_top = fsec.getBoundingClientRect().top + window_top - 40;
-  // var s_top = ssec.getBoundingClientRect().top + window_top - 40;
-  // var l_top = lsec.getBoundingClientRect().top + window_top - 40;
-  // var r_top = rsec.getBoundingClientRect().top + window_top - 40;
-  //
-  // var p_btm = psec.getBoundingClientRect().bottom + window_top - 40;
-  // var f_btm = fsec.getBoundingClientRect().bottom + window_top - 40;
-  // var s_btm = ssec.getBoundingClientRect().bottom + window_top - 40;
-  // var l_btm = lsec.getBoundingClientRect().bottom + window_top - 40;
-  // var r_btm = rsec.getBoundingClientRect().bottom + window_top - 40;
-  //
-  // var top = [p_top, f_top, s_top, l_top, r_top];
-  // var btm = [p_btm, f_btm, s_btm, l_btm, r_btm];
-  //
-  // for (var i = 0; i < top.length; i++) {
-  //   if ((top[i] < window_top) && (btm[i] > window_top)) {
-  //     scroll[i].classList.add('activelink');
-  //   }
-  //   else {
-  //     scroll[i].classList.remove('activelink');
-  //   }
-  // }
-
+  if (y > concdiv || y < a) {
+    for (var i=0; i<6; i++) {
+      document.getElementById("prof-link-"+shortkeyList[i]).classList.remove('activelink');
+    }
+  } else {
+    for (var i = 0; i < 6; i++) {
+      if (y > scroll[i]) {
+        profile_idx = i;
+      }
+    }
+    if (shortkeyList[profile_idx]){
+      for (var i=0; i<6; i++) {
+        document.getElementById("prof-link-"+shortkeyList[i]).classList.remove('activelink');
+      }
+      document.getElementById("prof-link-"+shortkeyList[profile_idx]).classList.add('activelink');
+    }
+  }
 };
 window.addEventListener("scroll", navDisplay);
