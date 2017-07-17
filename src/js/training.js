@@ -11,7 +11,7 @@ var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorg
 var keyList = ["balint","gene","greg","hilary","iain","jorge","lauren"];
 var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
 var chartElevationList = ["#hilary-elevation"];
-var shortkeyList = ["balint","greg","hilary","iain","jorge","lauren"];
+var shortkeyList = ["iain","lauren","hilary","jorge","balint","greg"];
 
 // functions to parse dates
 var	parseFullDate = d3.timeParse("%Y-%m-%d");
@@ -634,12 +634,6 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
 
-  // var timeVar = data[data.length-1]["Total Time"];
-  // if (timeVar){
-  //   timeVar = timeVar.split(":")[0];
-  //   document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
-  //   document.getElementById("work-weeks-"+keyList[jdx]).innerHTML = Math.round(timeVar/520*100)+"%";
-  // }
 }
 
 dotChart("#dot-chart",75,"all");
@@ -670,11 +664,6 @@ $(window).resize(function () {
 
     hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
 
-    // var timeVar = data[data.length-1]["Total Time"];
-    // if (timeVar){
-    //   timeVar = timeVar.split(":")[0];
-    //   document.getElementById("total-time-text-"+keyList[jdx]).innerHTML = timeVar;
-    // }
   }
 });
 
@@ -710,8 +699,6 @@ qsa(".button").forEach(function(group,index) {
         }
       }
       data = eval(buttonRunnerID+"Data");
-      console.log(buttonRunnerID+"Data");
-      console.log(data);
       data.forEach(function(d) {
         if (d["Daily Miles"]) {
           d.paceObj = parsePace(d["Daily Pace"]);
@@ -720,7 +707,6 @@ qsa(".button").forEach(function(group,index) {
         }
       });
     }
-    console.log(combinedData);
     dotChart("#dot-chart",75,buttonRunnerID);
   });
 });
@@ -761,12 +747,12 @@ var a,b,c,d,e,f,concdiv;
   // var window_top = document.body.scrollTop;
 // }
 window.onload = function () {
-  a = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
-  b = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
+  a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
+  b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
-  d = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
-  e = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
-  f = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
+  d = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
+  e = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
+  f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
   scroll = [a,b,c,d,e,f];
   concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
 }
