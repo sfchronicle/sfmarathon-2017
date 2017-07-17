@@ -1,7 +1,7 @@
 
 @red: #CF0000;//#8A0000;//"#F04646";
 
-@balint: #FFCC32;
+@balint: #E6B319;//#FFCC32;
 @gene: #2274A5;
 @greg: #F25C00;
 @hilary: #45C16F;
@@ -245,10 +245,42 @@ a {
 }
 
 .inline-image {
-  max-width: 730px;
+  max-width: 800px;
   margin: auto;
   img {
     width: 100%;
+  }
+  &.vertical {
+    max-width: 550px;
+  }
+  &.padded {
+    padding: 30px 0 40px 0;
+  }
+}
+
+.diptych-container {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  .display-flex;
+  .flex-wrap(wrap);
+  padding: 20px 0 40px 0;
+
+  .diptych1 {
+    .flex(0 0 36%);
+    img {
+      width: 95%;
+      text-align: center;
+      margin: auto;
+    }
+  }
+  .diptych2 {
+    .flex(0 0 64%);
+    img {
+      width: 95%;
+      text-align: center;
+      margin: auto;
+    }
   }
 }
 

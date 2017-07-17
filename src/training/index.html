@@ -41,37 +41,22 @@
           <% if (d.type == "text") { %>
             <p><%=d.value%></p>
           <% } else { %>
-            <div class="interactive-container">
-              <div class="hed"><%=d.value[0].Hed%></div>
-              <div class="interactive-deck"><%=d.value[0].Deck%></div>
-              <div class="legend-container-big">
-                <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
-                  <div class="legend"><span class="legend-swath <%=d.Key%>"></span><span class="legend-name"><%=d.Name%></span></div>
-                <% }); %>
-              </div>
-              <div id="dot-chart"></div>
+            <% console.log(d) %>
+            <div class="inline-image <%= d.value[0].Size %>">
+              <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+              <div class="caption"><%= d.value[0].Caption %></div>
             </div>
           <% } %>
         <% }); %>
       </div>
 
-      <!-- <div class="link-wrapper" id="link-nav">
-        <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
-          <% if (d.Key == "hilary"){ %>
-            <div class="profile-link"><a href="#profile<%=d.Key%>">Hilary & Gene</a></div>
-          <% } else { %>
-            <div class="profile-link"><a href="#profile<%=d.Key%>"><%=d.Name.split(" ")[0]%></a></div>
-          <% } %>
-        <% }); %>
-      </div> -->
-
       <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
 
         <div class="profile-hed <%=d.Key%>" id="profile<%=d.Key%>"><%=d.Name%></div>
 
-        <div class="inline-image">
+        <div class="inline-image <%= d.image[0].Size %>">
           <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
-          <div class="caption"><%= d.image.Caption %></div>
+          <div class="caption"><%= d.image[0].Caption %></div>
         </div>
 
         <div class="interactive-container">
@@ -170,7 +155,24 @@
         <% } %>
 
         <% d.text.forEach(function(d,idx) { %>
-            <p><%=d.value%></p>
+          <% console.log(d); %>
+            <% if (d.type == "text"){ %>
+              <p><%=d.value%></p>
+            <% } else if (d.type == "diptych") { %>
+              <div class="diptych-container">
+                <div class="diptych1"><img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_1 %>/5/1000x0.jpg"></div>
+                <div class="diptych2"><img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_2 %>/5/1000x0.jpg"></div>
+                <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
+              </div>
+
+            <% } else { %>
+              <div class="float-img-container">
+                <div class="float-img right">
+                  <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+                  <div class="caption"><%= d.value[0].Caption %></div>
+                </div>
+              </div>
+            <% } %>
         <% }); %>
 
 
