@@ -6,8 +6,8 @@
 @greg: #F25C00;
 @hilary: #45C16F;
 @iain: #26532B;
-@jorge: purple;
-@lauren: #AA4297;
+@jorge: #551E59;
+@lauren: #C94EB2;
 
 a {
   color: @red;
@@ -40,6 +40,20 @@ a {
   max-width: 800px;
   margin: auto;
   margin-top: 50px;
+  img {
+    width: 100%;
+  }
+}
+.desktop-gif {
+  @media @mobile {
+    display: none;
+  }
+}
+.mobile-gif {
+  display: none;
+  @media @mobile {
+    display: block;
+  }
 }
 
 .month-title {
@@ -138,6 +152,9 @@ a {
   .miles-chart, .elevation-chart {
     position: relative;
     .flex(0 0 48%);
+    @media @mobile {
+      .flex(0 0 100%);
+    }
   }
 }
 .race-chart {
@@ -258,6 +275,9 @@ a {
   &.vertical {
     max-width: 550px;
   }
+  &.small {
+    max-width: 550px;
+  }
   &.padded {
     padding: 30px 0 40px 0;
   }
@@ -301,42 +321,43 @@ a {
   margin: auto;
   font-size: 28px;
   font-family: @boldest-graphics;
-  color: @red;
+  // color: @red;
+  // color: @dark-gray;
   margin-bottom: 30px;
-  border-bottom: 4px solid @red;
+  // border-bottom: 4px solid @red;
   padding-top: 40px;
   @media @mobile {
     // padding-top: 20px;
     font-size: 20px;
   }
-  // &.balint {
+  &.balint {
   //   color: @balint;
-  //   border-bottom: 4px solid @balint;
-  // }
-  // &.gene {
+    border-bottom: 4px solid @balint;
+  }
+  &.gene {
   //   color: @gene;
-  //   border-bottom: 4px solid @gene;
-  // }
-  // &.greg {
+    border-bottom: 4px solid @gene;
+  }
+  &.greg {
   //   color: @greg;
-  //   border-bottom: 4px solid @greg;
-  // }
-  // &.hilary {
+    border-bottom: 4px solid @greg;
+  }
+  &.hilary {
   //   color: @hilary;
-  //   border-bottom: 4px solid @hilary;
-  // }
-  // &.iain {
+    border-bottom: 4px solid @hilary;
+  }
+  &.iain {
   //   color: @iain;
-  //   border-bottom: 4px solid @iain;
-  // }
-  // &.jorge {
+    border-bottom: 4px solid @iain;
+  }
+  &.jorge {
   //   color: @jorge;
-  //   border-bottom: 4px solid @jorge;
-  // }
-  // &.lauren {
+    border-bottom: 4px solid @jorge;
+  }
+  &.lauren {
   //   color: @lauren;
-  //   border-bottom: 4px solid @lauren;
-  // }
+    border-bottom: 4px solid @lauren;
+  }
 }
 
 .instructions {
@@ -358,21 +379,21 @@ a {
   font-size: 14px;
   display: block;
   text-align: center;
-  padding-top: 10px;
+  // padding-top: 10px;
   font-family: @block-graphics;
   margin: 20px auto;
-  &.mobile {
-    display: none;
-    @media @mobile {
-      display: block;
-    }
-  }
-  &.desktop {
-    display: block;
-    @media @mobile {
-      display: none;
-    }
-  }
+  // &.mobile {
+  //   display: none;
+  //   @media @mobile {
+  //     display: block;
+  //   }
+  // }
+  // &.desktop {
+  //   display: block;
+  //   @media @mobile {
+  //     display: none;
+  //   }
+  // }
   .legend {
     display: inline-block;
     width: 200px;

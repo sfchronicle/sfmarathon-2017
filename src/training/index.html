@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title><%= json.project.seo_title %></title>
+    <title><%= json.project.seo_title_training %></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="__sync_contentCategory" content="meterA">
@@ -10,7 +10,7 @@
 
     <%= !json.project.embedded ? t.include("partials/_paywall.html") : t.include("partials/_embedframe.html") %>
 
-    <%= t.include("partials/_head.html") %>
+    <%= t.include("partials/_head_training.html") %>
 
   </head>
 
@@ -20,12 +20,17 @@
     <%= t.include("partials/_nav.html") %>
 
     <!-- <div class="gif-container">
-      <div class="gif"><img src="../assets/gifs/balint_testing.gif"></img></div>
+      <div class="gif"><img src="../assets/gifs/Balint_slow.gif"></img></div>
       <div class="gif"><img src="../assets/gifs/Hilary_speedy.gif"></img></div>
       <div class="gif"><img src="../assets/gifs/Iain_small.gif"></img></div>
       <div class="gif"><img src="../assets/gifs/Lauren_small_lightened.gif"></img></div>
     </div> -->
-    <div class="gif-large"><img src="../assets/gifs/best_ever.gif"></img></div>
+    <div class="desktop-gif">
+      <div class="gif-large"><img src="../assets/gifs/best_ever.gif"></img></div>
+    </div>
+    <div class="mobile-gif">
+      <div class="gif-large"><img src="../assets/gifs/best_ever_mobile_tiny.gif"></img></div>
+    </div>
 
     <div class="outer" id="content">
 
@@ -160,10 +165,15 @@
             <% } else if (d.type == "diptych") { %>
               <div class="diptych-container">
                 <div class="diptych1"><img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_1 %>/5/1000x0.jpg"></div>
-                <div class="diptych2"><img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_2 %>/5/1000x0.jpg"></div>
+                <div class="diptych2"><img src="../assets/photos/mickle_crop.jpg"></div>
                 <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
               </div>
 
+            <% } else if (d.type == "hilary"){ %>
+              <div class="inline-image small <%= d.value[0].Size %>">
+                <img src="../assets/photos/hilary_and_gene.JPG">
+                <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
+              </div>
             <% } else { %>
               <div class="float-img-container">
                 <div class="float-img right">
@@ -196,17 +206,6 @@
                     <div class="button gene" id="gene-button">Gene</div>
                   <% } else { %>
                     <div class="button <%=d.Key%>" id="<%=d.Key%>-button"><%=d.Name.split(" ")[0]%></div>
-                  <% } %>
-                <% }); %>
-              </div>
-              <div class="legend-container-big desktop">
-                <div class="button all active" id="all-button">All runners</div>
-                <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
-                  <% if (d.Key == "hilary"){ %>
-                    <div class="button hilary" id="hilary-button">Hilary Shirazi</div>
-                    <div class="button gene" id="gene-button">Gene Dykes</div>
-                  <% } else { %>
-                    <div class="button <%=d.Key%>" id="<%=d.Key%>-button"><%=d.Name%></div>
                   <% } %>
                 <% }); %>
               </div>

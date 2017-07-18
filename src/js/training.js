@@ -6,11 +6,10 @@ var calendar = require("calendar-heatmap-mini");
 var maxWidth = 1000;
 
 // lists to enable me to generate charts automatically - these are the runners that we're using
-var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Shirazi","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
-var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorgeData","laurenData"];
-var keyList = ["balint","gene","greg","hilary","iain","jorge","lauren"];
-var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
-var chartElevationList = ["#hilary-elevation"];
+var nameList = ["Jorge Maravilla","Balint Gal","Gene Dykes","Greg McQuaid","Hilary Shirazi","Iain Mickle","Lauren Elkins"];
+var dataList = ["jorgeData","balintData","geneData","gregData","hilaryData","iainData","laurenData"];
+var keyList = ["jorge","balint","gene","greg","hilary","iain","lauren"];
+var chartHeatList = ["#jorge-heatmap","#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#lauren-heatmap"];
 var shortkeyList = ["iain","lauren","hilary","jorge","balint","greg"];
 
 // functions to parse dates
@@ -38,9 +37,9 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Iain Mickle") {
       return "#26532B";
     } else if (personName == "Jorge Maravilla") {
-      return "purple";
+      return "#551E59";
     } else if (personName == "Lauren Elkins") {
-      return "#AA4297";
+      return "#C94EB2";
     }
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return "#2274A5";
@@ -61,7 +60,7 @@ function stroke_by_person(personName,runnerID) {
 
 function colorful_dots(personName) {
   if (personName == "Balint Gal") {
-    return "#FFCC32";
+    return "#E6B319";
   } else if (personName == "Gene Dykes") {
     return "#2274A5";
   } else if (personName == "Greg McQuaid") {
@@ -71,9 +70,9 @@ function colorful_dots(personName) {
   } else if (personName == "Iain Mickle") {
     return "#26532B";
   } else if (personName == "Jorge Maravilla") {
-    return "purple";
+    return "#551E59";//"#6D106A";
   } else if (personName == "Lauren Elkins") {
-    return "#AA4297";
+    return "#C94EB2";
   }
 }
 
@@ -432,7 +431,7 @@ function dotChart(targetID,maxval,runnerID){
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
             return 1.0;
           } else {
-            return 0.3;
+            return 0.5;
           }
         })
         .attr("fill",function(d) {
@@ -630,9 +629,9 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 
   drawCalendarV2(data,chartID);
 
-  hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
+  hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",130000,"Elevation gain total (ft)","ft",nameList[jdx]);
 
-  hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
+  hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",1000,"Total number of miles run","miles",nameList[jdx]);
 
 }
 
@@ -647,6 +646,7 @@ $(window).resize(function () {
   halfWidth = Math.min((windowWidth/2),maxWidth/2);
 
   var buttons = document.getElementsByClassName("button");
+  console.log(buttons);
   for (var idx=1; idx<buttons.length; idx++){
     buttons[idx].classList.remove("active");
   }
@@ -660,9 +660,9 @@ $(window).resize(function () {
 
     drawCalendarV2(data,chartID);
 
-    hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",60000,"Elevation gain total (ft)","ft",nameList[jdx]);
+    hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",130000,"Elevation gain total (ft)","ft",nameList[jdx]);
 
-    hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",900,"Total number of miles run","miles",nameList[jdx]);
+    hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",1000,"Total number of miles run","miles",nameList[jdx]);
 
   }
 });

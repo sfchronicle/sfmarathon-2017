@@ -1,18 +1,28 @@
 {
   "year":"2017",
-  "title": "",
-  "description": "",
-  "seo_title": "",
-  "author":"",
-  "hearst_category":"",
-  "date":"2017-04-02",
-  "url": "http://projects.sfchronicle.com/2017/",
-  "slug": "SLUG-HERE-WITH-TRAILING-SLASH/",
-  "twitter_text":"",
-  "hashtag":"",
-  "image": "assets/social.jpg",
+  "author":"Erin Allday and Emma O'Neill and Santiago Mejia",
+  "hearst_category":"Main News",
+  "date":"2017-07-19",
+  "url": "http://projects.sfchronicle.com/2017/sf-marathon/",
   "sheets": ["1C5UHvOzUTWdFiAAE-MF_l6blCQxTVVdjIvLkee65ohA"],
   "docsID":["189MOpY8vns4LLz0pI2_19S8Xg6gBlLV6T6S3Uv_RAYc","1Z2AvW1ZjYkHqCFbLHXqF8etvFSBEoLO8OptdsFiEzeo"],
   "production": false,
-  "embedded": false
+  "embedded": false,
+
+  "title_training": "7 runners, 1 mission: Training for the SF Marathon",
+  "description_training": "Finishing the San Francisco Marathon is hard. Preparing for the race may be even harder, and no two approaches are the same.",
+  "seo_title_training": "Training for SF Marathon: There's more than one way to the finish line",
+  "slug_training": "training/",
+  "twitter_text_training":"Seven runners, one mission: No two approaches are the same when training for the SF Marathon.",
+  "hashtag_training":"TSFM2017",
+  "image_training": "assets/social.jpg",
+
+  "title_races": "7 runners, 1 mission: Training for the SF Marathon",
+  "description_races": "Finishing the San Francisco Marathon is hard. Preparing for the race may be even harder, and no two approaches are the same.",
+  "seo_title_races": "Training for SF Marathon: There's more than one way to the finish line",
+  "slug_races": "training/",
+  "twitter_text_races":"Seven runners, one mission: No two approaches are the same when training for the SF Marathon.",
+  "hashtag_races":"TSFM2017",
+  "image_races": "assets/social.jpg"
+
 }
