@@ -19,12 +19,13 @@
     <%= t.include("partials/_flat_nav.html") %>
     <%= t.include("partials/_nav.html") %>
 
-    <div class="gif-container">
-      <div class="gif"><img src="../assets/gifs/Balint_small.gif"></img></div>
-      <div class="gif"><img src="../assets/gifs/Hilary_small.gif"></img></div>
+    <!-- <div class="gif-container">
+      <div class="gif"><img src="../assets/gifs/balint_testing.gif"></img></div>
+      <div class="gif"><img src="../assets/gifs/Hilary_speedy.gif"></img></div>
       <div class="gif"><img src="../assets/gifs/Iain_small.gif"></img></div>
-      <div class="gif"><img src="../assets/gifs/Lauren_small.gif"></img></div>
-    </div>
+      <div class="gif"><img src="../assets/gifs/Lauren_small_lightened.gif"></img></div>
+    </div> -->
+    <div class="gif-large"><img src="../assets/gifs/best_ever.gif"></img></div>
 
     <div class="outer" id="content">
 
@@ -41,10 +42,9 @@
           <% if (d.type == "text") { %>
             <p><%=d.value%></p>
           <% } else { %>
-            <% console.log(d) %>
             <div class="inline-image <%= d.value[0].Size %>">
               <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
-              <div class="caption"><%= d.value[0].Caption %></div>
+              <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
             </div>
           <% } %>
         <% }); %>
@@ -56,7 +56,7 @@
 
         <div class="inline-image <%= d.image[0].Size %>">
           <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
-          <div class="caption"><%= d.image[0].Caption %></div>
+          <div class="caption"><%= d.image[0].Caption %><span class="byline"> <%= d.image[0].Photographer %></span></div>
         </div>
 
         <div class="interactive-container">
@@ -155,7 +155,6 @@
         <% } %>
 
         <% d.text.forEach(function(d,idx) { %>
-          <% console.log(d); %>
             <% if (d.type == "text"){ %>
               <p><%=d.value%></p>
             <% } else if (d.type == "diptych") { %>
@@ -169,7 +168,7 @@
               <div class="float-img-container">
                 <div class="float-img right">
                   <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
-                  <div class="caption"><%= d.value[0].Caption %></div>
+                  <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
                 </div>
               </div>
             <% } %>
