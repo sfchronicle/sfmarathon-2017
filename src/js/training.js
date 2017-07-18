@@ -646,7 +646,6 @@ $(window).resize(function () {
   halfWidth = Math.min((windowWidth/2),maxWidth/2);
 
   var buttons = document.getElementsByClassName("button");
-  console.log(buttons);
   for (var idx=1; idx<buttons.length; idx++){
     buttons[idx].classList.remove("active");
   }
@@ -659,12 +658,22 @@ $(window).resize(function () {
     var data = eval(dataList[jdx]);
 
     drawCalendarV2(data,chartID);
-
     hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",130000,"Elevation gain total (ft)","ft",nameList[jdx]);
-
     hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",1000,"Total number of miles run","miles",nameList[jdx]);
 
   }
+
+  // re-compute where sections begin and end
+  var window_top = document.body.scrollTop-30;
+  a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
+  b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
+  c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
+  d = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
+  e = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
+  f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
+  scroll = [a,b,c,d,e,f];
+  concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
+
 });
 
 //----------------------------------------------------------------------------------
@@ -741,12 +750,8 @@ var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var profile_idx = -1;
 var a,b,c,d,e,f,concdiv;
-// if (windowWidth<= 480) {
-  var window_top = document.body.scrollTop-30;
-// } else {
-  // var window_top = document.body.scrollTop;
-// }
 window.onload = function () {
+  var window_top = document.body.scrollTop-30;
   a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
   b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
