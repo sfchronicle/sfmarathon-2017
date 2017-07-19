@@ -40,6 +40,9 @@ a {
   max-width: 800px;
   margin: auto;
   margin-top: 50px;
+  @media @mobile {
+    margin-top: 15px;
+  }
   img {
     width: 100%;
   }
@@ -323,6 +326,7 @@ a {
   margin: auto;
   font-size: 28px;
   font-family: @boldest-graphics;
+  text-align: center;
   // color: @red;
   // color: @dark-gray;
   margin-bottom: 30px;
@@ -551,6 +555,9 @@ a {
   font-size: 40px;
   max-width: 500px;
   padding-bottom: 10px;
+  @media @mobile {
+    margin-top: 0;
+  }
 }
 .title-deck {
   font-family: @body;

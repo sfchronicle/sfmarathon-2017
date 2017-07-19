@@ -21,10 +21,10 @@
     <%= t.include("partials/_nav.html") %>
 
     <div class="desktop-gif">
-      <div class="gif-large"><img src="../assets/gifs/best_ever.gif"></img></div>
+      <div class="gif-large"><img src="../assets/gifs/final_best_ever.gif"></img></div>
     </div>
     <div class="mobile-gif">
-      <div class="gif-large"><img src="../assets/gifs/best_ever_mobile_tiny.gif"></img></div>
+      <div class="gif-large"><img src="../assets/gifs/final_best_ever_mobile.gif"></img></div>
     </div>
 
     <div class="outer" id="content">
@@ -41,6 +41,12 @@
         <% json.sfmarathontraining.intro.forEach(function(d,idx) { %>
           <% if (d.type == "text") { %>
             <p><%=d.value%></p>
+          <% } else if (d.type == "map"){ %>
+            <div class="float-img-container">
+              <div class="float-img right">
+                <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+              </div>
+            </div>
           <% } else { %>
             <div class="inline-image <%= d.value[0].Size %>">
               <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
@@ -124,7 +130,7 @@
           </div>
 
           <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>
-            <div>Note: Gene Dykes has been out of the country and may be missing some runs in the last week or two.</div>
+            <div>Note: Gene Dykes has been out of the country and unable to regularly upload runs since July 3.</div>
           </div>
 
         <% } else { %>
@@ -150,7 +156,6 @@
           </div>
 
           <div class="text-pullout"><%=d.FunFact.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%></div>
-          </div>
 
           <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%></div>
 

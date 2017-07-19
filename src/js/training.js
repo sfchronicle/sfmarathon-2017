@@ -1,6 +1,6 @@
 require("./lib/social");
 var d3 = require("d3");//Do not delete'
-var calendar = require("calendar-heatmap-mini");
+// var calendar = require("calendar-heatmap-mini");
 
 // this is set in the styles
 var maxWidth = 1000;
@@ -112,30 +112,16 @@ function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
     left: 50
   };
   if (screen.width > 768) {
-    // var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    // var width = 440 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
-  } else if (screen.width <= 480 && screen.width > 340) {
-    console.log("big phone");
+  } else if (screen.width <= 480) {
     var margin = {
       top: 20,
       right: 40,
       bottom: 50,
-      left: 40
+      left: 50
     };
-    // var width = 340 - margin.left - margin.right;
-    var height = 300 - margin.top - margin.bottom;
-  } else if (screen.width <= 340) {
-    console.log("mini iphone")
-    var margin = {
-      top: 20,
-      right: 40,
-      bottom: 50,
-      left: 40
-    };
-    // var width = 310 - margin.left - margin.right;
     var height = 300 - margin.top - margin.bottom;
   }
   if (windowWidth <= 800) {
@@ -308,13 +294,10 @@ function dotChart(targetID,maxval,runnerID){
     left: 100
   };
   if (screen.width > 768) {
-    // var width = 900 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    // var width = 720 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
-    console.log("big phone");
     var margin = {
       top: 20,
       right: 30,
@@ -324,7 +307,6 @@ function dotChart(targetID,maxval,runnerID){
     // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
-    console.log("mini iphone")
     var margin = {
       top: 20,
       right: 30,
@@ -335,7 +317,6 @@ function dotChart(targetID,maxval,runnerID){
     var height = 370 - margin.top - margin.bottom;
   }
   var width = Math.min(windowWidth,maxWidth) - 10 - margin.left - margin.right;
-  console.log(margin);
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -477,7 +458,7 @@ function drawCalendarV2(dateData,chartID) {
 
   if (windowWidth <= 650) {
     var cellMargin = 2,
-        cellSize = 16;
+        cellSize = 18;
     var header_height = 40;
   } else {
     var cellMargin = 2,
@@ -628,14 +609,19 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
   var data = eval(dataList[jdx]);
 
   drawCalendarV2(data,chartID);
-
   hoverChart("#hover-chart-elevation-"+keyList[jdx],"Total Elevation",130000,"Elevation gain total (ft)","ft",nameList[jdx]);
-
   hoverChart("#hover-chart-miles-"+keyList[jdx],"Total Miles",1000,"Total number of miles run","miles",nameList[jdx]);
 
 }
 
-dotChart("#dot-chart",75,"all");
+if (screen.width <= 480) {
+  dotChart("#dot-chart",75,"iain");
+  var buttons = document.getElementsByClassName("button");
+  buttons[0].classList.remove("active");
+  buttons[1].classList.add("active");
+} else {
+  dotChart("#dot-chart",75,"all");
+}
 
 //----------------------------------------------------------------------------------
 // REDRAW ALL CHARTS ON RESIZE
