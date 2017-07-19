@@ -40,8 +40,11 @@ a {
   max-width: 800px;
   margin: auto;
   margin-top: 50px;
-  @media @mobile {
+  @media @mobile-tiny {
     margin-top: 15px;
+  }
+  @media @mobile {
+    margin-top: 45px;
   }
   img {
     width: 100%;
@@ -157,7 +160,7 @@ a {
   .miles-chart, .elevation-chart {
     position: relative;
     .flex(0 0 48%);
-    @media @mobile {
+    @media @tablet {
       .flex(0 0 100%);
     }
   }
@@ -171,7 +174,8 @@ a {
   top: 40px;
   font-size:14px;
   font-family: @med-graphics;
-  background: rgba(0,0,0,0.05);
+  // color: @dark-gray;
+  // background: rgba(0,0,0,0.05);
   width: 200px;
   &.training {
     width: 150px;
@@ -190,6 +194,7 @@ a {
 .hover-name {
   padding-top: 10px;
   padding-left: 20px;
+  // border-bottom: 1px solid @light-gray;
   @media @mobile {
     padding-left: 0;
   }
@@ -201,12 +206,12 @@ a {
     padding-left: 0;
   }
 }
-.hover-pace:empty{
-    display:none;
-}
-.hover-name:empty {
-  display:none;
-}
+// .hover-pace:empty{
+//   display:none;
+// }
+// .hover-name:empty {
+//   display:none;
+// }
 
 .source {
   max-width: 1000px;

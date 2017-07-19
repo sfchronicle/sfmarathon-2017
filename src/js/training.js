@@ -101,8 +101,8 @@ var dataNested = d3.nest()
 function hoverChart(targetID,targetVal,maxval,yLabel,units,runnerID) {
 
   // show tooltip
-  var tooltipDots = d3.select("body").append("div")
-    .attr("class", "tooltip-dots");
+  // var tooltipDots = d3.select("body").append("div")
+  //   .attr("class", "tooltip-dots");
 
   // create SVG container for chart components
   var margin = {
@@ -635,8 +635,15 @@ $(window).resize(function () {
   for (var idx=1; idx<buttons.length; idx++){
     buttons[idx].classList.remove("active");
   }
-  buttons[0].classList.add("active");
-  dotChart("#dot-chart",75,"all");
+  if (screen.width <= 480) {
+    dotChart("#dot-chart",75,"iain");
+    var buttons = document.getElementsByClassName("button");
+    buttons[0].classList.remove("active");
+    buttons[1].classList.add("active");
+  } else {
+    dotChart("#dot-chart",75,"all");
+    buttons[0].classList.add("active");
+  }
 
   for (var jdx=0; jdx<dataList.length; jdx++) {
     var data = [];
