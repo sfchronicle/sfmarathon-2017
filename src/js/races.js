@@ -1,17 +1,16 @@
 require("./lib/social");
 var d3 = require("d3");//Do not delete'
-var calendar = require("calendar-heatmap-mini");
 
 // this is set in the styles
 var maxWidthDots = 1000;
 var maxWidthRaces = 800;
 
 // lists to enable me to generate charts automatically - these are the runners that we're using
-var nameList = ["Balint Gal","Gene Dykes","Greg McQuaid","Hilary Shirazi","Iain Mickle","Jorge Maravilla","Lauren Elkins"];
-var dataList = ["balintData","geneData","gregData","hilaryData","iainData","jorgeData","laurenData"];
-var keyList = ["balint","gene","greg","hilary","iain","jorge","lauren"];
-var chartHeatList = ["#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#jorge-heatmap","#lauren-heatmap"];
-var chartElevationList = ["#hilary-elevation"];
+var nameList = ["Jorge Maravilla","Balint Gal","Gene Dykes","Greg McQuaid","Hilary Shirazi","Iain Mickle","Lauren Elkins"];
+var dataList = ["jorgeData","balintData","geneData","gregData","hilaryData","iainData","laurenData"];
+var keyList = ["jorge","balint","gene","greg","hilary","iain","lauren"];
+var chartHeatList = ["#jorge-heatmap","#balint-heatmap","#gene-heatmap","#greg-heatmap","#hilary-heatmap","#iain-heatmap","#lauren-heatmap"];
+var shortkeyList = ["iain","lauren","hilary","jorge","balint","greg"];
 
 // functions to parse dates
 var	parseFullDate = d3.timeParse("%Y-%m-%d");
@@ -28,7 +27,7 @@ function color_by_person(personName,runnerID) {
   if (personName == runnerID) {
     // return "#CF0000";
     if (personName == "Balint Gal") {
-      return "#E6B319";//"#FFCC32";
+      return "#E6B319";//#FFCC32";
     } else if (personName == "Gene Dykes") {
       return "#2274A5";
     } else if (personName == "Greg McQuaid") {
@@ -36,16 +35,16 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Hilary Shirazi") {
       return "#45C16F";
     } else if (personName == "Iain Mickle") {
-      return "#55A85F";//"#26532B";
+      return "#26532B";
     } else if (personName == "Jorge Maravilla") {
-      return "purple";
+      return "#551E59";
     } else if (personName == "Lauren Elkins") {
-      return "#AA4297";
+      return "#C94EB2";
     }
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
     return "#2274A5";
   } else {
-    return "#3F3F3F";
+    return "#8C8C8C";
   }
 }
 
@@ -75,7 +74,7 @@ function opacity_by_person(personName,runnerID) {
 
 function colorful_dots(personName) {
   if (personName == "Balint Gal") {
-    return "#FFCC32";
+    return "#E6B319";
   } else if (personName == "Gene Dykes") {
     return "#2274A5";
   } else if (personName == "Greg McQuaid") {
@@ -85,9 +84,9 @@ function colorful_dots(personName) {
   } else if (personName == "Iain Mickle") {
     return "#26532B";
   } else if (personName == "Jorge Maravilla") {
-    return "purple";
+    return "#551E59";//"#6D106A";
   } else if (personName == "Lauren Elkins") {
-    return "#AA4297";
+    return "#C94EB2";
   }
 }
 
@@ -142,7 +141,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       top: 20,
       right: 60,
       bottom: 50,
-      left: 30
+      left: 50
     };
     // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
@@ -152,16 +151,12 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       top: 20,
       right: 55,
       bottom: 50,
-      left: 32
+      left: 50
     };
     // var width = 310 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   }
-  // if (windowWidth <= 800) {
-    var width = Math.min(windowWidth,maxWidthRaces) - 10 - margin.left - margin.right;
-  // } else {
-    // var width = halfWidth - 10 - margin.left - margin.right;
-  // }
+  var width = Math.min(windowWidth,maxWidthRaces) - 10 - margin.left - margin.right;
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -317,33 +312,29 @@ function dotChart(targetID,maxval,runnerID){
     left: 100
   };
   if (screen.width > 768) {
-    var width = 900 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
-    var width = 720 - margin.left - margin.right;
     var height = 470 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
-    console.log("big phone");
     var margin = {
       top: 20,
-      right: 60,
-      bottom: 50,
-      left: 30
+      right: 30,
+      bottom: 40,
+      left: 55
     };
-    var width = 340 - margin.left - margin.right;
+    // var width = 340 - margin.left - margin.right;
     var height = 350 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
-    console.log("mini iphone")
     var margin = {
       top: 20,
-      right: 55,
-      bottom: 50,
-      left: 32
+      right: 30,
+      bottom: 40,
+      left: 55
     };
-    var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    // var width = 310 - margin.left - margin.right;
+    var height = 370 - margin.top - margin.bottom;
   }
-  console.log(margin);
+  var width = Math.min(windowWidth,maxWidthDots) - 10 - margin.left - margin.right;
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")
@@ -379,7 +370,13 @@ function dotChart(targetID,maxval,runnerID){
       .append("text")
         .attr("class", "label")
         .attr("transform", "rotate(-90)")
-        .attr("y", 20)
+        .attr("y", function(d) {
+          if (screen.width <= 480) {
+            return 30;
+          } else {
+            return 20;
+          }
+        })
         .attr("x", 0)
         .attr("fill","black")
         .style("text-anchor", "end")
@@ -395,19 +392,32 @@ function dotChart(targetID,maxval,runnerID){
         .attr("class","annotation-path")
         .attr("d", line);
 
-  svg.append("text")
+  if (screen.width <= 480) {
+    svg.append("text")
+      .text("Marathon distance (26.2 miles)")
+      .style("text-anchor","end")
+      // .attr("dx",function(d){ return x(26.2); })
+      // .attr("dy",function(d){ return y(parsePace("22:00")); })
+      .attr("transform","translate("+x(32)+","+y(parsePace("22:00"))+") rotate(-90)")
+  } else {
+    svg.append("text")
       .text("Marathon distance (26.2 miles)")
       .style("text-anchor","end")
       // .attr("dx",function(d){ return x(26.2); })
       // .attr("dy",function(d){ return y(parsePace("22:00")); })
       .attr("transform","translate("+x(29)+","+y(parsePace("22:00"))+") rotate(-90)")
+  }
 
   svg.selectAll("dot")
         .data(combinedData)
       .enter().append("circle")
         .attr("r", function(d) {
           if (d["Daily Elevation"] ) {
-            return (d["Daily Elevation"]/500+5)
+            if (screen.width <= 480) {
+              return (d["Daily Elevation"]/1000+5)
+            } else {
+              return (d["Daily Elevation"]/500+5)
+            }
           } else {
             return 5;
           }
@@ -420,7 +430,7 @@ function dotChart(targetID,maxval,runnerID){
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
             return 1.0;
           } else {
-            return 0.1;
+            return 0.5;
           }
         })
         .attr("fill",function(d) {
@@ -469,7 +479,14 @@ for (var jdx=0; jdx<dataList.length; jdx++) {
 
   hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
 }
-dotChart("#dot-chart-races",75,"all");
+if (screen.width <= 480) {
+  dotChart("#dot-chart-races",75,"iain");
+  var buttons = document.getElementsByClassName("button");
+  buttons[0].classList.remove("active");
+  buttons[1].classList.add("active");
+} else {
+  dotChart("#dot-chart-races",75,"all");
+}
 
 //----------------------------------------------------------------------------------
 // RE-DRAW ALL THE CHARTS ON RESIZE
@@ -477,14 +494,20 @@ dotChart("#dot-chart-races",75,"all");
 
 $(window).resize(function () {
   windowWidth = $(window).width();
-  // halfWidth = Math.min((windowWidth/2),450);
 
   var buttons = document.getElementsByClassName("button");
   for (var idx=1; idx<buttons.length; idx++){
     buttons[idx].classList.remove("active");
   }
-  buttons[0].classList.add("active");
-  dotChart("#dot-chart-races",75,"all");
+  if (screen.width <= 480) {
+    dotChart("#dot-chart-races",75,"iain");
+    var buttons = document.getElementsByClassName("button");
+    buttons[0].classList.remove("active");
+    buttons[1].classList.add("active");
+  } else {
+    dotChart("#dot-chart-races",75,"all");
+    buttons[0].classList.add("active");
+  }
 
   for (var jdx=0; jdx<dataList.length; jdx++) {
     var data = [];
@@ -493,6 +516,18 @@ $(window).resize(function () {
 
     hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
   }
+
+  // re-compute where sections begin and end
+  var window_top = document.body.scrollTop-30;
+  a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
+  b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
+  c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
+  d = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
+  e = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
+  f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
+  scroll = [a,b,c,d,e,f];
+  concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
+
 });
 
 //----------------------------------------------------------------------------------
@@ -507,8 +542,35 @@ qsa(".button").forEach(function(group,index) {
       buttons[idx].classList.remove("active");
     }
     group.classList.add("active");
-    dotChart("#dot-chart-races",75,group.id.split("-button")[0]);
-    // console.log(e);
+
+    var buttonRunnerID = group.id.split("-button")[0];
+    if (buttonRunnerID != "all"){
+      combinedData = [];
+      for (var jdx=0; jdx<dataList.length; jdx++) {
+        var data = [];
+        if (keyList[jdx] != buttonRunnerID){
+          data = eval(dataList[jdx]);
+          data.forEach(function(d) {
+            if (d["Daily Miles"]) {
+              d.paceObj = parsePace(d["Daily Pace"]);
+              d.name = nameList[jdx];
+              combinedData.push(d);
+            }
+          });
+        } else {
+          var keyIDX = jdx;
+        }
+      }
+      data = eval(buttonRunnerID+"Data");
+      data.forEach(function(d) {
+        if (d["Daily Miles"]) {
+          d.paceObj = parsePace(d["Daily Pace"]);
+          d.name = nameList[keyIDX];
+          combinedData.push(d);
+        }
+      });
+    }
+    dotChart("#dot-chart-races",75,buttonRunnerID);
   });
 });
 
@@ -539,12 +601,45 @@ $(document).on('click', 'a[href^="#"]', function(e) {
 
 var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
+var profile_idx = -1;
+var a,b,c,d,e,f,concdiv;
+window.onload = function () {
+  var window_top = document.body.scrollTop-30;
+  a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
+  b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
+  c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
+  d = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
+  e = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
+  f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
+  scroll = [a,b,c,d,e,f];
+  concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
+}
+
+var y;
 var navDisplay = function() {
-  var y = window.scrollY;
+  // var y = window.scrollY;
+  y = $(window).scrollTop();
   if (y >= navposition) {
     navID.className = "fixed show";
   } else {
     navID.className = "fixed hide";
+  }
+  if (y > concdiv || y < a) {
+    for (var i=0; i<6; i++) {
+      document.getElementById("prof-link-"+shortkeyList[i]).classList.remove('activelink');
+    }
+  } else {
+    for (var i = 0; i < 6; i++) {
+      if (y > scroll[i]) {
+        profile_idx = i;
+      }
+    }
+    if (shortkeyList[profile_idx]){
+      for (var i=0; i<6; i++) {
+        document.getElementById("prof-link-"+shortkeyList[i]).classList.remove('activelink');
+      }
+      document.getElementById("prof-link-"+shortkeyList[profile_idx]).classList.add('activelink');
+    }
   }
 };
 window.addEventListener("scroll", navDisplay);

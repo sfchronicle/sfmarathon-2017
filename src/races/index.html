@@ -84,7 +84,7 @@
 
       <% }); %>
 
-      <div class="section-break"></div>
+      <div class="section-break" id="conclusion"></div>
 
       <div class="conclusion-text">
         <% json.sfmarathonrace.conclusion.forEach(function(d,idx) { %>
@@ -94,14 +94,15 @@
             <div class="interactive-container">
               <div class="hed"><%=d.value[0].Hed%></div>
               <div class="interactive-deck"><%=d.value[0].Deck%></div>
-              <div class="legend-container-big">
+              <div class="instructions">Click on the buttons below to see each runner's training. <i class="fa fa-hand-o-right" aria-hidden="true"></i></div>
+              <div class="legend-container-big mobile">
                 <div class="button all active" id="all-button">All runners</div>
                 <% json.sfmarathontraining.profiles.forEach(function(d,idx){ %>
                   <% if (d.Key == "hilary"){ %>
-                    <div class="button hilary" id="hilary-button">Hilary Shirazi</div>
-                    <div class="button gene" id="gene-button">Gene Dykes</div>
+                    <div class="button hilary" id="hilary-button">Hilary</div>
+                    <div class="button gene" id="gene-button">Gene</div>
                   <% } else { %>
-                    <div class="button <%=d.Key%>" id="<%=d.Key%>-button"><%=d.Name%></div>
+                    <div class="button <%=d.Key%>" id="<%=d.Key%>-button"><%=d.Name.split(" ")[0]%></div>
                   <% } %>
                 <% }); %>
               </div>

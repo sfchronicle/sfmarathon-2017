@@ -1,6 +1,5 @@
 require("./lib/social");
 var d3 = require("d3");//Do not delete'
-// var calendar = require("calendar-heatmap-mini");
 
 // this is set in the styles
 var maxWidth = 1000;
