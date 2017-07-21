@@ -425,12 +425,27 @@ function dotChart(targetID,maxval,runnerID){
         .attr("cx", function(d) { return x(d["Daily Miles"]); })
         .attr("cy", function(d) { return y(d.paceObj); })
         .attr("opacity",function(d) {
+          // all data displayed
           if (runnerID == "all") {
-            return 0.7;
+            if (d.Date == "2017-07-01"){
+              return 1.0;
+            } else {
+              return 0.2;
+            }
+          // data just for one runner is displayed and this is the one
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
-            return 1.0;
+            if (d.Date == "2017-07-01"){
+              return 1.0;
+            } else {
+              return 0.3;
+            }
+          // just one runner is displayed and this is not the one
           } else {
-            return 0.5;
+            if (d.Date == "2017-07-01"){
+              return 0.5;
+            } else {
+              return 0.2;
+            }
           }
         })
         .attr("fill",function(d) {
