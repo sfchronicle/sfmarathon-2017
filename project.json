@@ -17,11 +17,11 @@
   "hashtag_training":"TSFM2017",
   "image_training": "assets/social.jpg",
 
-  "title_races": "7 runners, 1 mission: Training for the SF Marathon",
-  "description_races": "Finishing the San Francisco Marathon is hard. Preparing for the race may be even harder, and no two approaches are the same.",
-  "seo_title_races": "Training for San Francisco Marathon: There's more than one way to the finish line",
-  "slug_races": "training/",
-  "twitter_text_races":"Seven runners, one mission: No two approaches are the same when training for the SF Marathon.",
+  "title_races": "7 runners, 1 race: Racing the SF Marathon",
+  "description_races": "This is a description for the races story.",
+  "seo_title_races": "This is the SEO title for the races story.",
+  "slug_races": "races/",
+  "twitter_text_races":"This is Twitter text for the races story.",
   "hashtag_races":"TSFM2017",
   "image_races": "assets/social.jpg"
 
