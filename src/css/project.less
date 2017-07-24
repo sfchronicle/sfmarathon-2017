@@ -22,6 +22,15 @@ a {
   }
 }
 
+.landing-image {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0;
+  img {
+    width: 100%;
+  }
+}
+
 .gif-container {
   max-width: 800px;
   margin: auto;
@@ -227,6 +236,9 @@ a {
   &.nomargin {
     margin: 0 auto 20px auto;
   }
+  &.narrow {
+    max-width: 800px;
+  }
 }
 
 .text-pullout {
@@ -240,6 +252,10 @@ a {
   margin: auto;
   &.padded {
     margin-bottom: 40px;
+  }
+  &.centered {
+    max-width: 600px;
+    margin: 20px auto;
   }
   //
   @media @mobile {

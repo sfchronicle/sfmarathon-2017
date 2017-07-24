@@ -131,10 +131,10 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
   };
   if (screen.width > 768) {
     // var width = 440 - margin.left - margin.right;
-    var height = 450 - margin.top - margin.bottom;
+    var height = 500 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
     // var width = 440 - margin.left - margin.right;
-    var height = 450 - margin.top - margin.bottom;
+    var height = 500 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
     console.log("big phone");
     var margin = {
@@ -217,20 +217,20 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
     var voronoi = d3.voronoi()
         // .curve(d3.curveBasis)
         .x(function(d) {
-          return x(d["mileShort"]);
+          return x(d["mile"]);
         })
         .y(function(d) {
-          return y(parsePace(d["paceShort"]))
+          return y(parsePace(d["pace"]))
         })
         .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]]);
 
     var line = d3.line()
         .curve(d3.curveCardinal)
         .x(function(d) {
-          return x(d["mileShort"]);
+          return x(d["mile"]);
         })
         .y(function(d) {
-          return y(parsePace(d["paceShort"]));
+          return y(parsePace(d["pace"]));
         });
 
     var elevationLine = d3.line()
@@ -281,8 +281,8 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       function mouseover(d) {
         d3.select(".id"+d.data.athlete_id.toLowerCase().replace(/ /g,'')+runnerID.toLowerCase().replace(/ /g,'')).classed("line-hover-races", true);
         d3.select("#hover-race-name-"+runnerID.split(" ")[0].toLowerCase()).text(d.data.athlete_id);
-        d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("Mile "+d.data.mileShort+" pace: "+d.data.paceShort);
-        focus.attr("transform", "translate(" + x(d.data["mileShort"]) + "," + y(parsePace(d.data["paceShort"])) + ")");
+        d3.select("#hover-race-pace-"+runnerID.split(" ")[0].toLowerCase()).text("Mile "+d.data.mile+" pace: "+d.data.pace);
+        focus.attr("transform", "translate(" + x(d.data["mile"]) + "," + y(parsePace(d.data["pace"])) + ")");
       }
 
       function mouseout(d) {
@@ -414,9 +414,9 @@ function dotChart(targetID,maxval,runnerID){
         .attr("r", function(d) {
           if (d["Daily Elevation"] ) {
             if (screen.width <= 480) {
-              return (d["Daily Elevation"]/1000+5)
+              return (d["Daily Elevation"]/1000+6)
             } else {
-              return (d["Daily Elevation"]/500+5)
+              return (d["Daily Elevation"]/500+6)
             }
           } else {
             return 5;
@@ -427,25 +427,25 @@ function dotChart(targetID,maxval,runnerID){
         .attr("opacity",function(d) {
           // all data displayed
           if (runnerID == "all") {
-            if (d.Date == "2017-07-01"){
+            if (d.Date == "2017-07-23"){ // <------------------------------------------------------- CHANGE THIS ON MONDAY!
               return 1.0;
             } else {
-              return 0.2;
+              return 0.3;
             }
           // data just for one runner is displayed and this is the one
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {
-            if (d.Date == "2017-07-01"){
+            if (d.Date == "2017-07-23"){ // <------------------------------------------------------- CHANGE THIS ON MONDAY!
               return 1.0;
             } else {
               return 0.3;
             }
           // just one runner is displayed and this is not the one
           } else {
-            if (d.Date == "2017-07-01"){
-              return 0.5;
-            } else {
+            // if (d.Date == "2017-07-01"){ // <------------------------------------------------------- CHANGE THIS ON MONDAY!
+              // return 0.5;
+            // } else {
               return 0.2;
-            }
+            // }
           }
         })
         .attr("fill",function(d) {
