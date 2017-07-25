@@ -4,7 +4,7 @@
 @balint: #E6B319;//#FFCC32;
 @gene: #2274A5;
 @greg: #F25C00;
-@hilary: #45C16F;
+@hilary: #38B462;//#45C16F;
 @iain: #26532B;
 @jorge: #551E59;
 @lauren: #C94EB2;
@@ -240,6 +240,9 @@ a {
     max-width: 800px;
   }
 }
+.note {
+  padding-top: 5px;
+}
 
 .text-pullout {
   font-family: @med-graphics;
@@ -256,8 +259,10 @@ a {
   &.centered {
     max-width: 600px;
     margin: 20px auto;
+    @media @mobile {
+      margin-top: 10px;
+    }
   }
-  //
   @media @mobile {
     width: 90%;
     font-size: 18px;

@@ -33,7 +33,7 @@ function color_by_person(personName,runnerID) {
     } else if (personName == "Greg McQuaid") {
       return "#F25C00";//"#EB8F6A";
     } else if (personName == "Hilary Shirazi") {
-      return "#45C16F";
+      return "#38B462";
     } else if (personName == "Iain Mickle") {
       return "#26532B";
     } else if (personName == "Jorge Maravilla") {
@@ -66,7 +66,7 @@ function opacity_by_person(personName,runnerID) {
   if (personName == runnerID) {
     return 0.9;
   } else if (runnerID == "Hilary Shirazi" && personName == "Gene Dykes"){
-    return 0,9;
+    return 0.9;
   } else {
     return 0.9;
   }
@@ -80,7 +80,7 @@ function colorful_dots(personName) {
   } else if (personName == "Greg McQuaid") {
     return "#F25C00";//"#EB8F6A";
   } else if (personName == "Hilary Shirazi") {
-    return "#45C16F";
+    return "#38B462";
   } else if (personName == "Iain Mickle") {
     return "#26532B";
   } else if (personName == "Jorge Maravilla") {
@@ -170,7 +170,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       y = d3.scaleTime().range([height, 0]),
       yRight = d3.scaleLinear().range([height,0]);
 
-  x.domain([0, 26.2]);
+  x.domain([0, 27]);
   y.domain([parsePace('00:00'),parsePace("20:00")]);
   yRight.domain([-9,1000])
 
@@ -430,7 +430,7 @@ function dotChart(targetID,maxval,runnerID){
             if (d.Date == "2017-07-23"){ // <------------------------------------------------------- CHANGE THIS ON MONDAY!
               return 1.0;
             } else {
-              return 0.3;
+              return 0.2;
             }
           // data just for one runner is displayed and this is the one
           } else if (d.name.split(" ")[0].toLowerCase() == runnerID) {

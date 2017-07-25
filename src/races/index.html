@@ -69,7 +69,18 @@
         <div class="text-pullout centered"><%=d.Highlight.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%>
         </div>
 
-        <div class="source narrow">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>, <a href="http://www.thesfmarathon.com/" target="_blank">SF Marathon</a></div>
+        <% if (d.Key == "hilary"){ %>
+          <div class="source narrow">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>, <a href="http://www.thesfmarathon.com/" target="_blank">SF Marathon</a>
+          <div class="note">Note: <%=d.Note%></div>
+          </div>
+        <% } else if (d.Key == "lauren") { %>
+          <div class="source narrow">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>, <a href="http://www.thesfmarathon.com/" target="_blank">SF Marathon</a>
+          <div class="note">Note: <%=d.Note%></div>
+          </div>
+        <% } else { %>
+          <div class="source narrow">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>, <a href="http://www.thesfmarathon.com/" target="_blank">SF Marathon</a></div>
+        <% } %>
+
 
         <% d.text.forEach(function(d,idx) { %>
             <p><%=d.value%></p>
@@ -109,7 +120,7 @@
 
     </div>
 
-    <%= t.include("partials/_credits.html") %>
+    <%= t.include("partials/_credits_races.html") %>
     <%= t.include("partials/_dontMiss_race.html") %>
     <%= t.include("partials/_footer.html") %>
 
