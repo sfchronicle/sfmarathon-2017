@@ -17,12 +17,12 @@
   "hashtag_training":"TSFM2017",
   "image_training": "assets/social.jpg",
 
-  "title_races": "7 runners, 1 race: Racing the SF Marathon",
-  "description_races": "This is a description for the races story.",
-  "seo_title_races": "This is the SEO title for the races story.",
+  "title_races": "How 7 athletes confronted the SF Marathon",
+  "description_races": "The Chronicle profiled and tracked the data of seven runners with seven different goals as they trained for the 40th annual San Francisco Marathon. How did they do?",
+  "seo_title_races": "How 7 San Francisco Marathon runners with 7 different goals confronted the race",
   "slug_races": "races/",
-  "twitter_text_races":"This is Twitter text for the races story.",
+  "twitter_text_races":"How 7 athletes with 7 different goals confronted the SF Marathon",
   "hashtag_races":"TSFM2017",
-  "image_races": "assets/social.jpg"
+  "image_races": "assets/social_races.jpg"
 
 }

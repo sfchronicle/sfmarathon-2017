@@ -22,12 +22,59 @@ a {
   }
 }
 
+.above-photo {
+  padding: 50px 0 30px 0;
+  @media @mobile {
+    padding: 30px 0 0 0;
+  }
+  .title {
+    font-size: 60px;
+    @media @mobile {
+      font-size: 50px;
+    }
+    @media @mobile-tiny {
+      font-size: 46px;
+    }
+  }
+  .date {
+    margin-bottom: 0;
+  }
+  .title-deck {
+    font-size: 22px;
+    text-align: center;
+    max-width: 400px;
+    @media @mobile {
+      padding: 10px;
+    }
+  }
+}
+
+.date.race {
+  margin-bottom: 0;
+}
+
+.flex-container {
+  .display-flex;
+  .flex-wrap(wrap);
+  .above-photo, .flex-image {
+    .flex(0 1 100%);
+  }
+  padding-bottom: 50px;
+  @media @mobile {
+    flex-direction: column-reverse;
+    padding-bottom: 40px;
+  }
+}
+
 .landing-image {
-  max-width: 1000px;
+  max-width: 2000px;
   margin: auto;
   padding: 0;
   img {
     width: 100%;
+  }
+  @media @mobile {
+    margin-top: 37px;
   }
 }
 
@@ -195,10 +242,11 @@ a {
     }
   }
   &.races {
+    top: 10px;
     // background: rgba(0,0,0,0.1);
     right: 25%;
     @media @mobile {
-      right: 5%;
+      right: 10%;
     }
   }
 }
@@ -285,6 +333,12 @@ a {
   padding: 30px 0 10px 0;
   @media @mobile {
     padding: 10px 0 20px 0;
+  }
+  &.nopadding {
+    @media @mobile {
+      padding-top: 0;
+      // margin-top: -5px;
+    }
   }
 }
 .interactive-deck {
@@ -417,6 +471,9 @@ a {
   // padding-top: 10px;
   font-family: @block-graphics;
   margin: 20px auto;
+  @media @mobile {
+    margin: 20px auto 10px auto;
+  }
   // &.mobile {
   //   display: none;
   //   @media @mobile {
@@ -704,6 +761,11 @@ path {
   margin: 70px auto 50px auto;
   @media @mobile {
     margin: 40px auto 30px auto;
+  }
+  &.topraces {
+    @media @mobile {
+      margin-top: -10px;
+    }
   }
 }
 

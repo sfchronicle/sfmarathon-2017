@@ -18,7 +18,7 @@ var	parseTime = d3.timeParse("%H:%M:%S");
 var	parsePace = d3.timeParse("%M:%S");
 var formatthousands = d3.format(",");
 
-var windowWidth = $(window).width();;
+var windowWidth = $(window).width();
 console.log("window width = ");
 console.log(windowWidth);
 // var halfWidth = Math.min((windowWidth/2),maxWidth/2);
@@ -125,7 +125,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
   // create SVG container for chart components
   var margin = {
     top: 15,
-    right: 60,
+    right: 65,
     bottom: 40,
     left: 60
   };
@@ -133,6 +133,13 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
     // var width = 440 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
   } else if (screen.width <= 768 && screen.width > 480) {
+    console.log("HERE");
+    var margin = {
+      top: 15,
+      right: 80,
+      bottom: 40,
+      left: 60
+    };
     // var width = 440 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
   } else if (screen.width <= 480 && screen.width > 340) {
@@ -144,7 +151,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       left: 50
     };
     // var width = 340 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 380 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     console.log("mini iphone")
     var margin = {
@@ -154,8 +161,10 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       left: 50
     };
     // var width = 310 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 370 - margin.top - margin.bottom;
   }
+  console.log(margin.left);
+  console.log(margin.right);
   var width = Math.min(windowWidth,maxWidthRaces) - 10 - margin.left - margin.right;
 
   d3.select(targetID).select("svg").remove();
@@ -171,7 +180,7 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
       yRight = d3.scaleLinear().range([height,0]);
 
   x.domain([0, 27]);
-  y.domain([parsePace('00:00'),parsePace("20:00")]);
+  y.domain([parsePace('00:00'),parsePace("18:00")]);
   yRight.domain([-9,1000])
 
   // Define the axes
@@ -323,7 +332,7 @@ function dotChart(targetID,maxval,runnerID){
       left: 55
     };
     // var width = 340 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 380 - margin.top - margin.bottom;
   } else if (screen.width <= 340) {
     var margin = {
       top: 20,
