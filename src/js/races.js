@@ -129,16 +129,22 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
     bottom: 40,
     left: 60
   };
-  if (screen.width > 768) {
-    // var width = 440 - margin.left - margin.right;
+  if (screen.width > 1025) {
     var height = 500 - margin.top - margin.bottom;
-  } else if (screen.width <= 768 && screen.width > 480) {
-    console.log("HERE");
+  } else if (screen.width <= 1024 && screen.width > 768) {
     var margin = {
       top: 15,
       right: 80,
       bottom: 40,
       left: 60
+    };
+    var height = 500 - margin.top - margin.bottom;
+  } else if (screen.width <= 768 && screen.width > 480) {
+    var margin = {
+      top: 15,
+      right: 200,
+      bottom: 40,
+      left: 100
     };
     // var width = 440 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
@@ -163,9 +169,8 @@ function hoverChart(targetID,maxval,yLabel,units,runnerID) {
     // var width = 310 - margin.left - margin.right;
     var height = 370 - margin.top - margin.bottom;
   }
-  console.log(margin.left);
-  console.log(margin.right);
   var width = Math.min(windowWidth,maxWidthRaces) - 10 - margin.left - margin.right;
+  console.log(width);
 
   d3.select(targetID).select("svg").remove();
   var svg = d3.select(targetID).append("svg")

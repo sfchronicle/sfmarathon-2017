@@ -21,10 +21,16 @@
     <%= t.include("partials/_nav.html") %>
 
     <div class="desktop-gif">
-      <div class="gif-large"><img src="../assets/gifs/final_best_ever.gif"></img></div>
+      <div class="gif-large">
+        <img class="actual-gif" src="../assets/gifs/final_best_ever.gif"></img>
+        <img class="background-gif" src="../assets/gifs/background_image_gif.png"></img>
+      </div>
     </div>
     <div class="mobile-gif">
-      <div class="gif-large"><img src="../assets/gifs/final_best_ever_mobile.gif"></img></div>
+      <div class="gif-large">
+        <img class="actual-gif" src="../assets/gifs/final_best_ever_mobile.gif"></img>
+        <img class="background-gif" src="../assets/gifs/background_image_gif.png"></img>
+      </div>
     </div>
 
     <div class="outer" id="content">
@@ -45,12 +51,12 @@
           <% } else if (d.type == "map"){ %>
             <div class="float-img-container">
               <div class="float-img right">
-                <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+                <img src="https://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
               </div>
             </div>
           <% } else { %>
             <div class="inline-image <%= d.value[0].Size %>">
-              <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+              <img src="https://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
               <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
             </div>
           <% } %>
@@ -62,7 +68,7 @@
         <div class="profile-hed <%=d.Key%>" id="profile<%=d.Key%>"><%=d.Name%></div>
 
         <div class="inline-image <%= d.image[0].Size %>">
-          <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
+          <img src="https://ww2.hdnux.com/photos/61/64/55/<%= d.image[0].WcmID %>/5/1000x0.jpg">
           <div class="caption"><%= d.image[0].Caption %><span class="byline"> <%= d.image[0].Photographer %></span></div>
         </div>
 
@@ -130,7 +136,7 @@
           <div class="text-pullout"><%=d.FunFact.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%>
           </div>
 
-          <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>
+          <div class="source">Source: <a href="httpss://www.strava.com" target="_blank">Strava</a>, <%=d.Name%>
             <div>Note: Gene Dykes has been out of the country and unable to regularly upload runs since July 3.</div>
           </div>
 
@@ -158,7 +164,7 @@
 
           <div class="text-pullout"><%=d.FunFact.replace("**","<span class='bold-text-pullout'>").replace("*","</span>").replace("**","<span class='bold-text-pullout'>").replace("*","</span>")%></div>
 
-          <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, <%=d.Name%></div>
+          <div class="source">Source: <a href="httpss://www.strava.com" target="_blank">Strava</a>, <%=d.Name%></div>
 
         <% } %>
 
@@ -167,7 +173,7 @@
               <p><%=d.value%></p>
             <% } else if (d.type == "diptych") { %>
               <div class="diptych-container">
-                <div class="diptych1"><img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_1 %>/5/1000x0.jpg"></div>
+                <div class="diptych1"><img src="https://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID_1 %>/5/1000x0.jpg"></div>
                 <div class="diptych2"><img src="../assets/photos/mickle_crop.jpg"></div>
                 <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
               </div>
@@ -182,7 +188,7 @@
             <% } else { %>
               <div class="float-img-container">
                 <div class="float-img right vertical">
-                  <img src="http://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
+                  <img src="https://ww2.hdnux.com/photos/61/64/55/<%= d.value[0].WcmID %>/5/1000x0.jpg">
                   <div class="caption"><%= d.value[0].Caption %><span class="byline"> <%= d.value[0].Photographer %></span></div>
                 </div>
               </div>
@@ -215,7 +221,7 @@
                 <% }); %>
               </div>
               <div id="dot-chart"></div>
-              <div class="source">Source: <a href="https://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla and Lauren Elkins</div>
+              <div class="source">Source: <a href="httpss://www.strava.com" target="_blank">Strava</a>, Bálint Gál, Gene Dykes, Greg McQuaid, Hilary Shirazi, Iain Mickle, Jorge Maravilla and Lauren Elkins</div>
             </div>
           <% } %>
         <% }); %>
