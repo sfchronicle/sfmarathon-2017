@@ -629,7 +629,7 @@ var a,b,c,d,e,f,concdiv,window_top,y;
 
 var navDisplay = function() {
   y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-  window_top = window.scrollY;
+  window_top = window.scrollY-30;
   a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
   b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
