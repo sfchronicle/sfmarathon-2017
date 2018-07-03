@@ -1,5 +1,6 @@
 require("./lib/social");
-var d3 = require("d3");//Do not delete'
+var d3 = require("d3");//Do not delete
+var debounce = require("./lib/debounce");
 
 // this is set in the styles
 var maxWidthDots = 1000;
@@ -546,17 +547,6 @@ $(window).resize(function () {
     hoverChart("#"+keyList[jdx]+"-race",900,"Total number of miles run","miles",nameList[jdx]);
   }
 
-  // re-compute where sections begin and end
-  var window_top = document.body.scrollTop-30;
-  a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
-  b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
-  c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
-  d = document.getElementById('profilejorge').getBoundingClientRect().top + window_top;
-  e = document.getElementById('profilebalint').getBoundingClientRect().top + window_top;
-  f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
-  scroll = [a,b,c,d,e,f];
-  concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
-
 });
 
 //----------------------------------------------------------------------------------
@@ -632,8 +622,11 @@ var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var profile_idx = -1;
 var a,b,c,d,e,f,concdiv;
-window.onload = function () {
-  var window_top = document.body.scrollTop-30;
+
+var y;
+var navDisplay = function() {
+  y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+  var window_top = window.scrollY;
   a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
   b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
@@ -642,12 +635,6 @@ window.onload = function () {
   f = document.getElementById('profilegreg').getBoundingClientRect().top + window_top;
   scroll = [a,b,c,d,e,f];
   concdiv= document.getElementById('conclusion').getBoundingClientRect().top + window_top;
-}
-
-var y;
-var navDisplay = function() {
-  // var y = window.scrollY;
-  y = $(window).scrollTop();
   if (y >= navposition) {
     navID.className = "fixed show";
   } else {
@@ -671,4 +658,4 @@ var navDisplay = function() {
     }
   }
 };
-window.addEventListener("scroll", navDisplay);
+window.addEventListener("scroll", debounce(navDisplay,100));
