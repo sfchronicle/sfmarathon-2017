@@ -727,16 +727,18 @@ $(document).on('click', 'a[href^="#"]', function(e) {
     $('body, html').animate({scrollTop: pos});
 });
 
+//----------------------------------------------------------------------------------
+// HIGHLIGHT CURRENT PROFILE ON SCROLL
+//----------------------------------------------------------------------------------
 
 var navID = document.getElementById("nav");
 var navposition = 400;//document.getElementById("link-nav").offsetTop+40;
 var profile_idx = -1;
-var a,b,c,d,e,f,concdiv;
+var a,b,c,d,e,f,concdiv,window_top,y;
 
-var y;
 var navDisplay = function() {
   y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-  var window_top = window.scrollY-30;
+  window_top = window.scrollY-30;
   a = document.getElementById('profileiain').getBoundingClientRect().top + window_top;
   b = document.getElementById('profilelauren').getBoundingClientRect().top + window_top;
   c = document.getElementById('profilehilary').getBoundingClientRect().top + window_top;
